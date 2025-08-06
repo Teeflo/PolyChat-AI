@@ -63,23 +63,51 @@ const ChatWindow: React.FC = () => {
         {isLoading && (
           <div style={{ display: 'flex', justifyContent: 'flex-start', marginBottom: '16px' }}>
             <div style={{
-              backgroundColor: isDark ? '#374151' : '#f3f4f6',
+              backgroundColor: isDark ? '#374151' : '#f8fafc',
               color: isDark ? '#e5e7eb' : '#374151',
               borderRadius: '18px',
               borderBottomLeftRadius: '6px',
               padding: '16px 20px',
-              boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)'
+              border: `1px solid ${isDark ? '#4b5563' : '#e2e8f0'}`,
+              boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
+              position: 'relative',
+              overflow: 'hidden'
             }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <Loader2 
-                  size={16} 
-                  style={{ 
-                    animation: 'spin 1s linear infinite',
-                    color: isDark ? '#818cf8' : '#6366f1'
-                  }} 
-                />
-                <span style={{ fontSize: '14px', fontWeight: '500' }}>
-                  IA en train d'écrire...
+              {/* Effet de shimmer */}
+              <div style={{
+                position: 'absolute',
+                top: 0,
+                left: '-100%',
+                width: '100%',
+                height: '100%',
+                background: `linear-gradient(90deg, transparent, ${isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.05)'}, transparent)`,
+                animation: 'shimmer 2s ease-in-out infinite'
+              }} />
+              <div style={{ display: 'flex', alignItems: 'center', gap: '12px', position: 'relative', zIndex: 1 }}>
+                <div style={{
+                  display: 'flex',
+                  gap: '4px'
+                }}>
+                  {[1, 2, 3].map((i) => (
+                    <div
+                      key={i}
+                      style={{
+                        width: '8px',
+                        height: '8px',
+                        borderRadius: '50%',
+                        backgroundColor: isDark ? '#818cf8' : '#6366f1',
+                        animation: `typingDot 1.4s ease-in-out infinite both`,
+                        animationDelay: `${(i - 1) * 0.16}s`
+                      }}
+                    />
+                  ))}
+                </div>
+                <span style={{ 
+                  fontSize: '14px', 
+                  fontWeight: '500',
+                  fontFamily: 'JetBrains Mono, monospace'
+                }}>
+                  Génération de la réponse...
                 </span>
               </div>
             </div>

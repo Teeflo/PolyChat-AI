@@ -56,8 +56,8 @@ const ChatInput: React.FC = () => {
               disabled={isAnyLoading}
               className="pixel-input-textarea"
               style={{ 
-                color: 'var(--matrix-green)',
-                borderColor: 'rgba(0, 255, 65, 0.3)'
+                color: 'var(--pixel-accent-1)',
+                borderColor: 'rgba(100, 116, 139, 0.3)'
               }}
             />
             

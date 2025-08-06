@@ -1,30 +1,30 @@
-/* PolyChat AI - Styles hacker */
+/* PolyChat AI - Styles harmonisés avec modern-pixel.css */
 
-/* Variables CSS pour le thème hacker - Version sombre */
+/* Variables CSS harmonisées */
 :root {
-  /* Couleurs principales - Plus sombres et discrètes */
-  --hacker-green: #4a9b4a;
-  --hacker-dark-green: #2a4a2a;
-  --hacker-darker-green: #1a2a1a;
-  --hacker-light-green: #6a8a6a;
-  --hacker-gray: #2a2a2a;
-  --hacker-dark-gray: #1a1a1a;
-  --hacker-darker-gray: #0f0f0f;
+  /* Couleurs harmonisées avec modern-pixel.css */
+  --hacker-green: #64748b;
+  --hacker-dark-green: #475569;
+  --hacker-darker-green: #374151;
+  --hacker-light-green: #94a3b8;
+  --hacker-gray: #374151;
+  --hacker-dark-gray: #242830;
+  --hacker-darker-gray: #1a1d23;
   
-  /* Dégradés plus sombres */
+  /* Dégradés harmonisés */
   --gradient-primary: linear-gradient(135deg, var(--hacker-gray) 0%, var(--hacker-dark-gray) 100%);
   --gradient-secondary: linear-gradient(135deg, var(--hacker-dark-gray) 0%, var(--hacker-darker-gray) 100%);
   --gradient-accent: linear-gradient(135deg, var(--hacker-light-green) 0%, var(--hacker-dark-green) 100%);
   
-  /* Ombres plus subtiles */
-  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.2);
-  --shadow-md: 0 2px 4px -1px rgba(0, 0, 0, 0.3), 0 1px 2px -1px rgba(0, 0, 0, 0.2);
-  --shadow-lg: 0 4px 8px -2px rgba(0, 0, 0, 0.4), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
-  --shadow-xl: 0 8px 16px -4px rgba(0, 0, 0, 0.5), 0 4px 8px -2px rgba(0, 0, 0, 0.4);
+  /* Ombres harmonisées */
+  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.2);
+  --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.3);
+  --shadow-lg: 0 8px 16px rgba(0, 0, 0, 0.4);
+  --shadow-xl: 0 16px 32px rgba(0, 0, 0, 0.5);
   
-  /* Effets de néon très subtils */
-  --neon-glow: 0 0 2px rgba(106, 138, 106, 0.3), 0 0 4px rgba(106, 138, 106, 0.2);
-  --neon-glow-strong: 0 0 3px rgba(106, 138, 106, 0.4), 0 0 6px rgba(106, 138, 106, 0.3);
+  /* Effets subtils harmonisés */
+  --subtle-highlight: 0 0 0 1px rgba(100, 116, 139, 0.2);
+  --subtle-highlight-strong: 0 0 0 2px rgba(100, 116, 139, 0.3);
   
   /* Bordures discrètes */
   --border-thin: 1px solid var(--hacker-gray);
@@ -119,13 +119,13 @@
   outline: none;
   background: var(--hacker-dark-green);
   color: var(--hacker-green);
-  box-shadow: var(--neon-glow);
+  box-shadow: var(--subtle-highlight);
 }
 
 .btn-modern:hover {
   background: var(--hacker-green);
   color: var(--hacker-darker-green);
-  box-shadow: var(--neon-glow-strong);
+  box-shadow: var(--subtle-highlight-strong);
 }
 
 .btn-modern:active {
@@ -154,12 +154,12 @@
   backdrop-filter: blur(5px);
   border: var(--border-thin);
   border-radius: var(--border-radius-lg);
-  box-shadow: var(--neon-glow);
+  box-shadow: var(--subtle-highlight);
   transition: all 0.3s ease;
 }
 
 .card-modern:hover {
-  box-shadow: var(--neon-glow-strong);
+  box-shadow: var(--subtle-highlight-strong);
 }
 
 /* Messages de chat */
@@ -171,7 +171,7 @@
   padding: var(--spacing-md);
   margin-left: auto;
   max-width: 80%;
-  box-shadow: var(--neon-glow);
+  box-shadow: var(--subtle-highlight);
 }
 
 .message-assistant {
@@ -182,7 +182,7 @@
   padding: var(--spacing-md);
   margin-right: auto;
   max-width: 80%;
-  box-shadow: var(--neon-glow);
+  box-shadow: var(--subtle-highlight);
 }
 
 /* Indicateur de frappe */
@@ -196,7 +196,7 @@
   border-radius: var(--border-radius-md);
   margin-right: auto;
   width: fit-content;
-  box-shadow: var(--neon-glow);
+  box-shadow: var(--subtle-highlight);
 }
 
 .typing-dot {
@@ -222,17 +222,17 @@
   transition: all 0.3s ease;
   outline: none;
   resize: none;
-  box-shadow: var(--neon-glow);
+  box-shadow: var(--subtle-highlight);
 }
 
 .input-modern::placeholder {
-  color: rgba(0, 255, 65, 0.5);
+  color: rgba(106, 138, 106, 0.6);
 }
 
 .input-modern:focus {
   border: var(--border-medium);
   background: var(--hacker-dark-green);
-  box-shadow: var(--neon-glow-strong);
+  box-shadow: var(--subtle-highlight-strong);
 }
 
 /* Modal moderne */
@@ -256,7 +256,7 @@
   border: var(--border-thin);
   border-radius: var(--border-radius-lg);
   padding: var(--spacing-xl);
-  box-shadow: var(--neon-glow-strong);
+  box-shadow: var(--subtle-highlight-strong);
   max-width: 500px;
   width: 90%;
   max-height: 80vh;

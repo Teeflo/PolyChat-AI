@@ -8,9 +8,11 @@ interface ChatStore {
   activeSessions: ChatSession[];
   selectedModels: string[]; // Max 3 modèles
   isAnyLoading: boolean;
-  addModel: (modelId: string, modelName: string) => void;
+  addModel: (modelId: string) => void;
   removeModel: (modelId: string) => void;
   sendMessageToAll: (content: string) => Promise<void>;
+  regenerateMessage: (sessionId: string, messageId: string) => Promise<void>;
+  deleteMessage: (sessionId: string, messageId: string) => void;
   clearAllChats: () => void;
   initializeChat: () => void;
 }
@@ -55,7 +57,7 @@ export const useChat = create<ChatStore>((set, get) => ({
     }
   },
   
-  addModel: (modelId: string, modelName: string) => {
+  addModel: (modelId: string) => {
     const { activeSessions, selectedModels } = get();
     
     // Vérifier si le modèle n'est pas déjà actif et qu'on n'a pas atteint la limite de 3
@@ -63,7 +65,7 @@ export const useChat = create<ChatStore>((set, get) => ({
       const newSession: ChatSession = {
         id: modelId,
         modelId,
-        modelName,
+        modelName: modelId, // Utiliser l'ID pour la cohérence
         messages: [createWelcomeMessage(modelId)],
         isLoading: false,
         error: null,
@@ -171,6 +173,101 @@ export const useChat = create<ChatStore>((set, get) => ({
     
     if (clearedSessions.length > 0) {
       saveMessages(clearedSessions[0].messages);
+    }
+  },
+
+  regenerateMessage: async (sessionId: string, messageId: string) => {
+    const { activeSessions } = get();
+    const { apiKey } = useSettings.getState();
+
+    if (!apiKey) {
+      return;
+    }
+
+    // Trouver la session et le message
+    const sessionIndex = activeSessions.findIndex(s => s.id === sessionId);
+    if (sessionIndex === -1) return;
+
+    const session = activeSessions[sessionIndex];
+    const messageIndex = session.messages.findIndex(m => m.id === messageId);
+    if (messageIndex === -1) return;
+
+    // Ne régénérer que les messages de l'assistant
+    const message = session.messages[messageIndex];
+    if (message.role !== 'assistant') return;
+
+    // Marquer la session comme en chargement
+    const updatedSessions = [...activeSessions];
+    updatedSessions[sessionIndex] = {
+      ...session,
+      isLoading: true,
+      error: null
+    };
+    set({ activeSessions: updatedSessions, isAnyLoading: true });
+
+    try {
+      // Récupérer les messages jusqu'au message à régénérer (sans l'inclure)
+      const conversationHistory = session.messages.slice(0, messageIndex);
+      
+      // Faire appel à l'API
+      const aiResponse = await fetchAIResponse(conversationHistory, apiKey, session.modelId);
+      
+      // Remplacer le message régénéré
+      const newMessage = createMessage('assistant', aiResponse, session.modelId);
+      const newMessages = [
+        ...conversationHistory,
+        newMessage,
+        ...session.messages.slice(messageIndex + 1)
+      ];
+
+      updatedSessions[sessionIndex] = {
+        ...session,
+        messages: newMessages,
+        isLoading: false,
+        error: null
+      };
+
+      set({ activeSessions: updatedSessions, isAnyLoading: false });
+      saveMessages(newMessages);
+
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Erreur lors de la régénération';
+      
+      updatedSessions[sessionIndex] = {
+        ...session,
+        isLoading: false,
+        error: errorMessage
+      };
+
+      set({ activeSessions: updatedSessions, isAnyLoading: false });
+    }
+  },
+
+  deleteMessage: (sessionId: string, messageId: string) => {
+    const { activeSessions } = get();
+    
+    const updatedSessions = activeSessions.map(session => {
+      if (session.id === sessionId) {
+        const filteredMessages = session.messages.filter(m => m.id !== messageId);
+        
+        // S'assurer qu'il reste au moins le message d'accueil
+        const finalMessages = filteredMessages.length === 0 
+          ? [createWelcomeMessage(session.modelId)]
+          : filteredMessages;
+
+        return {
+          ...session,
+          messages: finalMessages
+        };
+      }
+      return session;
+    });
+
+    set({ activeSessions: updatedSessions });
+    
+    // Sauvegarder les messages de la première session comme référence
+    if (updatedSessions.length > 0) {
+      saveMessages(updatedSessions[0].messages);
     }
   }
 }));

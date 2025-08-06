@@ -182,7 +182,7 @@
   height: 2px;
   background: var(--gradient-cyber);
   opacity: 0.6;
-  animation: cyberGlow 3s ease-in-out infinite;
+  animation: subtleHighlight 3s ease-in-out infinite;
 }
 
 /* Responsive pour le header moderne */

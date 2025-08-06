@@ -43,12 +43,12 @@ const SettingsModalModern: React.FC<SettingsModalModernProps> = ({ isOpen, onClo
     document.body.className = `theme-${newTheme}`;
   };
 
-  const getModelDisplayName = (modelName: string) => {
-    return modelName.split('/').pop() || modelName;
+  const getModelDisplayName = (modelId: string) => {
+    return modelId.split('/').pop() || modelId;
   };
 
-  const getModelProvider = (modelName: string) => {
-    const parts = modelName.split('/');
+  const getModelProvider = (modelId: string) => {
+    const parts = modelId.split('/');
     return parts.length > 1 ? parts[0] : 'Unknown';
   };
 
@@ -136,7 +136,7 @@ const SettingsModalModern: React.FC<SettingsModalModernProps> = ({ isOpen, onClo
                 <option value="">Choisir un modèle...</option>
                 {models.map((model) => (
                   <option key={model.id} value={model.id}>
-                    {getModelProvider(model.name)} - {getModelDisplayName(model.name)}
+                    {getModelDisplayName(model.id)} ({getModelProvider(model.id)})
                   </option>
                 ))}
               </select>

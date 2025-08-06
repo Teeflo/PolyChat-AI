@@ -1,10 +1,10 @@
-/* Styles pour le sélecteur de modèles dans le chat */
+/* Styles harmonisés pour le sélecteur de modèles dans le chat */
 .pixel-model-selector-in-chat {
   margin-bottom: 20px;
   padding: 15px;
-  border: 1px solid rgba(0, 255, 65, 0.3);
+  border: 1px solid rgba(100, 116, 139, 0.3);
   border-radius: 4px;
-  background-color: rgba(0, 20, 10, 0.7);
+  background-color: rgba(26, 29, 35, 0.7);
 }
 
 .pixel-model-selector-header {
@@ -30,21 +30,21 @@
   display: flex;
   align-items: center;
   padding: 8px 12px;
-  border: 1px solid rgba(0, 255, 65, 0.3);
+  border: 1px solid rgba(100, 116, 139, 0.3);
   border-radius: 4px;
-  background-color: rgba(0, 30, 15, 0.5);
+  background-color: rgba(36, 40, 48, 0.5);
   cursor: pointer;
   transition: all 0.2s ease;
   font-size: 12px;
 }
 
 .pixel-model-item-in-chat:hover {
-  background-color: rgba(0, 60, 30, 0.7);
+  background-color: rgba(45, 49, 66, 0.7);
   border-color: var(--pixel-accent-1);
 }
 
 .pixel-model-item-in-chat.selected {
-  background-color: rgba(0, 100, 50, 0.7);
+  background-color: rgba(100, 116, 139, 0.3);
   border-color: var(--pixel-accent-1);
 }
 
@@ -79,10 +79,10 @@
 .pixel-assistant-response {
   flex: 1;
   min-width: 300px; /* Ajuster selon la taille souhaitée */
-  border: 1px solid rgba(0, 255, 65, 0.2);
+  border: 1px solid rgba(100, 116, 139, 0.2);
   border-radius: 4px;
   padding: 10px;
-  background-color: rgba(0, 20, 10, 0.5);
+  background-color: rgba(26, 29, 35, 0.5);
 }
 
 /* Ajustements pour les petits écrans */

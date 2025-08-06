@@ -40,14 +40,14 @@ export interface ModelsResponse {
 }
 
 /**
- * Récupère tous les modèles disponibles sans limite artificielle
+ * Récupère tous les modèles disponibles avec une seule requête optimisée
  */
 export async function fetchAllAvailableModels(): Promise<OpenRouterModel[]> {
   try {
     console.log('🔄 Récupération de TOUS les modèles depuis OpenRouter...');
     
     const params = new URLSearchParams();
-    // Suppression de la limite artificielle - récupérer tous les modèles disponibles
+    params.append('limit', '400'); // Limite raisonnable basée sur le nombre réel sur OpenRouter (~400 modèles)
     params.append('order', 'top-weekly');
     
     const controller = new AbortController();
@@ -109,7 +109,7 @@ export async function fetchAllAvailableModels(): Promise<OpenRouterModel[]> {
 
 /**
  * Récupère la liste des modèles depuis l'API OpenRouter
- * Sans limite artificielle pour récupérer tous les modèles
+ * Utilise une limite raisonnable pour éviter les doublons
  */
 export async function fetchAvailableModels(filters?: Partial<ModelFilters>): Promise<OpenRouterModel[]> {
   try {
@@ -117,7 +117,8 @@ export async function fetchAvailableModels(filters?: Partial<ModelFilters>): Pro
     
     // Construire les paramètres de requête de base
     const params = new URLSearchParams();
-    // Suppression de la limite artificielle
+    // Limite raisonnable pour récupérer la plupart des modèles populaires
+    params.append('limit', '400'); // Récupérer jusqu'à 400 modèles en une seule requête
     params.append('order', 'top-weekly'); // Trier par popularité
     
     // Ne pas filtrer par prix côté API pour avoir plus de modèles
@@ -256,7 +257,7 @@ export async function getAvailableProviders(): Promise<string[]> {
 }
 
 /**
- * Récupère les informations de prix d'un modèle avec précision maximale
+ * Récupère les informations de prix d'un modèle
  */
 export function getModelPricing(model: OpenRouterModel): string {
   if (!model.pricing) return 'Prix non disponible';
@@ -264,30 +265,21 @@ export function getModelPricing(model: OpenRouterModel): string {
   const promptPrice = parseFloat(model.pricing.prompt) || 0;
   const completionPrice = parseFloat(model.pricing.completion) || 0;
   
-  // Vérification stricte pour vraiment gratuit (0 exactement)
   if (promptPrice === 0 && completionPrice === 0) {
     return 'Gratuit';
   }
   
-  // Affichage précis des prix réels
-  if (promptPrice > 0 || completionPrice > 0) {
-    const promptStr = promptPrice > 0 ? `${(promptPrice * 1000000).toFixed(2)}$/1M tokens` : '';
-    const completionStr = completionPrice > 0 ? `${(completionPrice * 1000000).toFixed(2)}$/1M tokens` : '';
-    
-    if (promptPrice > 0 && completionPrice > 0) {
-      return `In: ${promptStr} | Out: ${completionStr}`;
-    } else if (promptPrice > 0) {
-      return `Input: ${promptStr}`;
-    } else {
-      return `Output: ${completionStr}`;
-    }
-  }
+  const avgPrice = (promptPrice + completionPrice) / 2;
   
-  return 'Prix non disponible';
+  if (avgPrice < 0.000001) return 'Gratuit';
+  if (avgPrice < 0.00001) return 'Très peu cher';
+  if (avgPrice < 0.0001) return 'Peu cher';
+  if (avgPrice < 0.001) return 'Modéré';
+  return 'Premium';
 }
 
 /**
- * Catégorise le prix d'un modèle avec précision stricte
+ * Catégorise le prix d'un modèle
  */
 export function getPriceCategory(model: OpenRouterModel): PriceRange {
   if (!model.pricing) return 'premium';
@@ -295,14 +287,12 @@ export function getPriceCategory(model: OpenRouterModel): PriceRange {
   const promptPrice = parseFloat(model.pricing.prompt) || 0;
   const completionPrice = parseFloat(model.pricing.completion) || 0;
   
-  // Vérification stricte : VRAIMENT gratuit (0 exactement)
   if (promptPrice === 0 && completionPrice === 0) return 'free';
   
-  // Calcul plus précis basé sur le prix moyen par token
   const avgPrice = (promptPrice + completionPrice) / 2;
   
-  // Catégories plus strictes et réalistes
-  if (avgPrice <= 0.000005) return 'cheap';        // ≤ $5/1M tokens
-  if (avgPrice <= 0.00002) return 'moderate';      // ≤ $20/1M tokens  
-  return 'premium';                                 // > $20/1M tokens
+  if (avgPrice < 0.000001) return 'free';
+  if (avgPrice < 0.00001) return 'cheap';
+  if (avgPrice < 0.001) return 'moderate';
+  return 'premium';
 }

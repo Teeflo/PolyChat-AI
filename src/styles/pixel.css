@@ -5,21 +5,21 @@
 
 /* Variables CSS pour le thème pixel */
 :root {
-  /* Couleurs pixel art - Thème Matrix vert */
-  --pixel-bg-primary: #0a1a0a;
-  --pixel-bg-secondary: #0d2b0d;
-  --pixel-bg-tertiary: #0f3d0f;
-  --pixel-accent-1: #00ff41; /* Vert Matrix principal */
-  --pixel-accent-2: #00cc33; /* Vert Matrix secondaire */
-  --pixel-accent-3: #009922; /* Vert Matrix foncé */
-  --pixel-accent-4: #33ff66; /* Vert Matrix clair */
-  --pixel-green: #00ff41;
-  --pixel-red: #ff4757;
-  --pixel-yellow: #fffa65;
-  --pixel-purple: #a55eea;
+  /* Couleurs pixel art - Thème plus doux */
+  --pixel-bg-primary: #1a1d23;
+  --pixel-bg-secondary: #242830;
+  --pixel-bg-tertiary: #2d3142;
+  --pixel-accent-1: #64748b; /* Gris-bleu principal */
+  --pixel-accent-2: #475569; /* Gris-bleu secondaire */
+  --pixel-accent-3: #334155; /* Gris-bleu foncé */
+  --pixel-accent-4: #94a3b8; /* Gris-bleu clair */
+  --pixel-green: #10b981;
+  --pixel-red: #ef4444;
+  --pixel-yellow: #f59e0b;
+  --pixel-purple: #8b5cf6;
   --pixel-white: #f1f2f6;
-  --pixel-gray: #57606f;
-  --pixel-dark-gray: #2f3542;
+  --pixel-gray: #6b7280;
+  --pixel-dark-gray: #374151;
   
   /* Bordures pixel */
   --pixel-border-thin: 2px solid;
@@ -105,14 +105,12 @@ body {
 
 @keyframes pixelGlow {
   0%, 100% { 
-    box-shadow: 0 0 5px var(--pixel-accent-1),
-                0 0 10px var(--pixel-accent-1),
-                0 0 15px var(--pixel-accent-1);
+    box-shadow: 0 0 2px var(--pixel-accent-1),
+                0 0 4px rgba(100, 116, 139, 0.3);
   }
   50% { 
-    box-shadow: 0 0 10px var(--pixel-accent-1),
-                0 0 20px var(--pixel-accent-1),
-                0 0 30px var(--pixel-accent-1);
+    box-shadow: 0 0 4px var(--pixel-accent-1),
+                0 0 8px rgba(100, 116, 139, 0.4);
   }
 }
 
@@ -188,7 +186,7 @@ body {
 
 .pixel-input:focus {
   border-color: var(--pixel-accent-2);
-  box-shadow: 0 0 10px var(--pixel-accent-2);
+  box-shadow: 0 0 0 2px rgba(71, 85, 105, 0.3);
   animation: pixelGlow 2s infinite;
 }
 
@@ -211,7 +209,7 @@ body {
 
 .pixel-select:focus {
   border-color: var(--pixel-accent-2);
-  box-shadow: 0 0 10px var(--pixel-accent-2);
+  box-shadow: 0 0 0 2px rgba(71, 85, 105, 0.3);
 }
 
 /* Cartes pixel */
@@ -435,6 +433,21 @@ body {
     width: 95%;
     margin: var(--pixel-spacing-sm);
   }
+  
+  .pixel-main-chat-area {
+    margin: 4px;
+    min-height: 250px;
+    height: calc(100vh - 100px);
+  }
+  
+  .pixel-messages-container {
+    min-height: 200px;
+  }
+  
+  .pixel-chat-content {
+    padding: 16px;
+    min-height: 200px;
+  }
 }
 
 /* Effets spéciaux pixel */
@@ -544,7 +557,7 @@ body {
 
 .pixel-input-textarea:focus {
   border-color: var(--pixel-green);
-  box-shadow: 0 0 10px rgba(0, 255, 150, 0.3);
+  box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.3);
 }
 
 .pixel-cursor {
@@ -645,7 +658,9 @@ body {
   padding: 24px;
   max-width: 800px;
   margin: 0 auto;
-  min-height: calc(100vh - 200px);
+  min-height: 300px;
+  height: 100%;
+  overflow-y: auto;
 }
 
 .pixel-welcome-message {
@@ -745,6 +760,67 @@ body {
   100% { width: 100%; }
 }
 
+/* Animations pour les indicateurs de chargement */
+.pixel-typing-indicator {
+  margin-bottom: 20px;
+  animation: pixelSlideIn 0.3s ease;
+}
+
+.pixel-typing-content {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  background: var(--pixel-bg-secondary);
+  border: 2px solid var(--pixel-accent-1);
+  position: relative;
+  overflow: hidden;
+}
+
+.pixel-typing-content::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(138, 180, 248, 0.2), transparent);
+  animation: pixelSweep 2s ease-in-out infinite;
+}
+
+.pixel-typing-text {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 8px;
+  color: var(--pixel-accent-1);
+  animation: pixelBlink 1.5s infinite;
+  position: relative;
+  z-index: 1;
+}
+
+.pixel-loading-bar {
+  height: 4px;
+  background: var(--pixel-bg-primary);
+  border: 1px solid var(--pixel-accent-1);
+  overflow: hidden;
+}
+
+.pixel-loading-progress {
+  height: 100%;
+  background: var(--pixel-accent-1);
+  animation: pixelProgress 2s ease-in-out infinite;
+}
+
+@keyframes pixelSweep {
+  0% { left: -100%; }
+  100% { left: 100%; }
+}
+
+@keyframes pixelProgress {
+  0% { width: 0%; }
+  50% { width: 70%; }
+  100% { width: 100%; }
+}
+
 .pixel-error-message {
   display: flex;
   justify-content: flex-start;
@@ -827,8 +903,8 @@ body {
   align-items: center;
   gap: 8px;
   padding: 8px 12px;
-  background: rgba(0, 0, 0, 0.2);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  background: var(--pixel-bg-glass-light);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   font-size: 8px;
 }
 
@@ -886,9 +962,9 @@ body {
 }
 
 .pixel-inline-code {
-  background: rgba(0, 0, 0, 0.3);
+  background: var(--pixel-bg-secondary);
   padding: 2px 6px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid var(--pixel-accent-muted);
   font-size: 8px;
   font-family: 'Press Start 2P', monospace;
   color: var(--pixel-accent-1);
@@ -957,7 +1033,7 @@ body {
   border-left: 3px solid var(--pixel-accent-2);
   padding-left: 12px;
   margin: 8px 0;
-  background: rgba(0, 0, 0, 0.2);
+  background: var(--pixel-bg-glass-light);
   font-style: italic;
 }
 
@@ -966,8 +1042,8 @@ body {
   justify-content: space-between;
   align-items: center;
   padding: 6px 12px;
-  background: rgba(0, 0, 0, 0.1);
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  background: var(--pixel-bg-glass);
+  border-top: 1px solid var(--pixel-accent-muted);
   font-size: 6px;
   opacity: 0.8;
 }
@@ -1312,14 +1388,18 @@ body {
   position: relative;
   z-index: 1;
   margin: 8px;
-  border: 4px solid var(--pixel-accent-1);
-  background: var(--pixel-bg-secondary);
+  border: 1px solid var(--pixel-dark-gray);
+  background: var(--pixel-bg-primary);
+  border-radius: 8px;
+  min-height: 400px;
+  height: calc(100vh - 140px);
 }
 
 .pixel-messages-container {
   flex: 1;
   overflow: hidden;
   position: relative;
+  min-height: 300px;
 }
 
 .pixel-input-area {
@@ -1472,7 +1552,7 @@ body {
 .pixel-add-model-btn:hover {
   background: var(--pixel-accent-2);
   color: var(--pixel-bg-primary);
-  box-shadow: 0 0 8px var(--pixel-accent-2);
+  box-shadow: 0 2px 4px rgba(71, 85, 105, 0.3);
 }
 
 .pixel-models-dropdown {
@@ -1625,16 +1705,4 @@ body {
 /* Ajustements pour la mise en page avec sélecteur de modèles */
 .pixel-model-selector-container {
   margin-bottom: var(--pixel-spacing-sm);
-}
-
-.pixel-main-chat-area {
-  display: flex;
-  flex-direction: column;
-  height: calc(100vh - 120px);
-}
-
-.pixel-messages-container {
-  flex: 1;
-  overflow: hidden;
-  min-height: 0;
 }

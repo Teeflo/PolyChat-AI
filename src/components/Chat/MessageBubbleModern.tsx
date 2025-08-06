@@ -1,5 +1,5 @@
 import React from 'react';
-import { User, Bot, Copy, ThumbsUp, ThumbsDown, RefreshCw } from 'lucide-react';
+import { User, Bot, Copy, RefreshCw, Trash2 } from 'lucide-react';
 import type { Message } from '../../types/index';
 import './MessageBubbleModern.css';
 
@@ -8,13 +8,17 @@ interface MessageBubbleModernProps {
   isLoading?: boolean;
   error?: string | null;
   onRetry?: () => void;
+  onRegenerate?: () => void;
+  onDelete?: () => void;
 }
 
 const MessageBubbleModern: React.FC<MessageBubbleModernProps> = ({ 
   message, 
   isLoading = false,
   error,
-  onRetry 
+  onRetry,
+  onRegenerate,
+  onDelete
 }) => {
   const isUser = message.role === 'user';
   const isAssistant = message.role === 'assistant';
@@ -77,9 +81,10 @@ const MessageBubbleModern: React.FC<MessageBubbleModernProps> = ({
           )}
         </div>
 
-        {/* Actions (uniquement pour les messages de l'assistant) */}
-        {isAssistant && !isLoading && (
+        {/* Actions - Pour tous les messages */}
+        {!isLoading && (
           <div className="message-bubble-modern-actions">
+            {/* Bouton copier - pour tous les messages */}
             <button
               onClick={handleCopy}
               className="message-bubble-modern-action-btn"
@@ -88,25 +93,34 @@ const MessageBubbleModern: React.FC<MessageBubbleModernProps> = ({
               <Copy size={14} />
             </button>
             
-            <button
-              className="message-bubble-modern-action-btn"
-              aria-label="J'aime cette réponse"
-            >
-              <ThumbsUp size={14} />
-            </button>
+            {/* Bouton régénérer - seulement pour les messages assistant */}
+            {isAssistant && onRegenerate && (
+              <button
+                onClick={onRegenerate}
+                className="message-bubble-modern-action-btn"
+                aria-label="Régénérer la réponse"
+              >
+                <RefreshCw size={14} />
+              </button>
+            )}
             
-            <button
-              className="message-bubble-modern-action-btn"
-              aria-label="Je n'aime pas cette réponse"
-            >
-              <ThumbsDown size={14} />
-            </button>
+            {/* Bouton supprimer - pour tous les messages */}
+            {onDelete && (
+              <button
+                onClick={onDelete}
+                className="message-bubble-modern-action-btn message-bubble-modern-delete-btn"
+                aria-label="Supprimer le message"
+              >
+                <Trash2 size={14} />
+              </button>
+            )}
             
+            {/* Bouton retry pour les erreurs */}
             {onRetry && (
               <button
                 onClick={onRetry}
                 className="message-bubble-modern-action-btn"
-                aria-label="Régénérer la réponse"
+                aria-label="Réessayer"
               >
                 <RefreshCw size={14} />
               </button>

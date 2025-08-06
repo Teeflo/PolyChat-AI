@@ -1,11 +1,10 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Send, Mic, Paperclip, Smile, Square } from 'lucide-react';
+import { Send } from 'lucide-react';
 import { useChat } from '../../hooks/useChat';
 import './ChatInputModern.css';
 
 const ChatInputModern: React.FC = () => {
   const [message, setMessage] = useState('');
-  const [isRecording, setIsRecording] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const { sendMessageToAll, isAnyLoading } = useChat();
 
@@ -31,31 +30,9 @@ const ChatInputModern: React.FC = () => {
     }
   };
 
-  const toggleRecording = () => {
-    setIsRecording(!isRecording);
-    // Ici vous pourriez implémenter la logique d'enregistrement vocal
-  };
-
   return (
     <div className="chat-input-modern-container">
       <div className="chat-input-modern-wrapper">
-        {/* Barre d'outils */}
-        <div className="chat-input-modern-toolbar">
-          <button
-            className="chat-input-modern-tool-btn"
-            aria-label="Joindre un fichier"
-          >
-            <Paperclip size={18} />
-          </button>
-          
-          <button
-            className="chat-input-modern-tool-btn"
-            aria-label="Ajouter un emoji"
-          >
-            <Smile size={18} />
-          </button>
-        </div>
-
         {/* Zone de saisie principale */}
         <div className="chat-input-modern-input-area">
           <textarea
@@ -78,15 +55,6 @@ const ChatInputModern: React.FC = () => {
 
         {/* Boutons d'action */}
         <div className="chat-input-modern-actions">
-          {/* Bouton d'enregistrement vocal */}
-          <button
-            onClick={toggleRecording}
-            className={`chat-input-modern-action-btn ${isRecording ? 'recording' : ''}`}
-            aria-label={isRecording ? "Arrêter l'enregistrement" : "Enregistrer un message vocal"}
-          >
-            {isRecording ? <Square size={18} /> : <Mic size={18} />}
-          </button>
-
           {/* Bouton d'envoi */}
           <button
             onClick={handleSend}
@@ -102,18 +70,6 @@ const ChatInputModern: React.FC = () => {
           </button>
         </div>
       </div>
-
-      {/* Indicateur de frappe si nécessaire */}
-      {isAnyLoading && (
-        <div className="chat-input-modern-typing-indicator">
-          <div className="chat-input-modern-typing-dots">
-            <span></span>
-            <span></span>
-            <span></span>
-          </div>
-          <span className="chat-input-modern-typing-text">L'IA réfléchit...</span>
-        </div>
-      )}
 
       {/* Raccourcis clavier */}
       <div className="chat-input-modern-shortcuts">

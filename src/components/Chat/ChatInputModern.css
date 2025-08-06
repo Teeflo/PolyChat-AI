@@ -18,46 +18,20 @@
   gap: var(--spacing-md);
   max-width: 1200px;
   margin: 0 auto;
-  background: var(--pixel-bg-glass-light);
+  background: var(--gradient-glass);
   border: var(--border-thin);
   border-radius: var(--radius-xl);
   padding: var(--spacing-md);
   box-shadow: var(--shadow-lg);
   transition: var(--transition-normal);
+  -webkit-backdrop-filter: blur(15px);
+  backdrop-filter: blur(15px);
 }
 
 .chat-input-modern-wrapper:focus-within {
   border-color: var(--pixel-accent-primary);
-  box-shadow: var(--shadow-cyber);
-}
-
-.chat-input-modern-toolbar {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-xs);
-}
-
-.chat-input-modern-tool-btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 36px;
-  height: 36px;
-  background: transparent;
-  border: var(--border-thin);
-  border-color: var(--pixel-accent-muted);
-  border-radius: var(--radius-md);
-  color: var(--pixel-text-secondary);
-  cursor: pointer;
-  transition: var(--transition-normal);
-}
-
-.chat-input-modern-tool-btn:hover {
-  background: var(--pixel-accent-primary);
-  color: var(--pixel-text-inverse);
-  border-color: var(--pixel-accent-primary);
-  transform: translateY(-1px);
-  box-shadow: var(--shadow-md);
+  box-shadow: var(--shadow-cyber-strong);
+  transform: translateY(-2px);
 }
 
 .chat-input-modern-input-area {
@@ -79,6 +53,21 @@
   resize: none;
   padding: var(--spacing-sm) 0;
   overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--pixel-accent-primary) transparent;
+}
+
+.chat-input-modern-textarea::-webkit-scrollbar {
+  width: 6px;
+}
+
+.chat-input-modern-textarea::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.chat-input-modern-textarea::-webkit-scrollbar-thumb {
+  background: var(--pixel-accent-primary);
+  border-radius: 3px;
 }
 
 .chat-input-modern-textarea::placeholder {
@@ -106,36 +95,6 @@
   align-items: center;
 }
 
-.chat-input-modern-action-btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 44px;
-  height: 44px;
-  background: var(--pixel-bg-secondary);
-  border: var(--border-thin);
-  border-color: var(--pixel-accent-muted);
-  border-radius: var(--radius-md);
-  color: var(--pixel-text-secondary);
-  cursor: pointer;
-  transition: var(--transition-bounce);
-}
-
-.chat-input-modern-action-btn:hover {
-  background: var(--pixel-accent-secondary);
-  color: var(--pixel-text-inverse);
-  border-color: var(--pixel-accent-secondary);
-  transform: scale(1.05);
-  box-shadow: var(--shadow-md);
-}
-
-.chat-input-modern-action-btn.recording {
-  background: var(--pixel-error);
-  border-color: var(--pixel-error);
-  color: var(--pixel-text-primary);
-  animation: modernPulse 1s ease-in-out infinite;
-}
-
 .chat-input-modern-send-btn {
   display: flex;
   align-items: center;
@@ -152,7 +111,7 @@
 }
 
 .chat-input-modern-send-btn.active {
-  animation: cyberGlow 2s ease-in-out infinite;
+  animation: subtleHighlight 2s ease-in-out infinite;
 }
 
 .chat-input-modern-send-btn.active:hover {
@@ -172,50 +131,52 @@
 .chat-input-modern-spinner {
   width: 18px;
   height: 18px;
+  border: 2px solid var(--pixel-bg-secondary);
+  border-top: 2px solid var(--pixel-accent-primary);
+  border-radius: 50%;
+  animation: modernSpin 1s linear infinite;
+}
+
+/* Raccourcis clavier */
+.chat-input-modern-shortcuts {
+  display: flex;
+  justify-content: center;
+  padding-top: var(--spacing-sm);
+  opacity: 0.7;
+}
+
+.chat-input-modern-shortcut {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--pixel-text-muted);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+}
+
+.chat-input-modern-shortcut kbd {
+  background: var(--pixel-bg-secondary);
+  border: 1px solid var(--pixel-accent-muted);
+  border-radius: var(--radius-sm);
+  padding: 2px 6px;
+  font-size: 10px;
+  font-family: inherit;
+  color: var(--pixel-text-secondary);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+@keyframes modernSpin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.chat-input-modern-spinner {
+  width: 18px;
+  height: 18px;
   border: 2px solid var(--pixel-text-muted);
   border-top: 2px solid var(--pixel-text-inverse);
   border-radius: 50%;
   animation: spin 1s linear infinite;
-}
-
-.chat-input-modern-typing-indicator {
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-sm);
-  margin-top: var(--spacing-sm);
-  padding: var(--spacing-sm) var(--spacing-md);
-  background: var(--pixel-bg-glass);
-  border: var(--border-thin);
-  border-radius: var(--radius-lg);
-  max-width: 200px;
-  animation: modernSlideIn 0.3s ease;
-}
-
-.chat-input-modern-typing-dots {
-  display: flex;
-  gap: 4px;
-}
-
-.chat-input-modern-typing-dots span {
-  width: 6px;
-  height: 6px;
-  background: var(--pixel-accent-primary);
-  border-radius: 50%;
-  animation: typingDots 1.4s ease-in-out infinite both;
-}
-
-.chat-input-modern-typing-dots span:nth-child(1) {
-  animation-delay: -0.32s;
-}
-
-.chat-input-modern-typing-dots span:nth-child(2) {
-  animation-delay: -0.16s;
-}
-
-.chat-input-modern-typing-text {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 12px;
-  color: var(--pixel-text-secondary);
 }
 
 .chat-input-modern-shortcuts {
@@ -241,18 +202,6 @@
   margin: 0 2px;
 }
 
-/* Animation pour les points de frappe */
-@keyframes typingDots {
-  0%, 80%, 100% {
-    transform: scale(0);
-    opacity: 0.5;
-  }
-  40% {
-    transform: scale(1);
-    opacity: 1;
-  }
-}
-
 /* Animation de rotation pour le spinner */
 @keyframes spin {
   from {
@@ -264,6 +213,7 @@
 }
 
 /* Responsive pour l'input moderne */
+/* Responsivité améliorée */
 @media (max-width: 768px) {
   .chat-input-modern-container {
     padding: var(--spacing-md);
@@ -271,25 +221,41 @@
   
   .chat-input-modern-wrapper {
     padding: var(--spacing-sm);
-    gap: var(--spacing-sm);
+    border-radius: var(--radius-lg);
   }
   
-  .chat-input-modern-toolbar {
-    display: none; /* Masquer la barre d'outils sur mobile */
-  }
-  
-  .chat-input-modern-textarea {
-    font-size: 16px; /* Éviter le zoom sur iOS */
+  .chat-input-modern-actions {
+    gap: var(--spacing-xs);
   }
   
   .chat-input-modern-action-btn,
   .chat-input-modern-send-btn {
-    width: 40px;
-    height: 40px;
+    width: 36px;
+    height: 36px;
+  }
+  
+  .chat-input-modern-textarea {
+    font-size: 16px; /* Empêche le zoom sur iOS */
   }
   
   .chat-input-modern-shortcuts {
-    display: none; /* Masquer les raccourcis sur mobile */
+    display: none; /* Masque les raccourcis sur mobile */
+  }
+}
+
+@media (max-width: 480px) {
+  .chat-input-modern-container {
+    padding: var(--spacing-sm);
+  }
+  
+  .chat-input-modern-wrapper {
+    gap: var(--spacing-sm);
+    padding: var(--spacing-xs) var(--spacing-sm);
+  }
+  
+  .chat-input-modern-send-btn {
+    width: 40px;
+    height: 40px;
   }
 }
 
