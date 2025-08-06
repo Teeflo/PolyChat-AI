@@ -1,0 +1,138 @@
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Variables CSS pour les curseurs hacker */
+:root {
+  --hacker-green: #00ff41;
+  --hacker-dark-green: #003b00;
+  --hacker-darker-green: #001f00;
+  --hacker-light-green: #66ff99;
+}
+
+/* Styles globaux pour le thème hacker */
+body {
+  background-color: var(--hacker-darker-green);
+  color: var(--hacker-green);
+  font-family: 'Press Start 2P', monospace;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+/* Curseurs personnalisés pour le thème hacker - Version simple et robuste */
+
+/* Curseur par défaut - Style hacker visible */
+* {
+  cursor: crosshair !important;
+}
+
+/* Curseur pour les liens et boutons - Style hacker */
+a, button, [role="button"], .cursor-pointer {
+  cursor: pointer !important;
+}
+
+/* Curseur pour les zones de texte */
+input[type="text"], input[type="password"], textarea, .cursor-text {
+  cursor: text !important;
+}
+
+/* Style pour le curseur hacker personnalisé - TEST VISIBLE */
+body {
+  cursor: crosshair !important;
+}
+
+/* Effet visible pour vérifier que les styles sont appliqués */
+body::after {
+  content: "🎯 HACKER MODE ACTIVE";
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  background: var(--hacker-green);
+  color: black;
+  padding: 5px 10px;
+  font-size: 12px;
+  z-index: 9999;
+  border-radius: 3px;
+}
+
+/* Curseur pour les liens et boutons - Style hacker */
+a, button, [role="button"], .cursor-pointer {
+  cursor: pointer;
+  filter: drop-shadow(0 0 3px var(--hacker-green));
+}
+
+/* Curseur pour les zones de texte */
+input[type="text"], input[type="password"], textarea, .cursor-text {
+  cursor: text;
+}
+
+/* Curseur pour les éléments de redimensionnement */
+.cursor-resize {
+  cursor: nw-resize;
+}
+
+/* Curseur pour les éléments non autorisés */
+.cursor-not-allowed, [disabled] {
+  cursor: not-allowed;
+}
+
+/* Curseur pour les éléments de chargement */
+.cursor-wait {
+  cursor: wait;
+}
+
+/* Curseur pour les éléments déplaçables */
+.cursor-move {
+  cursor: move;
+}
+
+/* Effets visuels supplémentaires pour l'ambiance hacker */
+
+/* Animation de scan horizontal DÉSACTIVÉE pour interface plus discrète */
+body::before {
+  display: none; /* Ligne de scan désactivée */
+}
+
+@keyframes scanline {
+  0% { transform: translateY(-2px); }
+  100% { transform: translateY(100vh); }
+}
+
+/* Effet de glow discret sur les éléments interactifs au hover */
+a:hover, button:hover, [role="button"]:hover {
+  text-shadow: 0 0 2px #666666;
+  box-shadow: 0 0 3px rgba(102, 102, 102, 0.2);
+  transition: all 0.3s ease;
+}
+
+/* Style pour simuler un terminal hacker */
+.hacker-cursor-trail {
+  position: fixed;
+  width: 4px;
+  height: 4px;
+  background: #00ff41;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 10000;
+  opacity: 0.7;
+  animation: cursorTrail 0.5s ease-out forwards;
+}
+
+@keyframes cursorTrail {
+  0% {
+    transform: scale(1);
+    opacity: 0.7;
+  }
+  100% {
+    transform: scale(3);
+    opacity: 0;
+  }
+}
+
+/* Classe utilitaire pour activer le curseur personnalisé */
+.hacker-cursor-active {
+  cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpath d='M2 2 L22 2 L22 22 L2 22 Z' fill='none' stroke='%2300ff41' stroke-width='1'/%3E%3Cpath d='M4 8 L8 12 L4 16' stroke='%2300ff41' stroke-width='2' fill='none'/%3E%3Ctext x='12' y='16' font-family='monospace' font-size='8' fill='%2300ff41'%3E__%3C/text%3E%3Ccircle cx='20' cy='4' r='2' fill='%2300ff41' opacity='0.5'%3E%3Canimate attributeName='opacity' values='0.5;1;0.5' dur='1s' repeatCount='indefinite'/%3E%3C/circle%3E%3C/svg%3E"), auto !important;
+}

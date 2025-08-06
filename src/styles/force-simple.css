@@ -1,0 +1,33 @@
+/* Styles forcés pour supprimer tous les effets */
+
+/* Force le curseur simple avec couleur personnalisée */
+*, *::before, *::after {
+  cursor: crosshair !important;
+  /* Utilise un curseur SVG personnalisé avec la nouvelle couleur */
+  cursor: url("data:image/svg+xml,%3csvg width='20' height='20' xmlns='http://www.w3.org/2000/svg'%3e%3cg stroke='%23ffffff' stroke-width='1' fill='none'%3e%3cline x1='10' y1='2' x2='10' y2='18'/%3e%3cline x1='2' y1='10' x2='18' y2='10'/%3e%3ccircle cx='10' cy='10' r='1' fill='%23ffffff'/%3e%3c/g%3e%3c/svg%3e") 10 10, crosshair !important;
+}
+
+/* Supprime tous les pseudo-éléments qui pourraient créer des effets */
+body::before, body::after, html::before, html::after {
+  display: none !important;
+}
+
+/* Supprime toutes les animations et transitions */
+* {
+  animation: none !important;
+  transition: none !important;
+}
+
+/* Force les curseurs spécialisés */
+a, button, [role="button"], .cursor-pointer {
+  cursor: pointer !important;
+}
+
+input[type="text"], input[type="password"], textarea {
+  cursor: text !important;
+}
+
+/* Supprime tous les éléments avec les classes d'effets */
+.hacker-cursor-trail, .particle, .scan-line {
+  display: none !important;
+}
