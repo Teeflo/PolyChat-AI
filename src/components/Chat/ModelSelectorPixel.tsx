@@ -1,24 +1,26 @@
 import React from 'react';
 import { useModels } from '../../hooks/useModels';
-import { useSettings } from '../../hooks/useSettings';
+import { useChat } from '../../hooks/useChat';
 import { ChevronDown, ChevronUp } from 'lucide-react';
 
 const ModelSelectorPixel: React.FC = () => {
   const { models, loading, error } = useModels();
-  const { selectedModels, setSelectedModels } = useSettings();
+  const { selectedModels, addModel, removeModel } = useChat();
   const [isOpen, setIsOpen] = React.useState(false);
 
   const handleModelToggle = (modelId: string) => {
     const isSelected = selectedModels.includes(modelId);
     if (isSelected) {
-      setSelectedModels(selectedModels.filter(id => id !== modelId));
+      removeModel(modelId);
     } else {
-      setSelectedModels([...selectedModels, modelId]);
+      addModel(modelId);
     }
   };
 
   const handleClearSelection = () => {
-    setSelectedModels([]);
+    // Clear all models except the first one to maintain at least one active session
+    const modelsToRemove = selectedModels.slice(1);
+    modelsToRemove.forEach(modelId => removeModel(modelId));
   };
 
   if (loading) {

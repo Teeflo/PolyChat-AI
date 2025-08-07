@@ -7,10 +7,10 @@ const ChatInput: React.FC = () => {
   const { sendMessageToAll, isAnyLoading } = useChat();
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (message.trim() && !isAnyLoading) {
-      sendMessageToAll(message.trim());
+      await sendMessageToAll(message.trim());
       setMessage('');
     }
   };
@@ -18,7 +18,7 @@ const ChatInput: React.FC = () => {
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
-      handleSubmit(e as any);
+      handleSubmit(e);
     }
   };
 

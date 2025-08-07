@@ -306,3 +306,20 @@ export function getPriceCategory(model: OpenRouterModel): PriceRange {
   if (avgPrice <= 0.00002) return 'moderate';      // ≤ $20/1M tokens  
   return 'premium';                                 // > $20/1M tokens
 }
+
+/**
+ * Formate le nom d'un modèle pour l'affichage
+ */
+export function formatModelName(modelId: string): string {
+  if (!modelId) return 'Unknown Model';
+  
+  // Séparer par '/' et prendre la partie après le provider
+  const parts = modelId.split('/');
+  const modelName = parts.length > 1 ? parts.slice(1).join('/') : modelId;
+  
+  // Nettoyer le nom en remplaçant les tirets et underscores par des espaces
+  return modelName
+    .replace(/[-_]/g, ' ')
+    .replace(/\b\w/g, l => l.toUpperCase())
+    .trim();
+}

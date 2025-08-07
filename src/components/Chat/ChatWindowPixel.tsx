@@ -3,9 +3,18 @@ import MessageBubble from './MessageBubblePixel';
 import { useChat } from '../../hooks/useChat';
 import { Loader2, Terminal, Zap } from 'lucide-react';
 
-const ChatWindow: React.FC = () => {
-  const { messages, isLoading, error } = useChat();
+interface ChatWindowPixelProps {
+  sessions?: any[];
+}
+
+const ChatWindow: React.FC<ChatWindowPixelProps> = ({ sessions }) => {
+  const { activeSessions, isAnyLoading } = useChat();
   const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  // Utiliser les sessions passées en prop ou les sessions actives du store
+  const currentSessions = sessions || activeSessions;
+  const messages = currentSessions[0]?.messages || [];
+  const error = currentSessions[0]?.error || null;
 
   useEffect(() => {
     scrollToBottom();
@@ -48,11 +57,11 @@ const ChatWindow: React.FC = () => {
           </div>
         )}
 
-        {messages.map((message) => (
+        {messages.map((message: any) => (
           <MessageBubble key={message.id} message={message} />
         ))}
         
-        {isLoading && (
+        {isAnyLoading && (
           <div className="pixel-typing-indicator">
             <div className="pixel-message-assistant">
               <div className="pixel-typing-content">

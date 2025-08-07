@@ -29,10 +29,10 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose }) => {
     try {
       const result = await testOpenRouterAPI();
       setApiTestResult(result);
-    } catch (error) {
+    } catch (error: unknown) {
       setApiTestResult({
         success: false,
-        message: 'Erreur lors du test de l\'API'
+        message: error instanceof Error ? error.message : 'Erreur lors du test de l\'API'
       });
     } finally {
       setTestingAPI(false);

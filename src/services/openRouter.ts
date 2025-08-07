@@ -9,8 +9,8 @@ export const fetchAIResponse = async (
   systemPrompt?: string
 ): Promise<string> => {
   try {
-    // Préparer les messages pour l'API
-    const apiMessages = messages.map(({ id, timestamp, ...message }) => message);
+    // Préparer les messages pour l'API en excluant les propriétés spécifiques à l'interface
+    const apiMessages = messages.map(({ id, timestamp, modelId, ...message }) => message);
     
     // Ajouter le system prompt au début si fourni et pas vide
     if (systemPrompt && systemPrompt.trim()) {

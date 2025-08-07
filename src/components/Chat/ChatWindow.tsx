@@ -2,14 +2,22 @@ import React, { useEffect, useRef } from 'react';
 import MessageBubble from './MessageBubble';
 import { useChat } from '../../hooks/useChat';
 import { useSettings } from '../../hooks/useSettings';
-import { Loader2 } from 'lucide-react';
 
-const ChatWindow: React.FC = () => {
-  const { messages, isLoading, error } = useChat();
+interface ChatWindowProps {
+  sessions?: any[]; // Ajouter la prop sessions si nécessaire
+}
+
+const ChatWindow: React.FC<ChatWindowProps> = ({ sessions }) => {
+  const { activeSessions, isAnyLoading } = useChat();
   const { theme } = useSettings();
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const isDark = theme === 'dark';
+  
+  // Utiliser les sessions passées en prop ou les sessions actives du store
+  const currentSessions = sessions || activeSessions;
+  const messages = currentSessions[0]?.messages || [];
+  const error = currentSessions[0]?.error || null;
 
   useEffect(() => {
     scrollToBottom();
@@ -56,11 +64,11 @@ const ChatWindow: React.FC = () => {
           </div>
         )}
 
-        {messages.map((message) => (
+        {messages.map((message: any) => (
           <MessageBubble key={message.id} message={message} />
         ))}
         
-        {isLoading && (
+        {isAnyLoading && (
           <div style={{ display: 'flex', justifyContent: 'flex-start', marginBottom: '16px' }}>
             <div style={{
               backgroundColor: isDark ? '#374151' : '#f8fafc',

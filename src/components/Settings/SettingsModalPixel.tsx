@@ -24,10 +24,10 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose }) => {
     try {
       const result = await testOpenRouterAPI();
       setApiTestResult(result);
-    } catch (error) {
+    } catch (error: unknown) {
       setApiTestResult({
         success: false,
-        message: 'API TEST FAILED'
+        message: error instanceof Error ? error.message : 'API TEST FAILED'
       });
     } finally {
       setTestingAPI(false);

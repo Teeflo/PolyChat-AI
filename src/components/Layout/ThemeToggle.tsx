@@ -39,25 +39,3 @@ const ThemeToggle: React.FC = () => {
 };
 
 export default ThemeToggle;
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center'
-      }}
-      onMouseOver={(e) => {
-        const target = e.target as HTMLButtonElement;
-        target.style.backgroundColor = isDark ? '#4b5563' : '#e5e7eb';
-        target.style.transform = 'scale(1.05)';
-      }}
-      onMouseOut={(e) => {
-        const target = e.target as HTMLButtonElement;
-        target.style.backgroundColor = isDark ? '#374151' : '#f3f4f6';
-        target.style.transform = 'scale(1)';
-      }}
-      aria-label={theme === 'light' ? 'Passer en mode sombre' : 'Passer en mode clair'}
-    >
-      {isDark ? <Sun size={18} /> : <Moon size={18} />}
-    </button>
-  );
-};
-
-export default ThemeToggle;

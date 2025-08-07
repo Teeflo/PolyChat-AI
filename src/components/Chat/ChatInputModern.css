@@ -18,7 +18,7 @@
   gap: var(--spacing-md);
   max-width: 1200px;
   margin: 0 auto;
-  background: var(--gradient-glass);
+  background: linear-gradient(180deg, rgba(45,49,66,0.65) 0%, rgba(36,40,48,0.8) 100%);
   border: var(--border-thin);
   border-radius: var(--radius-xl);
   padding: var(--spacing-md);
@@ -55,6 +55,18 @@
   overflow-y: auto;
   scrollbar-width: thin;
   scrollbar-color: var(--pixel-accent-primary) transparent;
+}
+.chat-input-modern-textarea:focus {
+  outline: none;
+}
+
+.chat-input-modern-toolbar {
+  display: flex;
+  gap: var(--spacing-xs);
+  align-items: center;
+  padding: var(--spacing-xs) var(--spacing-sm);
+  background: rgba(0,0,0,0.08);
+  border-radius: var(--radius-md);
 }
 
 .chat-input-modern-textarea::-webkit-scrollbar {
@@ -93,14 +105,17 @@
   display: flex;
   gap: var(--spacing-sm);
   align-items: center;
+  padding: var(--spacing-xs);
+  background: rgba(0,0,0,0.1);
+  border-radius: var(--radius-md);
 }
 
 .chat-input-modern-send-btn {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 44px;
-  height: 44px;
+  width: 42px;
+  height: 42px;
   background: var(--gradient-cyber);
   border: none;
   border-radius: var(--radius-md);

@@ -62,7 +62,7 @@ const ModelSelector: React.FC = () => {
           ) : (
             models.map((model) => (
               <option key={model.id} value={model.id}>
-                {formatModelName(model)}
+                {formatModelName(model.id)}
               </option>
             ))
           )}

@@ -51,14 +51,16 @@ const AppContent: React.FC = () => {
       <div className="pixel-grid-background" />
       
       {/* Sidebar Toggle Button */}
-      <button
-        className="pixel-sidebar-toggle"
-        onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-        aria-label="Toggle conversation history"
-        title="Conversation History"
-      >
-        <Menu size={20} />
-      </button>
+      {!isSidebarOpen && (
+        <button
+          className="pixel-sidebar-toggle"
+          onClick={() => setIsSidebarOpen(true)}
+          aria-label="Toggle conversation history"
+          title="Conversation History"
+        >
+          <Menu size={20} />
+        </button>
+      )}
       
       {/* Chat History Sidebar */}
       <ChatHistorySidebar

@@ -139,7 +139,7 @@ const ModelSelector: React.FC = () => {
         ) : (
           models.map((model) => (
             <option key={model.id} value={model.id}>
-              {formatModelName(model)}
+              {formatModelName(model.id)}
             </option>
           ))
         )}
@@ -166,7 +166,7 @@ const ModelSelector: React.FC = () => {
               color: isDark ? '#e5e7eb' : '#374151',
               margin: 0
             }}>
-              {formatModelName(selectedModelData)}
+              {formatModelName(selectedModelData.id)}
             </h4>
             <span style={{
               fontSize: '11px',

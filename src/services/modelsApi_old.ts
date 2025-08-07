@@ -1,6 +1,18 @@
 // Service pour récupérer les modèles depuis l'API OpenRouter
 
-export interface OpenRouterModel {
+export inte      console.log(`📄 ${allModels.length} modèles récupérés depuis l'API`);
+      
+      // Déduplication par ID pour être sûr
+      const uniqueModels = allModels.filter((model, index, array) => 
+        array.findIndex(m => m.id === model.id) === index
+      );
+      
+      console.log(`🔍 ${uniqueModels.length} modèles uniques après déduplication`);
+      
+      console.log(`✅ ${uniqueModels.length} modèles uniques récupérés au total`);
+      
+      // Filtrer les modèles valides
+      const validModels = uniqueModels.filter((model: OpenRouterModel) => {del {
   id: string;
   name: string;
   description: string;

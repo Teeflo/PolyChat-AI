@@ -1,7 +1,12 @@
-import React from 'react';
+import React, { useMemo, useState } from 'react';
 import { User, Bot, Copy, RefreshCw, Trash2 } from 'lucide-react';
 import type { Message } from '../../types/index';
 import './MessageBubbleModern.css';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
+import { oneDark, oneLight } from 'react-syntax-highlighter/dist/esm/styles/prism';
+import { useSettings } from '../../hooks/useSettings';
 
 interface MessageBubbleModernProps {
   message: Message;
@@ -20,13 +25,61 @@ const MessageBubbleModern: React.FC<MessageBubbleModernProps> = ({
   onRegenerate,
   onDelete
 }) => {
+  const { theme } = useSettings();
+  const isDark = theme === 'dark';
   const isUser = message.role === 'user';
   const isAssistant = message.role === 'assistant';
+  const [copiedBlockId, setCopiedBlockId] = useState<string | null>(null);
 
   const handleCopy = () => {
     navigator.clipboard.writeText(message.content);
-    // Ici vous pourriez ajouter une notification de succès
   };
+
+  const markdownComponents = useMemo(() => ({
+    // Inline code
+    code: ({ className, children, ...props }: React.ComponentProps<"code"> & { inline?: boolean }) => {
+      const inline = (props as any).inline;
+      const match = /language-(\w+)/.exec(className || '');
+      if (!inline) {
+        const language = match ? match[1] : '';
+        const codeStr = String(children).replace(/\n$/, '');
+        const blockId = `${message.id}-${(props as any)['data-nodeid'] || Math.random().toString(36).slice(2)}`;
+        const onCopyBlock = async () => {
+          try {
+            await navigator.clipboard.writeText(codeStr);
+            setCopiedBlockId(blockId);
+            setTimeout(() => setCopiedBlockId((prev) => (prev === blockId ? null : prev)), 1200);
+          } catch {
+            // Silently fail if clipboard is not available
+          }
+        };
+        return (
+          <div className="code-block-wrapper">
+            <button onClick={onCopyBlock} className={`code-copy-btn ${copiedBlockId === blockId ? 'success' : ''}`}>
+              <Copy size={12} /> {copiedBlockId === blockId ? 'Copié' : 'Copier'}
+            </button>
+            <SyntaxHighlighter
+              language={language}
+              style={isDark ? oneDark : oneLight}
+              customStyle={{ margin: 0, background: 'transparent' }}
+              PreTag="div"
+              CodeTag="code"
+            >
+              {codeStr}
+            </SyntaxHighlighter>
+          </div>
+        );
+      }
+      return <code className={className} {...props}>{children}</code>;
+    },
+    a: ({ href, children, ...props }: React.ComponentProps<"a">) => {
+      return (
+        <a href={href} target="_blank" rel="noreferrer noopener" {...props}>
+          {children}
+        </a>
+      );
+    },
+  }), [copiedBlockId, isDark, message.id]);
 
   const formatTimestamp = (timestamp: Date) => {
     return new Intl.DateTimeFormat('fr-FR', {
@@ -75,8 +128,10 @@ const MessageBubbleModern: React.FC<MessageBubbleModernProps> = ({
               <span>Génération de la réponse...</span>
             </div>
           ) : (
-            <div className="message-bubble-modern-text">
-              {message.content}
+            <div className="message-bubble-modern-text markdown-body">
+              <ReactMarkdown remarkPlugins={[remarkGfm]} components={markdownComponents}>
+                {message.content}
+              </ReactMarkdown>
             </div>
           )}
         </div>

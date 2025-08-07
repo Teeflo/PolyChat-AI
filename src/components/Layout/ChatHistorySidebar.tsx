@@ -66,7 +66,7 @@ export const ChatHistorySidebar: React.FC<ChatHistorySidebarProps> = ({
       )}
       
       {/* Sidebar */}
-      <div className={`chat-history-sidebar ${!isOpen ? 'collapsed' : ''}`}>
+      <div className={`chat-history-sidebar ${!isOpen ? 'collapsed' : ''}`} role="complementary" aria-label="Historique des conversations">
         {/* Header */}
         <div className="chat-history-header">
           <h2 className="chat-history-title">

@@ -6,15 +6,15 @@ import { useChat } from '../../hooks/useChat';
 const ChatInput: React.FC = () => {
   const [message, setMessage] = useState('');
   const { theme } = useSettings();
-  const { sendMessage, isLoading } = useChat();
+  const { sendMessageToAll, isAnyLoading } = useChat();
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   const isDark = theme === 'dark';
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (message.trim() && !isLoading) {
-      sendMessage(message.trim());
+    if (message.trim() && !isAnyLoading) {
+      await sendMessageToAll(message.trim());
       setMessage('');
     }
   };
@@ -22,7 +22,7 @@ const ChatInput: React.FC = () => {
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
-      handleSubmit(e as any);
+      handleSubmit(e);
     }
   };
 
@@ -58,7 +58,7 @@ const ChatInput: React.FC = () => {
             onChange={(e) => setMessage(e.target.value)}
             onKeyDown={handleKeyDown}
             placeholder="Tapez votre message... (Entrée pour envoyer, Shift+Entrée pour nouvelle ligne)"
-            disabled={isLoading}
+            disabled={isAnyLoading}
             rows={1}
             style={{
               flex: 1,
@@ -87,12 +87,12 @@ const ChatInput: React.FC = () => {
           />
           <button
             type="submit"
-            disabled={!message.trim() || isLoading}
+            disabled={!message.trim() || isAnyLoading}
             style={{
-              background: (!message.trim() || isLoading) 
+              background: (!message.trim() || isAnyLoading) 
                 ? (isDark ? '#4b5563' : '#e5e7eb')
                 : 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-              color: (!message.trim() || isLoading) 
+              color: (!message.trim() || isAnyLoading) 
                 ? (isDark ? '#9ca3af' : '#9ca3af')
                 : '#ffffff',
               border: 'none',
@@ -102,12 +102,12 @@ const ChatInput: React.FC = () => {
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              cursor: (!message.trim() || isLoading) ? 'not-allowed' : 'pointer',
+              cursor: (!message.trim() || isAnyLoading) ? 'not-allowed' : 'pointer',
               transition: 'all 0.2s ease',
               margin: '3px'
             }}
             onMouseOver={(e) => {
-              if (!(!message.trim() || isLoading)) {
+              if (!(!message.trim() || isAnyLoading)) {
                 (e.target as HTMLButtonElement).style.transform = 'scale(1.05)';
               }
             }}
@@ -115,7 +115,7 @@ const ChatInput: React.FC = () => {
               (e.target as HTMLButtonElement).style.transform = 'scale(1)';
             }}
           >
-            {isLoading ? (
+            {isAnyLoading ? (
               <Loader2 size={16} style={{ animation: 'spin 1s linear infinite' }} />
             ) : (
               <Send size={16} />

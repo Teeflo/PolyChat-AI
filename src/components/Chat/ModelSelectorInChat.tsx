@@ -11,8 +11,8 @@ const ModelSelectorInChat: React.FC = () => {
   const availableModels = models.filter(model => !selectedModels.includes(model.id));
   const canAddMore = selectedModels.length < 3;
 
-  const handleAddModel = (modelId: string, modelName: string) => {
-    addModel(modelId, modelName);
+  const handleAddModel = (modelId: string) => {
+    addModel(modelId);
     setIsExpanded(false);
   };
 
@@ -72,7 +72,7 @@ const ModelSelectorInChat: React.FC = () => {
                       availableModels.slice(0, 10).map((model) => (
                         <button
                           key={model.id}
-                          onClick={() => handleAddModel(model.id, model.name)}
+                          onClick={() => handleAddModel(model.id)}
                           className="pixel-dropdown-item"
                         >
                           <span className="pixel-model-id">{model.id}</span>

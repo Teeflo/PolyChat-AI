@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useMemo, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
+import { oneDark } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import type { Message } from '../../types/index';
 import { User, Bot } from 'lucide-react';
 
@@ -10,6 +12,63 @@ interface MessageBubbleProps {
 
 const MessageBubble: React.FC<MessageBubbleProps> = ({ message }) => {
   const isUser = message.role === 'user';
+  const [copiedBlockId, setCopiedBlockId] = useState<string | null>(null);
+
+  const markdownComponents = useMemo(() => ({
+    p: ({ children, ...props }: React.ComponentProps<"p">) => <p className="pixel-message-paragraph" {...props}>{children}</p>,
+    ul: ({ children, ...props }: React.ComponentProps<"ul">) => <ul className="pixel-list" {...props}>{children}</ul>,
+    ol: ({ children, ...props }: React.ComponentProps<"ol">) => <ol className="pixel-list" {...props}>{children}</ol>,
+    h1: ({ children, ...props }: React.ComponentProps<"h1">) => <h1 className="pixel-heading pixel-h1" {...props}>{children}</h1>,
+    h2: ({ children, ...props }: React.ComponentProps<"h2">) => <h2 className="pixel-heading pixel-h2" {...props}>{children}</h2>,
+    h3: ({ children, ...props }: React.ComponentProps<"h3">) => <h3 className="pixel-heading pixel-h3" {...props}>{children}</h3>,
+    blockquote: ({ children, ...props }: React.ComponentProps<"blockquote">) => <blockquote className="pixel-blockquote" {...props}>{children}</blockquote>,
+    a: ({ href, children, ...props }: React.ComponentProps<"a">) => {
+      return (
+        <a href={href} target="_blank" rel="noreferrer noopener" {...props}>
+          {children}
+        </a>
+      );
+    },
+    code: ({ className, children, ...props }: React.ComponentProps<"code"> & { inline?: boolean }) => {
+      const inline = (props as any).inline;
+      const match = /language-(\w+)/.exec(className || '');
+      if (!inline) {
+        const language = match ? match[1] : '';
+        const codeStr = String(children).replace(/\n$/, '');
+        const blockId = `${message.id}-${(props as any)['data-nodeid'] || Math.random().toString(36).slice(2)}`;
+        const onCopyBlock = async () => {
+          try {
+            await navigator.clipboard.writeText(codeStr);
+            setCopiedBlockId(blockId);
+            setTimeout(() => setCopiedBlockId((prev) => (prev === blockId ? null : prev)), 1200);
+          } catch {
+            // Silently fail if clipboard is not available
+          }
+        };
+        return (
+          <div className="pixel-code-block" style={{ position: 'relative' }}>
+            <button
+              onClick={onCopyBlock}
+              className="pixel-btn-modern"
+              style={{ position: 'absolute', top: 8, right: 8, padding: '6px 8px', fontSize: 11 }}
+            >
+              {copiedBlockId === blockId ? 'Copié' : 'Copier'}
+            </button>
+            <SyntaxHighlighter
+              language={language}
+              style={oneDark}
+              customStyle={{ margin: 0, background: 'transparent' }}
+              PreTag="div"
+              CodeTag="code"
+            >
+              {codeStr}
+            </SyntaxHighlighter>
+          </div>
+        );
+      }
+      return <code className="pixel-inline-code" {...props}>{children}</code>;
+    },
+  }), [copiedBlockId, message.id]);
   
   return (
     <div className={`pixel-message-container ${isUser ? 'user' : 'assistant'}`}>
@@ -34,41 +93,8 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({ message }) => {
           </div>
         )}
 
-        <div className="pixel-message-content">
-          <ReactMarkdown 
-            remarkPlugins={[remarkGfm]}
-            components={{
-              p: ({ children }) => <p className="pixel-message-paragraph">{children}</p>,
-              code: ({ children }) => (
-                <code className="pixel-inline-code">
-                  {children}
-                </code>
-              ),
-              pre: ({ children }) => (
-                <pre className="pixel-code-block">
-                  {children}
-                </pre>
-              ),
-              ul: ({ children }) => (
-                <ul className="pixel-list">
-                  {children}
-                </ul>
-              ),
-              ol: ({ children }) => (
-                <ol className="pixel-list">
-                  {children}
-                </ol>
-              ),
-              h1: ({ children }) => <h1 className="pixel-heading pixel-h1">{children}</h1>,
-              h2: ({ children }) => <h2 className="pixel-heading pixel-h2">{children}</h2>,
-              h3: ({ children }) => <h3 className="pixel-heading pixel-h3">{children}</h3>,
-              blockquote: ({ children }) => (
-                <blockquote className="pixel-blockquote">
-                  {children}
-                </blockquote>
-              )
-            }}
-          >
+        <div className="pixel-message-content markdown-body" style={{ whiteSpace: 'normal' }}>
+          <ReactMarkdown remarkPlugins={[remarkGfm]} components={markdownComponents}>
             {message.content}
           </ReactMarkdown>
         </div>

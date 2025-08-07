@@ -953,8 +953,33 @@ body {
   word-break: break-word;
 }
 
+/* Harmonisation Markdown côté Pixel */
+.pixel-message-content.markdown-body h1,
+.pixel-message-content.markdown-body h2,
+.pixel-message-content.markdown-body h3 {
+  color: var(--pixel-accent-1);
+  text-shadow: 1px 1px 0px var(--pixel-bg-primary);
+}
+.pixel-message-content.markdown-body a {
+  color: var(--pixel-accent-4);
+  text-decoration: underline;
+}
+.pixel-message-content.markdown-body table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 6px 0;
+}
+.pixel-message-content.markdown-body th,
+.pixel-message-content.markdown-body td {
+  border: 1px solid var(--pixel-accent-3);
+  padding: 6px 8px;
+}
+.pixel-message-content.markdown-body th {
+  background: var(--pixel-bg-secondary);
+}
+
 .pixel-message-paragraph {
-  margin: 0 0 8px 0;
+  margin: 0 0 6px 0;
 }
 
 .pixel-message-paragraph:last-child {
