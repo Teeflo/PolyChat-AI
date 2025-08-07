@@ -1,5 +1,5 @@
 import React from 'react';
-import { X, Key, Palette, Info, Save, Zap } from 'lucide-react';
+import { X, Key, Palette, Info, Save, Zap, MessageSquare } from 'lucide-react';
 import { useSettings } from '../../hooks/useSettings';
 import { useModels } from '../../hooks/useModels';
 import './SettingsModalModern.css';
@@ -14,9 +14,11 @@ const SettingsModalModern: React.FC<SettingsModalModernProps> = ({ isOpen, onClo
     apiKey, 
     selectedModel, 
     theme, 
+    systemPrompt,
     setApiKey, 
     setSelectedModel, 
-    setTheme
+    setTheme,
+    setSystemPrompt
   } = useSettings();
   const { models } = useModels();
 
@@ -33,6 +35,10 @@ const SettingsModalModern: React.FC<SettingsModalModernProps> = ({ isOpen, onClo
 
   const handleModelChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedModel(e.target.value);
+  };
+
+  const handleSystemPromptChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setSystemPrompt(e.target.value);
   };
 
   const handleThemeChange = (newTheme: 'light' | 'dark') => {
@@ -144,6 +150,37 @@ const SettingsModalModern: React.FC<SettingsModalModernProps> = ({ isOpen, onClo
                 <Info size={12} />
                 <span>
                   Ce modèle sera sélectionné automatiquement au démarrage
+                </span>
+              </div>
+            </div>
+          </div>
+
+          {/* Section Instruction Système */}
+          <div className="settings-section-modern">
+            <div className="settings-section-modern-header">
+              <MessageSquare size={18} />
+              <h3>Instruction Système</h3>
+              <div className="settings-section-modern-badge optional">
+                Optionnel
+              </div>
+            </div>
+            
+            <div className="settings-field-modern">
+              <label htmlFor="systemPrompt" className="settings-label-modern">
+                Définir le contexte de l'IA
+              </label>
+              <textarea
+                id="systemPrompt"
+                value={systemPrompt}
+                onChange={handleSystemPromptChange}
+                placeholder="Ex: Tu es un assistant spécialisé en programmation Python. Réponds de manière concise et technique..."
+                className="settings-textarea-modern"
+                rows={4}
+              />
+              <div className="settings-help-modern">
+                <Info size={12} />
+                <span>
+                  Cette instruction sera envoyée à l'IA au début de chaque nouvelle conversation pour définir son comportement
                 </span>
               </div>
             </div>

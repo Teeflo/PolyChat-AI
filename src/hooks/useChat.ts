@@ -1,11 +1,13 @@
 import { create } from 'zustand';
 import type { Message, ChatSession } from '../types/index';
-import { saveMessages } from '../services/localStorage';
+import { saveChatHistory, loadChatHistory } from '../services/localStorage';
 import { fetchAIResponse } from '../services/openRouter';
 import { useSettings } from './useSettings';
 
 interface ChatStore {
   activeSessions: ChatSession[];
+  allSessions: ChatSession[]; // Toutes les sessions sauvegardées
+  currentSessionId: string | null; // Session actuellement active
   selectedModels: string[]; // Max 3 modèles
   isAnyLoading: boolean;
   addModel: (modelId: string) => void;
@@ -15,6 +17,9 @@ interface ChatStore {
   deleteMessage: (sessionId: string, messageId: string) => void;
   clearAllChats: () => void;
   initializeChat: () => void;
+  setActiveSession: (sessionId: string) => void;
+  createNewSession: () => void;
+  deleteSession: (sessionId: string) => void;
 }
 
 const createMessage = (role: 'user' | 'assistant', content: string, modelId?: string): Message => ({
@@ -35,44 +40,69 @@ const createWelcomeMessage = (modelId: string): Message => ({
 
 export const useChat = create<ChatStore>((set, get) => ({
   activeSessions: [],
+  allSessions: [],
+  currentSessionId: null,
   selectedModels: [],
   isAnyLoading: false,
   
   initializeChat: () => {
-    // Initialiser avec le modèle par défaut
-    const { selectedModel } = useSettings.getState();
-    if (selectedModel) {
-      const defaultSession: ChatSession = {
-        id: selectedModel,
-        modelId: selectedModel,
-        modelName: selectedModel,
-        messages: [createWelcomeMessage(selectedModel)],
-        isLoading: false,
-        error: null,
-      };
-      set({ 
-        activeSessions: [defaultSession],
-        selectedModels: [selectedModel]
+    // Charger l'historique depuis localStorage
+    const savedSessions = loadChatHistory();
+    
+    if (savedSessions.length > 0) {
+      // Utiliser la première session comme active par défaut
+      const firstSession = savedSessions[0];
+      set({
+        allSessions: savedSessions,
+        activeSessions: [firstSession],
+        currentSessionId: firstSession.id,
+        selectedModels: [firstSession.modelId]
       });
+    } else {
+      // Initialiser avec le modèle par défaut
+      const { selectedModel } = useSettings.getState();
+      if (selectedModel) {
+        const defaultSession: ChatSession = {
+          id: `session-${Date.now()}`,
+          modelId: selectedModel,
+          modelName: selectedModel,
+          messages: [createWelcomeMessage(selectedModel)],
+          isLoading: false,
+          error: null,
+        };
+        set({
+          allSessions: [defaultSession],
+          activeSessions: [defaultSession],
+          currentSessionId: defaultSession.id,
+          selectedModels: [selectedModel]
+        });
+      }
     }
   },
   
   addModel: (modelId: string) => {
-    const { activeSessions, selectedModels } = get();
+    const { activeSessions, selectedModels, allSessions } = get();
     
     // Vérifier si le modèle n'est pas déjà actif et qu'on n'a pas atteint la limite de 3
     if (!selectedModels.includes(modelId) && selectedModels.length < 3) {
       const newSession: ChatSession = {
-        id: modelId,
+        id: `${modelId}-${Date.now()}`,
         modelId,
-        modelName: modelId, // Utiliser l'ID pour la cohérence
+        modelName: modelId,
         messages: [createWelcomeMessage(modelId)],
         isLoading: false,
         error: null,
       };
       
+      // Ajouter à la fois dans activeSessions et allSessions
+      const updatedAllSessions = [...allSessions];
+      if (!updatedAllSessions.find(s => s.id === newSession.id)) {
+        updatedAllSessions.push(newSession);
+      }
+      
       set({
         activeSessions: [...activeSessions, newSession],
+        allSessions: updatedAllSessions,
         selectedModels: [...selectedModels, modelId]
       });
     }
@@ -93,8 +123,8 @@ export const useChat = create<ChatStore>((set, get) => ({
   sendMessageToAll: async (content: string) => {
     if (!content.trim()) return;
     
-    const { activeSessions } = get();
-    const { apiKey } = useSettings.getState();
+    const { activeSessions, allSessions } = get();
+    const { apiKey, systemPrompt } = useSettings.getState();
     
     if (!apiKey) {
       // Mettre à jour toutes les sessions avec l'erreur
@@ -107,7 +137,7 @@ export const useChat = create<ChatStore>((set, get) => ({
       return;
     }
     
-    // Ajouter le message utilisateur à toutes les sessions
+    // Ajouter le message utilisateur à toutes les sessions actives
     const userMessage = createMessage('user', content);
     const updatedSessions = activeSessions.map(session => ({
       ...session,
@@ -124,7 +154,7 @@ export const useChat = create<ChatStore>((set, get) => ({
     // Envoyer les requêtes en parallèle pour tous les modèles
     const promises = updatedSessions.map(async (session) => {
       try {
-        const aiResponse = await fetchAIResponse(session.messages, apiKey, session.modelId);
+        const aiResponse = await fetchAIResponse(session.messages, apiKey, session.modelId, systemPrompt);
         const aiMessage = createMessage('assistant', aiResponse, session.modelId);
         return {
           ...session,
@@ -144,41 +174,52 @@ export const useChat = create<ChatStore>((set, get) => ({
     
     try {
       const resolvedSessions = await Promise.all(promises);
+      
+      // Mettre à jour allSessions avec les nouvelles conversations
+      const updatedAllSessions = allSessions.map(session => {
+        const updatedSession = resolvedSessions.find(s => s.id === session.id);
+        return updatedSession || session;
+      });
+      
       set({ 
         activeSessions: resolvedSessions,
+        allSessions: updatedAllSessions,
         isAnyLoading: false
       });
       
-      // Sauvegarder dans le localStorage (on peut sauvegarder la première session comme référence)
-      if (resolvedSessions.length > 0) {
-        saveMessages(resolvedSessions[0].messages);
-      }
     } catch (error) {
       set({ isAnyLoading: false });
     }
   },
   
   clearAllChats: () => {
-    const { selectedModels } = get();
-    const clearedSessions = selectedModels.map(modelId => ({
-      id: modelId,
-      modelId,
-      modelName: modelId,
-      messages: [createWelcomeMessage(modelId)],
-      isLoading: false,
-      error: null,
-    }));
+    const { selectedModels, currentSessionId, allSessions } = get();
     
-    set({ activeSessions: clearedSessions });
-    
-    if (clearedSessions.length > 0) {
-      saveMessages(clearedSessions[0].messages);
+    if (currentSessionId) {
+      // Nettoyer uniquement la session active
+      const clearedSession = {
+        id: currentSessionId,
+        modelId: selectedModels[0] || 'default',
+        modelName: selectedModels[0] || 'default',
+        messages: [createWelcomeMessage(selectedModels[0] || 'default')],
+        isLoading: false,
+        error: null,
+      };
+      
+      const updatedAllSessions = allSessions.map(session => 
+        session.id === currentSessionId ? clearedSession : session
+      );
+      
+      set({ 
+        activeSessions: [clearedSession],
+        allSessions: updatedAllSessions
+      });
     }
   },
 
   regenerateMessage: async (sessionId: string, messageId: string) => {
-    const { activeSessions } = get();
-    const { apiKey } = useSettings.getState();
+    const { activeSessions, allSessions } = get();
+    const { apiKey, systemPrompt } = useSettings.getState();
 
     if (!apiKey) {
       return;
@@ -197,20 +238,27 @@ export const useChat = create<ChatStore>((set, get) => ({
     if (message.role !== 'assistant') return;
 
     // Marquer la session comme en chargement
-    const updatedSessions = [...activeSessions];
-    updatedSessions[sessionIndex] = {
-      ...session,
+    const updateSession = (s: ChatSession) => s.id === sessionId ? {
+      ...s,
       isLoading: true,
       error: null
-    };
-    set({ activeSessions: updatedSessions, isAnyLoading: true });
+    } : s;
+
+    const updatedActiveSessions = activeSessions.map(updateSession);
+    const updatedAllSessions = allSessions.map(updateSession);
+    
+    set({ 
+      activeSessions: updatedActiveSessions,
+      allSessions: updatedAllSessions,
+      isAnyLoading: true
+    });
 
     try {
       // Récupérer les messages jusqu'au message à régénérer (sans l'inclure)
       const conversationHistory = session.messages.slice(0, messageIndex);
       
       // Faire appel à l'API
-      const aiResponse = await fetchAIResponse(conversationHistory, apiKey, session.modelId);
+      const aiResponse = await fetchAIResponse(conversationHistory, apiKey, session.modelId, systemPrompt);
       
       // Remplacer le message régénéré
       const newMessage = createMessage('assistant', aiResponse, session.modelId);
@@ -220,38 +268,51 @@ export const useChat = create<ChatStore>((set, get) => ({
         ...session.messages.slice(messageIndex + 1)
       ];
 
-      updatedSessions[sessionIndex] = {
-        ...session,
+      const finalUpdateSession = (s: ChatSession) => s.id === sessionId ? {
+        ...s,
         messages: newMessages,
         isLoading: false,
         error: null
-      };
+      } : s;
 
-      set({ activeSessions: updatedSessions, isAnyLoading: false });
-      saveMessages(newMessages);
+      const finalActiveSessions = activeSessions.map(finalUpdateSession);
+      const finalAllSessions = allSessions.map(finalUpdateSession);
+
+      set({ 
+        activeSessions: finalActiveSessions,
+        allSessions: finalAllSessions,
+        isAnyLoading: false
+      });
 
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Erreur lors de la régénération';
       
-      updatedSessions[sessionIndex] = {
-        ...session,
+      const errorUpdateSession = (s: ChatSession) => s.id === sessionId ? {
+        ...s,
         isLoading: false,
         error: errorMessage
-      };
+      } : s;
 
-      set({ activeSessions: updatedSessions, isAnyLoading: false });
+      const errorActiveSessions = activeSessions.map(errorUpdateSession);
+      const errorAllSessions = allSessions.map(errorUpdateSession);
+
+      set({ 
+        activeSessions: errorActiveSessions,
+        allSessions: errorAllSessions,
+        isAnyLoading: false
+      });
     }
   },
 
   deleteMessage: (sessionId: string, messageId: string) => {
-    const { activeSessions } = get();
+    const { activeSessions, allSessions } = get();
     
-    const updatedSessions = activeSessions.map(session => {
+    const updateSession = (session: ChatSession) => {
       if (session.id === sessionId) {
         const filteredMessages = session.messages.filter(m => m.id !== messageId);
         
         // S'assurer qu'il reste au moins le message d'accueil
-        const finalMessages = filteredMessages.length === 0 
+        const finalMessages = filteredMessages.length === 0
           ? [createWelcomeMessage(session.modelId)]
           : filteredMessages;
 
@@ -261,13 +322,77 @@ export const useChat = create<ChatStore>((set, get) => ({
         };
       }
       return session;
-    });
+    };
 
-    set({ activeSessions: updatedSessions });
-    
-    // Sauvegarder les messages de la première session comme référence
-    if (updatedSessions.length > 0) {
-      saveMessages(updatedSessions[0].messages);
+    const updatedActiveSessions = activeSessions.map(updateSession);
+    const updatedAllSessions = allSessions.map(updateSession);
+
+    set({ 
+      activeSessions: updatedActiveSessions,
+      allSessions: updatedAllSessions
+    });
+  },
+
+  setActiveSession: (sessionId: string) => {
+    const { allSessions } = get();
+    const session = allSessions.find(s => s.id === sessionId);
+    if (session) {
+      set({
+        activeSessions: [session],
+        currentSessionId: sessionId,
+        selectedModels: [session.modelId]
+      });
     }
+  },
+
+  createNewSession: () => {
+    const { selectedModel } = useSettings.getState();
+    const { allSessions } = get();
+    
+    if (selectedModel) {
+      const newSession: ChatSession = {
+        id: `session-${Date.now()}`,
+        modelId: selectedModel,
+        modelName: selectedModel,
+        messages: [createWelcomeMessage(selectedModel)],
+        isLoading: false,
+        error: null,
+      };
+      
+      set(() => ({
+        allSessions: [...allSessions, newSession],
+        activeSessions: [newSession],
+        currentSessionId: newSession.id,
+        selectedModels: [selectedModel]
+      }));
+    }
+  },
+
+  deleteSession: (sessionId: string) => {
+    const { allSessions, currentSessionId } = get();
+    
+    const updatedSessions = allSessions.filter(s => s.id !== sessionId);
+    
+    // Si on supprime la session active, activer la première session disponible
+    const newCurrentSessionId = currentSessionId === sessionId 
+      ? (updatedSessions.length > 0 ? updatedSessions[0].id : null)
+      : currentSessionId;
+    
+    const newActiveSession = newCurrentSessionId 
+      ? updatedSessions.find(s => s.id === newCurrentSessionId)
+      : null;
+    
+    set({
+      allSessions: updatedSessions,
+      activeSessions: newActiveSession ? [newActiveSession] : [],
+      currentSessionId: newCurrentSessionId,
+      selectedModels: newActiveSession ? [newActiveSession.modelId] : []
+    });
   }
 }));
+
+// S'abonner aux changements pour sauvegarder automatiquement
+useChat.subscribe((state) => {
+  // Sauvegarder toutes les sessions dans localStorage
+  saveChatHistory(state.allSessions);
+});

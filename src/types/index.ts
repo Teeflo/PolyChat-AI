@@ -1,6 +1,6 @@
 export interface Message {
   id: string;
-  role: 'user' | 'assistant';
+  role: 'user' | 'assistant' | 'system';
   content: string;
   timestamp: Date;
   modelId?: string; // Ajout pour identifier quel modèle a généré la réponse
@@ -17,6 +17,7 @@ export interface Settings {
   apiKey: string;
   selectedModel: string;
   theme: 'light' | 'dark';
+  systemPrompt: string; // Nouveau champ pour l'instruction système
 }
 
 export interface ChatSession {

@@ -6,6 +6,7 @@ const DEFAULT_SETTINGS: Settings = {
   apiKey: '',
   selectedModel: '', // Aucun modèle par défaut - l'utilisateur choisit
   theme: 'dark', // Thème sombre par défaut pour le design moderne
+  systemPrompt: '', // Instruction système vide par défaut
 };
 
 interface SettingsStore extends Settings {
@@ -13,6 +14,7 @@ interface SettingsStore extends Settings {
   setApiKey: (apiKey: string) => void;
   setSelectedModel: (model: string) => void;
   setTheme: (theme: 'light' | 'dark') => void;
+  setSystemPrompt: (systemPrompt: string) => void;
   toggleTheme: () => void;
   toggleSettings: () => void;
   closeSettings: () => void;
@@ -26,6 +28,7 @@ export const useSettings = create<SettingsStore>()(
       setApiKey: (apiKey) => set({ apiKey }),
       setSelectedModel: (selectedModel) => set({ selectedModel }),
       setTheme: (theme) => set({ theme }),
+      setSystemPrompt: (systemPrompt) => set({ systemPrompt }),
       toggleTheme: () => set({ theme: get().theme === 'light' ? 'dark' : 'light' }),
       toggleSettings: () => set({ isSettingsOpen: !get().isSettingsOpen }),
       closeSettings: () => set({ isSettingsOpen: false }),

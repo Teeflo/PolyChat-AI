@@ -5,9 +5,21 @@ const API_URL = 'https://openrouter.ai/api/v1/chat/completions';
 export const fetchAIResponse = async (
   messages: Message[],
   apiKey: string,
-  model: string
+  model: string,
+  systemPrompt?: string
 ): Promise<string> => {
   try {
+    // Préparer les messages pour l'API
+    const apiMessages = messages.map(({ id, timestamp, ...message }) => message);
+    
+    // Ajouter le system prompt au début si fourni et pas vide
+    if (systemPrompt && systemPrompt.trim()) {
+      apiMessages.unshift({
+        role: 'system',
+        content: systemPrompt.trim()
+      });
+    }
+
     const response = await fetch(API_URL, {
       method: 'POST',
       headers: {
@@ -18,7 +30,7 @@ export const fetchAIResponse = async (
       },
       body: JSON.stringify({
         model,
-        messages: messages.map(({ id, timestamp, ...message }) => message),
+        messages: apiMessages,
       }),
     });
 
