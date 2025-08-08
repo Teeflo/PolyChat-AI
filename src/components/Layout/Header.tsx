@@ -15,6 +15,16 @@ const Header: React.FC<HeaderProps> = ({ onSettingsClick }) => {
         <div className="header-brand">
           {/* Logo pixel rétro */}
           <div className="pixel-logo pixel-glow header-logo">
+            {/* Image du logo (WebP > SVG). Si non supporté, l'icône CPU sert de fallback */}
+            <picture className="header-logo-picture">
+              <source srcSet="/logo.webp" type="image/webp" />
+              <img
+                src="/logo.svg"
+                alt="PolyChat logo"
+                className="header-logo-img"
+                onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }}
+              />
+            </picture>
             <Cpu size={24} className="header-logo-icon" />
           </div>
           

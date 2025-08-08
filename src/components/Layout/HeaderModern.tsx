@@ -24,9 +24,19 @@ const HeaderModern: React.FC<HeaderProps> = ({ onSettingsClick }) => {
         <div className="header-modern-brand">
           {/* Logo moderne avec effet de glow */}
           <div className="header-modern-logo pixel-glow">
+            <picture className="header-modern-logo-picture">
+              <source srcSet="/logo.webp" type="image/webp" />
+              <img
+                src="/logo.svg"
+                alt="PolyChat logo"
+                className="header-modern-logo-img"
+                onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }}
+              />
+            </picture>
             <Cpu size={28} style={{ 
               color: 'var(--pixel-text-inverse)',
-              filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.3))'
+              filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.3))',
+              zIndex: 1
             }} />
             
             {/* Indicateur d'activité */}

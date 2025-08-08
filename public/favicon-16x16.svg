@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+  <defs>
+    <style>
+      .bg { fill: #0f1a23; }
+      .node { fill: #f3efe9; }
+      .stroke { stroke: #f3efe9; stroke-width: 0.7; stroke-linecap: square; }
+      .accent { fill: #a6e8f5; }
+    </style>
+  </defs>
+  <rect class="bg" width="16" height="16" rx="1"/>
+  <g transform="translate(8 8)">
+    <line class="stroke" x1="0" y1="-4.4" x2="0" y2="-2.4"/>
+    <circle class="node" cx="0" cy="-7.4" r="0.6"/>
+    <line class="stroke" x1="0" y1="4.4" x2="0" y2="2.4"/>
+    <circle class="node" cx="0" cy="7.4" r="0.6"/>
+    <line class="stroke" x1="-4.4" y1="0" x2="-2.4" y2="0"/>
+    <circle class="node" cx="-7.4" cy="0" r="0.6"/>
+    <line class="stroke" x1="4.4" y1="0" x2="2.4" y2="0"/>
+    <circle class="node" cx="7.4" cy="0" r="0.6"/>
+    <line class="stroke" x1="3.1" y1="3.1" x2="1.7" y2="1.7"/>
+    <circle class="node" cx="5.4" cy="5.4" r="0.6"/>
+    <line class="stroke" x1="-3.1" y1="-3.1" x2="-1.7" y2="-1.7"/>
+    <circle class="node" cx="-5.4" cy="-5.4" r="0.6"/>
+    <line class="stroke" x1="-3.1" y1="3.1" x2="-1.7" y2="1.7"/>
+    <circle class="node" cx="-5.4" cy="5.4" r="0.6"/>
+    <line class="stroke" x1="3.1" y1="-3.1" x2="1.7" y2="-1.7"/>
+    <circle class="node" cx="5.4" cy="-5.4" r="0.6"/>
+  </g>
+  <circle class="node" cx="8" cy="8" r="1.4"/>
+  <circle class="accent" cx="13.5" cy="2.5" r="0.7"/>
+  <circle class="accent" cx="1" cy="8" r="0.7"/>
+</svg>

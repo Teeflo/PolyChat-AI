@@ -32,9 +32,19 @@ const Header: React.FC<HeaderProps> = ({ onSettingsClick }) => {
             alignItems: 'center',
             justifyContent: 'center'
           }}>
+            <picture className="header-logo-picture">
+              <source srcSet="/logo.webp" type="image/webp" />
+              <img
+                src="/logo.svg"
+                alt="PolyChat logo"
+                className="header-logo-img"
+                onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }}
+              />
+            </picture>
             <Cpu size={24} style={{ 
               color: 'var(--pixel-bg-primary)',
-              filter: 'drop-shadow(1px 1px 0px var(--pixel-white))'
+              filter: 'drop-shadow(1px 1px 0px var(--pixel-white))',
+              zIndex: 1
             }} />
           </div>
           

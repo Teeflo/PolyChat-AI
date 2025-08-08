@@ -29,6 +29,21 @@
   transition: var(--transition-bounce);
 }
 
+.header-modern-logo-picture { 
+  position: absolute; 
+  inset: 4px; /* Respect the rounded border and padding */
+  z-index: 2;
+  border-radius: calc(var(--radius-md) - 4px);
+  overflow: hidden;
+}
+
+.header-modern-logo-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  image-rendering: pixelated;
+}
+
 .header-modern-logo:hover {
   transform: scale(1.05) rotate(5deg);
   box-shadow: var(--shadow-cyber-strong);
