@@ -28,6 +28,13 @@
   backdrop-filter: blur(15px);
 }
 
+.chat-input-modern-template-area {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
 .chat-input-modern-wrapper:focus-within {
   border-color: var(--pixel-accent-primary);
   box-shadow: var(--shadow-cyber-strong);

@@ -1,0 +1,408 @@
+/* Template Selector Styles */
+.template-selector-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(4px);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.template-selector-modal {
+  background: var(--pixel-bg-primary);
+  border: 2px solid var(--pixel-border);
+  border-radius: 8px;
+  width: 100%;
+  max-width: 900px;
+  max-height: 80vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  position: relative;
+}
+
+.template-selector-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  border-bottom: 2px solid var(--pixel-border);
+  background: var(--pixel-bg-secondary);
+}
+
+.template-selector-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  font-size: 18px;
+  color: var(--pixel-text-primary);
+}
+
+.template-selector-close {
+  background: none;
+  border: none;
+  font-size: 24px;
+  color: var(--pixel-text-secondary);
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+
+.template-selector-close:hover {
+  background: var(--pixel-bg-hover);
+  color: var(--pixel-text-primary);
+}
+
+.template-selector-search {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--pixel-border);
+  background: var(--pixel-bg-primary);
+}
+
+.template-selector-search-input {
+  flex: 1;
+  background: var(--pixel-bg-secondary);
+  border: 1px solid var(--pixel-border);
+  border-radius: 4px;
+  padding: 8px 12px;
+  color: var(--pixel-text-primary);
+  font-size: 14px;
+}
+
+.template-selector-search-input:focus {
+  outline: none;
+  border-color: var(--pixel-accent);
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+}
+
+.template-selector-tabs {
+  display: flex;
+  border-bottom: 1px solid var(--pixel-border);
+  background: var(--pixel-bg-secondary);
+}
+
+.template-selector-tab {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 12px 16px;
+  background: none;
+  border: none;
+  color: var(--pixel-text-secondary);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border-bottom: 2px solid transparent;
+}
+
+.template-selector-tab:hover {
+  background: var(--pixel-bg-hover);
+  color: var(--pixel-text-primary);
+}
+
+.template-selector-tab.active {
+  color: var(--pixel-accent);
+  border-bottom-color: var(--pixel-accent);
+  background: var(--pixel-bg-hover);
+}
+
+.template-selector-categories {
+  display: flex;
+  gap: 8px;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--pixel-border);
+  background: var(--pixel-bg-secondary);
+  overflow-x: auto;
+}
+
+.template-category-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  background: var(--pixel-bg-primary);
+  border: 1px solid var(--pixel-border);
+  border-radius: 6px;
+  color: var(--pixel-text-secondary);
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.template-category-btn:hover {
+  background: var(--pixel-bg-hover);
+  color: var(--pixel-text-primary);
+}
+
+.template-category-btn.active {
+  background: var(--category-color, var(--pixel-accent));
+  border-color: var(--category-color, var(--pixel-accent));
+  color: white;
+}
+
+.template-category-icon {
+  font-size: 14px;
+}
+
+.template-selector-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px;
+  background: var(--pixel-bg-primary);
+}
+
+.template-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+}
+
+.quick-actions-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 12px;
+}
+
+.template-card {
+  background: var(--pixel-bg-secondary);
+  border: 1px solid var(--pixel-border);
+  border-radius: 8px;
+  padding: 16px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.template-card:hover {
+  border-color: var(--pixel-accent);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.template-card-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.template-card-icon {
+  font-size: 24px;
+  flex-shrink: 0;
+}
+
+.template-card-info {
+  flex: 1;
+}
+
+.template-card-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--pixel-text-primary);
+  margin: 0 0 4px 0;
+}
+
+.template-card-description {
+  font-size: 13px;
+  color: var(--pixel-text-secondary);
+  margin: 0;
+  line-height: 1.4;
+}
+
+.template-card-tags {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 8px;
+  flex-wrap: wrap;
+}
+
+.template-card-tag {
+  background: var(--pixel-bg-primary);
+  border: 1px solid var(--pixel-border);
+  border-radius: 4px;
+  padding: 2px 6px;
+  font-size: 10px;
+  color: var(--pixel-text-secondary);
+}
+
+.template-card-models {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+}
+
+.template-card-models-label {
+  color: var(--pixel-text-secondary);
+}
+
+.template-card-model {
+  background: var(--pixel-accent);
+  color: white;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 10px;
+}
+
+.quick-action-card {
+  background: var(--pixel-bg-secondary);
+  border: 1px solid var(--pixel-border);
+  border-radius: 6px;
+  padding: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.quick-action-card:hover {
+  border-color: var(--pixel-accent);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.quick-action-icon {
+  font-size: 20px;
+  margin-bottom: 8px;
+}
+
+.quick-action-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--pixel-text-primary);
+  margin: 0 0 4px 0;
+}
+
+.quick-action-description {
+  font-size: 12px;
+  color: var(--pixel-text-secondary);
+  margin: 0;
+  line-height: 1.3;
+}
+
+.quick-action-requires-selection {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: var(--pixel-accent);
+  color: white;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 9px;
+  font-weight: 500;
+}
+
+.template-empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  text-align: center;
+  color: var(--pixel-text-secondary);
+}
+
+.template-empty-state h3 {
+  margin: 16px 0 8px 0;
+  color: var(--pixel-text-primary);
+  font-size: 18px;
+}
+
+.template-empty-state p {
+  margin: 0;
+  font-size: 14px;
+}
+
+.template-selector-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  border-top: 1px solid var(--pixel-border);
+  background: var(--pixel-bg-secondary);
+}
+
+.template-selector-stats {
+  font-size: 12px;
+  color: var(--pixel-text-secondary);
+}
+
+.template-selector-create-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  background: var(--pixel-accent);
+  border: none;
+  border-radius: 6px;
+  color: white;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.template-selector-create-btn:hover {
+  background: var(--pixel-accent-hover);
+  transform: translateY(-1px);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .template-selector-modal {
+    max-width: 95vw;
+    max-height: 90vh;
+  }
+  
+  .template-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .quick-actions-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .template-selector-categories {
+    padding: 12px 16px;
+  }
+  
+  .template-selector-content {
+    padding: 16px;
+  }
+}
+
+/* Scrollbar Styling */
+.template-selector-content::-webkit-scrollbar {
+  width: 6px;
+}
+
+.template-selector-content::-webkit-scrollbar-track {
+  background: var(--pixel-bg-secondary);
+}
+
+.template-selector-content::-webkit-scrollbar-thumb {
+  background: var(--pixel-border);
+  border-radius: 3px;
+}
+
+.template-selector-content::-webkit-scrollbar-thumb:hover {
+  background: var(--pixel-accent);
+}
+

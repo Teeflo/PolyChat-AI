@@ -1,0 +1,87 @@
+/* Template Button Styles */
+.template-button {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 12px;
+  background: var(--pixel-bg-secondary);
+  border: 1px solid var(--pixel-border);
+  border-radius: 6px;
+  color: var(--pixel-text-secondary);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+  white-space: nowrap;
+}
+
+.template-button:hover {
+  background: var(--pixel-bg-hover);
+  border-color: var(--pixel-accent);
+  color: var(--pixel-text-primary);
+  transform: translateY(-1px);
+}
+
+.template-button:active {
+  transform: translateY(0);
+}
+
+.template-button-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--pixel-accent);
+}
+
+.template-button-label {
+  font-weight: 500;
+}
+
+.template-button-badge {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  background: var(--pixel-accent);
+  color: white;
+  border-radius: 50%;
+  width: 16px;
+  height: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 8px;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .template-button {
+    padding: 6px 10px;
+    font-size: 12px;
+  }
+  
+  .template-button-label {
+    display: none;
+  }
+  
+  .template-button-icon {
+    margin: 0;
+  }
+}
+

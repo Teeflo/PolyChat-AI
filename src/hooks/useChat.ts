@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import type { Message, ChatSession } from '../types/index';
+import type { Message, ChatSession, ConversationTemplate, QuickAction } from '../types/index';
 import { saveChatHistory, loadChatHistory } from '../services/localStorage';
 import { fetchAIResponse } from '../services/openRouter';
 import { useSettings } from './useSettings';
@@ -20,6 +20,9 @@ interface ChatStore {
   setActiveSession: (sessionId: string) => void;
   createNewSession: () => void;
   deleteSession: (sessionId: string) => void;
+  // New template and quick action methods
+  applyTemplate: (template: ConversationTemplate) => void;
+  executeQuickAction: (action: QuickAction, selectedText?: string) => void;
 }
 
 const createMessage = (role: 'user' | 'assistant', content: string, modelId?: string): Message => ({
@@ -388,6 +391,118 @@ export const useChat = create<ChatStore>((set, get) => ({
       currentSessionId: newCurrentSessionId,
       selectedModels: newActiveSession ? [newActiveSession.modelId] : []
     });
+  },
+
+  // Template and Quick Action methods
+  applyTemplate: (template: ConversationTemplate) => {
+    const { activeSessions, allSessions } = get();
+    const { apiKey } = useSettings.getState();
+    
+    if (!apiKey) {
+      console.error('API key is missing');
+      return;
+    }
+
+    // Update system prompt for all active sessions
+    const updatedSessions = activeSessions.map(session => ({
+      ...session,
+      messages: [
+        // Add system message with template system prompt
+        {
+          id: `system-${Date.now()}`,
+          role: 'system' as const,
+          content: template.systemPrompt,
+          timestamp: new Date(),
+          modelId: session.modelId
+        },
+        // Add user message with template content
+        {
+          id: `user-${Date.now()}`,
+          role: 'user' as const,
+          content: template.userMessage,
+          timestamp: new Date(),
+          modelId: session.modelId
+        }
+      ],
+      isLoading: false,
+      error: null
+    }));
+
+    // Update allSessions as well
+    const updatedAllSessions = allSessions.map(session => {
+      const updatedSession = updatedSessions.find(s => s.id === session.id);
+      return updatedSession || session;
+    });
+
+    set({
+      activeSessions: updatedSessions,
+      allSessions: updatedAllSessions
+    });
+
+    // Automatically send the template message
+    get().sendMessageToAll(template.userMessage);
+  },
+
+  executeQuickAction: (action: QuickAction, selectedText?: string) => {
+    const { activeSessions, allSessions } = get();
+    const { apiKey } = useSettings.getState();
+    
+    if (!apiKey) {
+      console.error('API key is missing');
+      return;
+    }
+
+    if (action.requiresSelection && (!selectedText || selectedText.trim().length === 0)) {
+      console.error('Quick action requires selected text');
+      return;
+    }
+
+    // Prepare the message content
+    let messageContent = '';
+    if (action.userMessageTemplate && selectedText) {
+      messageContent = action.userMessageTemplate.replace('{selectedText}', selectedText);
+    } else if (selectedText) {
+      messageContent = `Please ${action.action} this:\n\n${selectedText}`;
+    } else {
+      messageContent = `Please ${action.action}`;
+    }
+
+    // Update system prompt if provided
+    const updatedSessions = activeSessions.map(session => {
+      const updatedMessages = [...session.messages];
+      
+      // Add system message if action has a system prompt
+      if (action.systemPrompt) {
+        updatedMessages.unshift({
+          id: `system-${Date.now()}`,
+          role: 'system' as const,
+          content: action.systemPrompt,
+          timestamp: new Date(),
+          modelId: session.modelId
+        });
+      }
+
+      return {
+        ...session,
+        messages: updatedMessages,
+        isLoading: false,
+        error: null
+      };
+    });
+
+    // Update allSessions as well
+    const updatedAllSessions = allSessions.map(session => {
+      const updatedSession = updatedSessions.find(s => s.id === session.id);
+      return updatedSession || session;
+    });
+
+    set({
+      activeSessions: updatedSessions,
+      allSessions: updatedAllSessions
+    });
+
+    // Send the quick action message
+    get().sendMessageToAll(messageContent);
   }
 }));
 
