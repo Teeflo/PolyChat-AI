@@ -7,6 +7,9 @@ const DEFAULT_SETTINGS: Settings = {
   selectedModel: '', // Aucun modèle par défaut - l'utilisateur choisit
   theme: 'dark', // Thème sombre par défaut pour le design moderne
   systemPrompt: '', // Instruction système vide par défaut
+  tone: 'neutre',
+  notificationsEnabled: true,
+  hasOnboarded: false,
 };
 
 interface SettingsStore extends Settings {
@@ -15,6 +18,9 @@ interface SettingsStore extends Settings {
   setSelectedModel: (model: string) => void;
   setTheme: (theme: 'light' | 'dark') => void;
   setSystemPrompt: (systemPrompt: string) => void;
+  setTone: (tone: NonNullable<Settings['tone']>) => void;
+  setNotificationsEnabled: (enabled: boolean) => void;
+  setHasOnboarded: (hasOnboarded: boolean) => void;
   toggleTheme: () => void;
   toggleSettings: () => void;
   closeSettings: () => void;
@@ -29,6 +35,9 @@ export const useSettings = create<SettingsStore>()(
       setSelectedModel: (selectedModel) => set({ selectedModel }),
       setTheme: (theme) => set({ theme }),
       setSystemPrompt: (systemPrompt) => set({ systemPrompt }),
+  setTone: (tone) => set({ tone }),
+  setNotificationsEnabled: (notificationsEnabled) => set({ notificationsEnabled }),
+  setHasOnboarded: (hasOnboarded) => set({ hasOnboarded }),
       toggleTheme: () => set({ theme: get().theme === 'light' ? 'dark' : 'light' }),
       toggleSettings: () => set({ isSettingsOpen: !get().isSettingsOpen }),
       closeSettings: () => set({ isSettingsOpen: false }),

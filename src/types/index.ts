@@ -18,6 +18,9 @@ export interface Settings {
   selectedModel: string;
   theme: 'light' | 'dark';
   systemPrompt: string; // Nouveau champ pour l'instruction système
+  tone?: 'neutre' | 'formel' | 'amical' | 'professionnel' | 'enthousiaste';
+  notificationsEnabled?: boolean;
+  hasOnboarded?: boolean;
 }
 
 export interface ChatSession {
@@ -83,4 +86,21 @@ export interface TemplateCategoryInfo {
   description: string;
   icon: string;
   color: string;
+}
+
+// Analytics types
+export interface ModelStats {
+  conversations: number;
+  messages: number;
+  avgResponseTimeMs: number;
+}
+
+export interface UsageStats {
+  totalConversations: number;
+  totalMessages: number;
+  totalUserMessages: number;
+  totalAssistantMessages: number;
+  avgResponseTimeMs: number;
+  perModel: Record<string, ModelStats>;
+  lastUpdated: string; // ISO date string
 }

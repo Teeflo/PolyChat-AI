@@ -12,12 +12,26 @@ import { useEffect } from 'react'
 import { fetchAvailableModels } from './services/modelsApi'
 import { Menu } from 'lucide-react'
 import './styles/modern-pixel.css'
+import OnboardingModal from './components/Onboarding/OnboardingModal.tsx'
+import UsageDashboard from './components/Settings/UsageDashboard.tsx'
+import SmartSuggestions from './components/Chat/SmartSuggestions.tsx'
 
 // Composant interne qui utilise les hooks
 const AppContent: React.FC = () => {
   const { isSettingsOpen, toggleSettings, theme } = useSettings()
   const { activeSessions } = useChat()
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
+  const [showDashboard, setShowDashboard] = useState(false)
+  useEffect(()=>{
+    const handler = (e: KeyboardEvent) => {
+      if ((e.ctrlKey || e.metaKey) && (e.key.toLowerCase() === 'u')) {
+        e.preventDefault();
+        setShowDashboard(s=>!s);
+      }
+    }
+    window.addEventListener('keydown', handler);
+    return ()=>window.removeEventListener('keydown', handler);
+  },[])
   
   // Test de l'API au chargement
   useEffect(() => {
@@ -44,6 +58,22 @@ const AppContent: React.FC = () => {
       appContainer.className = `pixel-container pixel-app-container theme-${theme}`;
     }
   }, [theme]);
+
+  // Optionnel: demander la permission de notification si l'utilisateur active l'option
+  useEffect(()=>{
+    const onFocus = () => {
+      // Only request on focus to avoid intrusive popup on load
+      import('./hooks/useSettings').then(({ useSettings }) => {
+        const { notificationsEnabled } = useSettings.getState();
+        if (notificationsEnabled && 'Notification' in window && Notification.permission === 'default') {
+          Notification.requestPermission().catch(()=>{});
+        }
+      });
+      window.removeEventListener('focus', onFocus);
+    };
+    window.addEventListener('focus', onFocus);
+    return ()=>window.removeEventListener('focus', onFocus);
+  },[])
 
   return (
     <div className={`pixel-container pixel-app-container theme-${theme}`}>
@@ -80,7 +110,10 @@ const AppContent: React.FC = () => {
           <ModelSelectorModern />
         </div>
         
-        {/* Chat Messages Modernisé */}
+  {/* Suggestions intelligentes selon le contexte */}
+  <SmartSuggestions />
+
+  {/* Chat Messages Modernisé */}
         <div className="pixel-messages-container">
           <MultiChatWindowModern sessions={activeSessions} />
         </div>
@@ -91,13 +124,19 @@ const AppContent: React.FC = () => {
         </div>
       </div>
       
-      {/* Settings Modal Modernisé */}
+  {/* Settings Modal Modernisé */}
       {isSettingsOpen && (
         <SettingsModalModern
           isOpen={isSettingsOpen}
           onClose={toggleSettings}
         />
       )}
+
+  {/* Onboarding pour nouveaux utilisateurs */}
+  <OnboardingModal />
+
+  {/* Tableau de bord d'usage (toggle via clavier: Ctrl+U) */}
+  {showDashboard && (<UsageDashboard onClose={() => setShowDashboard(false)} />)}
       
       {/* Effet de particules flottantes */}
       <div className="pixel-particles-container">

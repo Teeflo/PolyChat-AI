@@ -191,6 +191,15 @@
   backdrop-filter: blur(10px);
 }
 
+/* New: radio chip group for tone */
+.settings-radio-group-modern{display:flex;flex-wrap:wrap;gap:8px}
+.settings-radio-chip-modern{display:inline-flex;align-items:center;gap:6px;padding:8px 10px;border:var(--border-thin);border-color:var(--pixel-accent-muted);border-radius:var(--radius-pill);cursor:pointer;background:var(--pixel-bg-secondary)}
+.settings-radio-chip-modern input{display:none}
+.settings-radio-chip-modern.active{background:var(--pixel-accent-primary);color:var(--pixel-text-inverse);border-color:var(--pixel-accent-primary)}
+
+/* New: toggle */
+.settings-toggle-modern{display:flex;align-items:center;gap:8px}
+
 .settings-input-modern:focus {
   border-color: var(--pixel-accent-primary);
   box-shadow: var(--shadow-cyber);
@@ -417,6 +426,9 @@
   border: var(--border-thin);
   border-color: var(--pixel-accent-muted);
   border-radius: var(--radius-md);
+}
+.settings-info-item-modern.span-2 {
+  grid-column: span 2;
 }
 
 .settings-info-label-modern {

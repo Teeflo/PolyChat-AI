@@ -15,10 +15,14 @@ const SettingsModalModern: React.FC<SettingsModalModernProps> = ({ isOpen, onClo
     selectedModel, 
     theme, 
     systemPrompt,
+    tone,
+    notificationsEnabled,
     setApiKey, 
     setSelectedModel, 
     setTheme,
-    setSystemPrompt
+    setSystemPrompt,
+    setTone,
+    setNotificationsEnabled
   } = useSettings();
   const { models } = useModels();
 
@@ -185,6 +189,59 @@ const SettingsModalModern: React.FC<SettingsModalModernProps> = ({ isOpen, onClo
               </div>
             </div>
           </div>
+
+            {/* Section Ton de l'IA */}
+            <div className="settings-section-modern">
+              <div className="settings-section-modern-header">
+                <MessageSquare size={18} />
+                <h3>Ton de l'IA</h3>
+                <div className="settings-section-modern-badge optional">Optionnel</div>
+              </div>
+              <div className="settings-field-modern">
+                <label className="settings-label-modern">Style de réponse</label>
+                <div className="settings-radio-group-modern">
+                  {(['neutre','formel','amical','professionnel','enthousiaste'] as const).map(t => (
+                    <label key={t} className={`settings-radio-chip-modern ${tone===t?'active':''}`}>
+                      <input type="radio" name="ai-tone" value={t} checked={tone===t} onChange={() => setTone(t)} />
+                      <span>{t.charAt(0).toUpperCase()+t.slice(1)}</span>
+                    </label>
+                  ))}
+                </div>
+                <div className="settings-help-modern">
+                  <Info size={12} />
+                  <span>Définit le ton par défaut ajouté à l'instruction système.</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Section Notifications */}
+            <div className="settings-section-modern">
+              <div className="settings-section-modern-header">
+                <MessageSquare size={18} />
+                <h3>Notifications</h3>
+                <div className="settings-section-modern-badge optional">Optionnel</div>
+              </div>
+              <div className="settings-field-modern">
+                <label className="settings-label-modern">Notifications navigateur</label>
+                <div className="settings-toggle-modern">
+                  <label htmlFor="notif-toggle" className="sr-only">Activer les notifications</label>
+                  <input id="notif-toggle" title="Activer les notifications" type="checkbox" checked={!!notificationsEnabled} onChange={async (e)=>{
+                    const enabled = e.target.checked;
+                    if (enabled && 'Notification' in window) {
+                      const res = await Notification.requestPermission();
+                      setNotificationsEnabled(res==='granted');
+                    } else {
+                      setNotificationsEnabled(false);
+                    }
+                  }} />
+                  <span>{notificationsEnabled? 'Activées':'Désactivées'}</span>
+                </div>
+                <div className="settings-help-modern">
+                  <Info size={12} />
+                  <span>Recevez une alerte quand une réponse est prête.</span>
+                </div>
+              </div>
+            </div>
 
           {/* Section Thème */}
           <div className="settings-section-modern">

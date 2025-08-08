@@ -3,6 +3,8 @@ import type { Message, ChatSession, ConversationTemplate, QuickAction } from '..
 import { saveChatHistory, loadChatHistory } from '../services/localStorage';
 import { fetchAIResponse } from '../services/openRouter';
 import { useSettings } from './useSettings';
+import { useUsageStats } from './useUsageStats';
+import { notify } from '../utils/notify';
 
 interface ChatStore {
   activeSessions: ChatSession[];
@@ -61,7 +63,7 @@ export const useChat = create<ChatStore>((set, get) => ({
         currentSessionId: firstSession.id,
         selectedModels: [firstSession.modelId]
       });
-    } else {
+  } else {
       // Initialiser avec le modèle par défaut
       const { selectedModel } = useSettings.getState();
       if (selectedModel) {
@@ -79,6 +81,7 @@ export const useChat = create<ChatStore>((set, get) => ({
           currentSessionId: defaultSession.id,
           selectedModels: [selectedModel]
         });
+    try { useUsageStats.getState().recordNewConversation(selectedModel); } catch {}
       }
     }
   },
@@ -108,6 +111,7 @@ export const useChat = create<ChatStore>((set, get) => ({
         allSessions: updatedAllSessions,
         selectedModels: [...selectedModels, modelId]
       });
+  try { useUsageStats.getState().recordNewConversation(modelId); } catch {}
     }
   },
   
@@ -126,8 +130,9 @@ export const useChat = create<ChatStore>((set, get) => ({
   sendMessageToAll: async (content: string) => {
     if (!content.trim()) return;
     
-    const { activeSessions, allSessions } = get();
-    const { apiKey, systemPrompt } = useSettings.getState();
+  const { activeSessions, allSessions } = get();
+  const { apiKey, systemPrompt, tone } = useSettings.getState();
+  const stats = useUsageStats.getState();
     
     if (!apiKey) {
       // Mettre à jour toutes les sessions avec l'erreur
@@ -140,7 +145,7 @@ export const useChat = create<ChatStore>((set, get) => ({
       return;
     }
     
-    // Ajouter le message utilisateur à toutes les sessions actives
+  // Ajouter le message utilisateur à toutes les sessions actives
     const userMessage = createMessage('user', content);
     const updatedSessions = activeSessions.map(session => ({
       ...session,
@@ -154,10 +159,20 @@ export const useChat = create<ChatStore>((set, get) => ({
       isAnyLoading: true
     });
     
+    // Statistiques: enregistrer le message utilisateur
+    try { stats.recordUserMessage(updatedSessions.map(s => s.modelId)); } catch {}
+
     // Envoyer les requêtes en parallèle pour tous les modèles
     const promises = updatedSessions.map(async (session) => {
       try {
-        const aiResponse = await fetchAIResponse(session.messages, apiKey, session.modelId, systemPrompt);
+        const tonePrefix = tone && tone !== 'neutre' ? `[Ton: ${tone}] ` : '';
+        const effectiveSystem = systemPrompt && systemPrompt.trim()
+          ? `${tonePrefix}${systemPrompt.trim()}`
+          : (tonePrefix ? `${tonePrefix}Tu es un assistant IA utile.` : undefined);
+        const start = performance.now();
+        const aiResponse = await fetchAIResponse(session.messages, apiKey, session.modelId, effectiveSystem);
+        const end = performance.now();
+        try { useUsageStats.getState().recordAssistantResponse(session.modelId, Math.round(end - start)); } catch {}
         const aiMessage = createMessage('assistant', aiResponse, session.modelId);
         return {
           ...session,
@@ -189,6 +204,14 @@ export const useChat = create<ChatStore>((set, get) => ({
         allSessions: updatedAllSessions,
         isAnyLoading: false
       });
+      // Notifications
+      const { notificationsEnabled } = useSettings.getState();
+      if (notificationsEnabled) {
+        try {
+          const count = resolvedSessions.length;
+          notify('PolyChat AI', count > 1 ? `Réponses prêtes pour ${count} modèles` : 'Réponse prête');
+        } catch {}
+      }
       
     } catch (error) {
       set({ isAnyLoading: false });
@@ -261,7 +284,15 @@ export const useChat = create<ChatStore>((set, get) => ({
       const conversationHistory = session.messages.slice(0, messageIndex);
       
       // Faire appel à l'API
-      const aiResponse = await fetchAIResponse(conversationHistory, apiKey, session.modelId, systemPrompt);
+      const { tone } = useSettings.getState();
+      const tonePrefix = tone && tone !== 'neutre' ? `[Ton: ${tone}] ` : '';
+      const effectiveSystem = systemPrompt && systemPrompt.trim()
+        ? `${tonePrefix}${systemPrompt.trim()}`
+        : (tonePrefix ? `${tonePrefix}Tu es un assistant IA utile.` : undefined);
+      const start = performance.now();
+      const aiResponse = await fetchAIResponse(conversationHistory, apiKey, session.modelId, effectiveSystem);
+      const end = performance.now();
+      try { useUsageStats.getState().recordAssistantResponse(session.modelId, Math.round(end - start)); } catch {}
       
       // Remplacer le message régénéré
       const newMessage = createMessage('assistant', aiResponse, session.modelId);
@@ -286,6 +317,10 @@ export const useChat = create<ChatStore>((set, get) => ({
         allSessions: finalAllSessions,
         isAnyLoading: false
       });
+      const { notificationsEnabled } = useSettings.getState();
+      if (notificationsEnabled) {
+        try { notify('PolyChat AI', 'Réponse régénérée prête'); } catch {}
+      }
 
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Erreur lors de la régénération';
@@ -368,6 +403,7 @@ export const useChat = create<ChatStore>((set, get) => ({
         currentSessionId: newSession.id,
         selectedModels: [selectedModel]
       }));
+  try { useUsageStats.getState().recordNewConversation(selectedModel); } catch {}
     }
   },
 
