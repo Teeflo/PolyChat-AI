@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Send, Loader2 } from 'lucide-react';
 import { useSettings } from '../../hooks/useSettings';
 import { useChat } from '../../hooks/useChat';
+import './ChatInput.css';
 
 const ChatInput: React.FC = () => {
   const [message, setMessage] = useState('');
@@ -34,24 +35,9 @@ const ChatInput: React.FC = () => {
   }, [message]);
 
   return (
-    <div style={{
-      borderTop: `1px solid ${isDark ? '#374151' : '#e5e7eb'}`,
-      padding: '20px 24px',
-      backgroundColor: isDark ? '#1f2937' : '#ffffff',
-      backdropFilter: 'blur(10px)',
-      boxShadow: '0 -1px 3px 0 rgba(0, 0, 0, 0.1), 0 -1px 2px 0 rgba(0, 0, 0, 0.06)'
-    }}>
-      <form onSubmit={handleSubmit} style={{ maxWidth: '800px', margin: '0 auto' }}>
-        <div style={{
-          display: 'flex',
-          alignItems: 'flex-end',
-          gap: '12px',
-          backgroundColor: isDark ? '#374151' : '#f8fafc',
-          borderRadius: '24px',
-          padding: '6px',
-          border: `2px solid ${isDark ? '#4b5563' : '#e2e8f0'}`,
-          transition: 'border-color 0.2s ease'
-        }}>
+    <div className={`chat-input-container ${isDark ? 'dark' : 'light'}`}>
+      <form onSubmit={handleSubmit} className="chat-input-form">
+        <div className={`chat-input-wrapper ${isDark ? 'dark' : 'light'}`}>
           <textarea
             ref={textareaRef}
             value={message}
@@ -60,77 +46,22 @@ const ChatInput: React.FC = () => {
             placeholder="Tapez votre message... (Entrée pour envoyer, Shift+Entrée pour nouvelle ligne)"
             disabled={isAnyLoading}
             rows={1}
-            style={{
-              flex: 1,
-              backgroundColor: 'transparent',
-              border: 'none',
-              outline: 'none',
-              resize: 'none',
-              padding: '12px 16px',
-              fontSize: '14px',
-              lineHeight: '1.5',
-              color: isDark ? '#e5e7eb' : '#374151',
-              fontFamily: 'inherit'
-            }}
-            onFocus={(e) => {
-              const container = e.target.parentElement as HTMLElement;
-              if (container) {
-                container.style.borderColor = '#667eea';
-              }
-            }}
-            onBlur={(e) => {
-              const container = e.target.parentElement as HTMLElement;
-              if (container) {
-                container.style.borderColor = isDark ? '#4b5563' : '#e2e8f0';
-              }
-            }}
+            className={`chat-input-textarea ${isDark ? 'dark' : 'light'}`}
           />
           <button
             type="submit"
             disabled={!message.trim() || isAnyLoading}
-            style={{
-              background: (!message.trim() || isAnyLoading) 
-                ? (isDark ? '#4b5563' : '#e5e7eb')
-                : 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-              color: (!message.trim() || isAnyLoading) 
-                ? (isDark ? '#9ca3af' : '#9ca3af')
-                : '#ffffff',
-              border: 'none',
-              borderRadius: '18px',
-              width: '36px',
-              height: '36px',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              cursor: (!message.trim() || isAnyLoading) ? 'not-allowed' : 'pointer',
-              transition: 'all 0.2s ease',
-              margin: '3px'
-            }}
-            onMouseOver={(e) => {
-              if (!(!message.trim() || isAnyLoading)) {
-                (e.target as HTMLButtonElement).style.transform = 'scale(1.05)';
-              }
-            }}
-            onMouseOut={(e) => {
-              (e.target as HTMLButtonElement).style.transform = 'scale(1)';
-            }}
+            className={`chat-input-send-btn ${(!message.trim() || isAnyLoading) ? 'disabled' : 'enabled'} ${isDark ? 'dark' : 'light'}`}
           >
             {isAnyLoading ? (
-              <Loader2 size={16} style={{ animation: 'spin 1s linear infinite' }} />
+              <Loader2 size={16} className="spin" />
             ) : (
               <Send size={16} />
             )}
           </button>
         </div>
         
-        <div style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          marginTop: '8px',
-          fontSize: '12px',
-          color: isDark ? '#9ca3af' : '#6b7280'
-        }}>
+        <div className={`chat-input-info ${isDark ? 'dark' : 'light'}`}>
           <span>
             Utilisez Shift+Entrée pour une nouvelle ligne
           </span>

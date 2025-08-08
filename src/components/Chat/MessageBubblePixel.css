@@ -1,0 +1,23 @@
+.pixel-code-block {
+  position: relative;
+}
+
+.pixel-code-copy-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  padding: 6px 8px;
+  font-size: 11px;
+}
+
+.pixel-message-content {
+  white-space: normal;
+}
+
+.pixel-avatar-container .bot-icon {
+  color: var(--matrix-green);
+}
+
+.pixel-avatar-container.user .user-icon {
+  color: white;
+}

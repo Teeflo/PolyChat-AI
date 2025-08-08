@@ -1,0 +1,96 @@
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 24px;
+}
+
+.header-brand {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.header-logo {
+  width: 48px;
+  height: 48px;
+  background: var(--pixel-accent-1);
+  border: 3px solid var(--pixel-bg-primary);
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.header-logo-icon {
+  color: var(--pixel-bg-primary);
+  filter: drop-shadow(1px 1px 0px var(--pixel-white));
+}
+
+.header-title {
+  font-family: 'Press Start 2P, monospace';
+  font-size: 16px;
+  color: var(--pixel-white);
+  margin: 0;
+  text-shadow: 2px 2px 0px var(--pixel-bg-primary), 4px 4px 0px var(--pixel-accent-1);
+  letter-spacing: 2px;
+  line-height: 1.2;
+}
+
+.header-controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.header-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  background: var(--pixel-bg-primary);
+  border: 2px solid var(--pixel-green);
+  font-size: 8px;
+  color: var(--pixel-green);
+  font-family: 'Press Start 2P, monospace';
+}
+
+.header-settings-btn {
+  padding: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 48px;
+  min-height: 48px;
+}
+
+.header-progress-bar {
+  height: 4px;
+  background: var(--pixel-bg-primary);
+  position: relative;
+  overflow: hidden;
+}
+
+.header-progress-animation {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--pixel-accent-1) 50%,
+    transparent 100%
+  );
+  animation: pixelSlideIn 3s infinite linear;
+}
+
+@keyframes pixelSlideIn {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}

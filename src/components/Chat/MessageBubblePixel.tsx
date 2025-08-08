@@ -5,6 +5,7 @@ import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { oneDark } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import type { Message } from '../../types/index';
 import { User, Bot } from 'lucide-react';
+import './MessageBubblePixel.css';
 
 interface MessageBubbleProps {
   message: Message;
@@ -46,11 +47,10 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({ message }) => {
           }
         };
         return (
-          <div className="pixel-code-block" style={{ position: 'relative' }}>
+          <div className="pixel-code-block">
             <button
               onClick={onCopyBlock}
-              className="pixel-btn-modern"
-              style={{ position: 'absolute', top: 8, right: 8, padding: '6px 8px', fontSize: 11 }}
+              className="pixel-btn-modern pixel-code-copy-btn"
             >
               {copiedBlockId === blockId ? 'Copié' : 'Copier'}
             </button>
@@ -76,7 +76,7 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({ message }) => {
         {!isUser && (
           <div className="pixel-message-header">
             <div className="pixel-avatar-container">
-              <Bot size={12} style={{ color: 'var(--matrix-green)' }} />
+              <Bot size={12} className="bot-icon" />
             </div>
             <span className="pixel-message-sender">AI ASSISTANT</span>
             <div className="pixel-status-dot active" />
@@ -88,12 +88,12 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({ message }) => {
             <div className="pixel-status-dot active" />
             <span className="pixel-message-sender">USER</span>
             <div className="pixel-avatar-container user">
-              <User size={12} style={{ color: 'white' }} />
+              <User size={12} className="user-icon" />
             </div>
           </div>
         )}
 
-        <div className="pixel-message-content markdown-body" style={{ whiteSpace: 'normal' }}>
+        <div className="pixel-message-content markdown-body">
           <ReactMarkdown remarkPlugins={[remarkGfm]} components={markdownComponents}>
             {message.content}
           </ReactMarkdown>

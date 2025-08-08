@@ -1,6 +1,7 @@
 import React from 'react';
 import { Settings, Cpu } from 'lucide-react';
 import ThemeToggle from './ThemeToggle';
+import './Header.css';
 
 interface HeaderProps {
   onSettingsClick: () => void;
@@ -9,46 +10,17 @@ interface HeaderProps {
 const Header: React.FC<HeaderProps> = ({ onSettingsClick }) => {
   return (
     <header className="pixel-header">
-      <div style={{
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        padding: '16px 24px'
-      }}>
+      <div className="header-container">
         {/* Logo et titre */}
-        <div style={{ 
-          display: 'flex', 
-          alignItems: 'center', 
-          gap: '16px' 
-        }}>
+        <div className="header-brand">
           {/* Logo pixel rétro */}
-          <div className="pixel-logo pixel-glow" style={{
-            width: '48px',
-            height: '48px',
-            background: 'var(--pixel-accent-1)',
-            border: '3px solid var(--pixel-bg-primary)',
-            position: 'relative',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center'
-          }}>
-            <Cpu size={24} style={{ 
-              color: 'var(--pixel-bg-primary)',
-              filter: 'drop-shadow(1px 1px 0px var(--pixel-white))'
-            }} />
+          <div className="pixel-logo pixel-glow header-logo">
+            <Cpu size={24} className="header-logo-icon" />
           </div>
           
           {/* Titre avec effet rétro */}
           <div>
-            <h1 style={{
-              fontFamily: 'Press Start 2P, monospace',
-              fontSize: '16px',
-              color: 'var(--pixel-white)',
-              margin: 0,
-              textShadow: '2px 2px 0px var(--pixel-bg-primary), 4px 4px 0px var(--pixel-accent-1)',
-              letterSpacing: '2px',
-              lineHeight: 1.2
-            }}>
+            <h1 className="header-title">
               POLYCHAT
             </h1>
             {/* Texte supprimé pour une interface plus épurée */}
@@ -56,23 +28,9 @@ const Header: React.FC<HeaderProps> = ({ onSettingsClick }) => {
         </div>
         
         {/* Contrôles */}
-        <div style={{ 
-          display: 'flex', 
-          alignItems: 'center', 
-          gap: '12px' 
-        }}>
+        <div className="header-controls">
           {/* Indicateur de statut */}
-          <div style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '8px',
-            padding: '8px 12px',
-            background: 'var(--pixel-bg-primary)',
-            border: '2px solid var(--pixel-green)',
-            fontSize: '8px',
-            color: 'var(--pixel-green)',
-            fontFamily: 'Press Start 2P, monospace'
-          }}>
+          <div className="header-status">
             <div className="pixel-status-online" />
             ONLINE
           </div>
@@ -83,15 +41,7 @@ const Header: React.FC<HeaderProps> = ({ onSettingsClick }) => {
           {/* Bouton paramètres pixel */}
           <button
             onClick={onSettingsClick}
-            className="pixel-btn pixel-btn-secondary"
-            style={{
-              padding: '12px',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              minWidth: '48px',
-              minHeight: '48px'
-            }}
+            className="pixel-btn pixel-btn-secondary header-settings-btn"
             title="SETTINGS"
           >
             <Settings size={16} />
@@ -100,26 +50,8 @@ const Header: React.FC<HeaderProps> = ({ onSettingsClick }) => {
       </div>
       
       {/* Barre de progression animée */}
-      <div style={{
-        height: '4px',
-        background: 'var(--pixel-bg-primary)',
-        position: 'relative',
-        overflow: 'hidden'
-      }}>
-        <div style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          height: '100%',
-          width: '100%',
-          background: `linear-gradient(
-            90deg,
-            transparent 0%,
-            var(--pixel-accent-1) 50%,
-            transparent 100%
-          )`,
-          animation: 'pixelSlideIn 3s infinite linear'
-        }} />
+      <div className="header-progress-bar">
+        <div className="header-progress-animation" />
       </div>
     </header>
   );

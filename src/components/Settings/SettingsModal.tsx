@@ -5,6 +5,7 @@ import ModelSelector from './ModelSelector';
 import { useSettings } from '../../hooks/useSettings';
 import { testOpenRouterAPI } from '../../services/apiTest';
 import { toggleHackerCursor } from '../../utils/hackerCursor';
+import './SettingsModal.css';
 
 interface SettingsModalProps {
   isOpen: boolean;
@@ -42,99 +43,37 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose }) => {
   if (!isOpen) return null;
 
   return (
-    <div style={{
-      position: 'fixed',
-      inset: 0,
-      backgroundColor: 'rgba(0, 0, 0, 0.5)',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      padding: '16px',
-      zIndex: 50,
-      backdropFilter: 'blur(4px)'
-    }}>
-      <div style={{
-        backgroundColor: isDark ? '#1f2937' : '#ffffff',
-        borderRadius: '16px',
-        width: '100%',
-        maxWidth: '480px',
-        boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
-        border: isDark ? '1px solid #374151' : '1px solid #e5e7eb'
-      }}>
+    <div className="settings-modal-overlay">
+      <div className={`settings-modal-container ${isDark ? 'dark' : 'light'}`}>
         {/* Header */}
-        <div style={{
-          borderBottom: `1px solid ${isDark ? '#374151' : '#e5e7eb'}`,
-          padding: '20px 24px',
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center'
-        }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-            <div style={{
-              width: '32px',
-              height: '32px',
-              borderRadius: '8px',
-              background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              fontSize: '16px'
-            }}>
+        <div className={`settings-modal-header ${isDark ? 'dark' : 'light'}`}>
+          <div className="settings-modal-header-content">
+            <div className="settings-modal-icon">
               ⚙️
             </div>
-            <h2 style={{
-              fontSize: '18px',
-              fontWeight: '600',
-              color: isDark ? '#f9fafb' : '#111827',
-              margin: 0
-            }}>
+            <h2 className={`settings-modal-title ${isDark ? 'dark' : 'light'}`}>
               Paramètres
             </h2>
           </div>
           <button
             onClick={onClose}
-            style={{
-              color: isDark ? '#9ca3af' : '#6b7280',
-              backgroundColor: 'transparent',
-              border: 'none',
-              cursor: 'pointer',
-              padding: '8px',
-              borderRadius: '8px',
-              transition: 'all 0.2s ease'
-            }}
-            onMouseOver={(e) => {
-              (e.target as HTMLButtonElement).style.backgroundColor = isDark ? '#374151' : '#f3f4f6';
-              (e.target as HTMLButtonElement).style.color = isDark ? '#e5e7eb' : '#374151';
-            }}
-            onMouseOut={(e) => {
-              (e.target as HTMLButtonElement).style.backgroundColor = 'transparent';
-              (e.target as HTMLButtonElement).style.color = isDark ? '#9ca3af' : '#6b7280';
-            }}
+            className={`settings-modal-close-btn ${isDark ? 'dark' : 'light'}`}
+            title="Fermer les paramètres"
           >
             <X size={20} />
           </button>
         </div>
         
         {/* Content */}
-        <div style={{ padding: '24px' }}>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+        <div className="settings-modal-content">
+          <div className="settings-modal-sections">
             <ApiKeyInput />
             <ModelSelector />
             
             {/* Hacker Cursor Effects Section */}
             <div>
-              <div style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                marginBottom: '12px'
-              }}>
-                <h3 style={{
-                  margin: 0,
-                  fontSize: '16px',
-                  fontWeight: '600',
-                  color: isDark ? '#e5e7eb' : '#374151'
-                }}>
+              <div className="settings-section-header">
+                <h3 className={`settings-section-title ${isDark ? 'dark' : 'light'}`}>
                   Effets de Curseur Hacker
                 </h3>
                 <button
@@ -142,92 +81,28 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose }) => {
                     toggleHackerCursor();
                     setHackerCursorEnabled(!hackerCursorEnabled);
                   }}
-                  style={{
-                    backgroundColor: hackerCursorEnabled 
-                      ? (isDark ? '#065f46' : '#d1fae5')
-                      : (isDark ? '#374151' : '#f3f4f6'),
-                    color: hackerCursorEnabled 
-                      ? (isDark ? '#34d399' : '#059669')
-                      : (isDark ? '#9ca3af' : '#6b7280'),
-                    border: `1px solid ${hackerCursorEnabled 
-                      ? (isDark ? '#059669' : '#34d399')
-                      : (isDark ? '#4b5563' : '#d1d5db')}`,
-                    borderRadius: '6px',
-                    padding: '8px 12px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '6px',
-                    fontSize: '12px',
-                    cursor: 'pointer',
-                    transition: 'all 0.2s ease'
-                  }}
-                  onMouseOver={(e) => {
-                    (e.target as HTMLButtonElement).style.backgroundColor = hackerCursorEnabled 
-                      ? (isDark ? '#047857' : '#a7f3d0')
-                      : (isDark ? '#4b5563' : '#e5e7eb');
-                  }}
-                  onMouseOut={(e) => {
-                    (e.target as HTMLButtonElement).style.backgroundColor = hackerCursorEnabled 
-                      ? (isDark ? '#065f46' : '#d1fae5')
-                      : (isDark ? '#374151' : '#f3f4f6');
-                  }}
+                  className={`settings-toggle-btn ${hackerCursorEnabled ? 'enabled' : 'disabled'} ${isDark ? 'dark' : 'light'}`}
                 >
                   <MousePointer size={14} />
                   {hackerCursorEnabled ? 'Désactiver' : 'Activer'}
                 </button>
               </div>
               
-              <p style={{
-                margin: 0,
-                fontSize: '12px',
-                color: isDark ? '#9ca3af' : '#6b7280',
-                lineHeight: '1.4'
-              }}>
+              <p className={`settings-section-description ${isDark ? 'dark' : 'light'}`}>
                 Active les effets de curseur personnalisés avec des particules et animations pour une expérience plus immersive.
               </p>
             </div>
             
             {/* Test API Section */}
             <div>
-              <div style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                marginBottom: '12px'
-              }}>
-                <h3 style={{
-                  fontSize: '14px',
-                  fontWeight: '500',
-                  color: isDark ? '#e5e7eb' : '#374151',
-                  margin: 0
-                }}>
+              <div className="settings-section-header">
+                <h3 className={`settings-section-subtitle ${isDark ? 'dark' : 'light'}`}>
                   Test de connectivité
                 </h3>
                 <button
                   onClick={handleTestAPI}
                   disabled={testingAPI}
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '8px',
-                    padding: '8px 12px',
-                    backgroundColor: isDark ? '#374151' : '#f3f4f6',
-                    border: 'none',
-                    borderRadius: '6px',
-                    color: isDark ? '#e5e7eb' : '#374151',
-                    fontSize: '12px',
-                    cursor: testingAPI ? 'not-allowed' : 'pointer',
-                    transition: 'all 0.2s ease',
-                    opacity: testingAPI ? 0.6 : 1
-                  }}
-                  onMouseOver={(e) => {
-                    if (!testingAPI) {
-                      (e.target as HTMLButtonElement).style.backgroundColor = isDark ? '#4b5563' : '#e5e7eb';
-                    }
-                  }}
-                  onMouseOut={(e) => {
-                    (e.target as HTMLButtonElement).style.backgroundColor = isDark ? '#374151' : '#f3f4f6';
-                  }}
+                  className={`settings-test-btn ${isDark ? 'dark' : 'light'}`}
                 >
                   {testingAPI ? (
                     <>
@@ -244,45 +119,18 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose }) => {
               </div>
               
               {apiTestResult && (
-                <div style={{
-                  padding: '12px',
-                  borderRadius: '6px',
-                  backgroundColor: apiTestResult.success 
-                    ? (isDark ? '#065f46' : '#d1fae5')
-                    : (isDark ? '#7f1d1d' : '#fee2e2'),
-                  border: `1px solid ${apiTestResult.success 
-                    ? (isDark ? '#059669' : '#34d399')
-                    : (isDark ? '#dc2626' : '#fecaca')}`
-                }}>
-                  <div style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '8px',
-                    marginBottom: '4px'
-                  }}>
+                <div className={`settings-test-result ${apiTestResult.success ? 'success' : 'error'} ${isDark ? 'dark' : 'light'}`}>
+                  <div className="settings-test-result-header">
                     {apiTestResult.success ? (
-                      <Wifi size={16} style={{ color: isDark ? '#34d399' : '#059669' }} />
+                      <Wifi size={16} className={`settings-test-result-icon success ${isDark ? 'dark' : 'light'}`} />
                     ) : (
-                      <WifiOff size={16} style={{ color: isDark ? '#fca5a5' : '#dc2626' }} />
+                      <WifiOff size={16} className={`settings-test-result-icon error ${isDark ? 'dark' : 'light'}`} />
                     )}
-                    <span style={{
-                      fontSize: '12px',
-                      fontWeight: '500',
-                      color: apiTestResult.success 
-                        ? (isDark ? '#34d399' : '#059669')
-                        : (isDark ? '#fca5a5' : '#dc2626')
-                    }}>
+                    <span className={`settings-test-result-title ${apiTestResult.success ? 'success' : 'error'} ${isDark ? 'dark' : 'light'}`}>
                       {apiTestResult.success ? 'API accessible' : 'API inaccessible'}
                     </span>
                   </div>
-                  <p style={{
-                    fontSize: '11px',
-                    color: apiTestResult.success 
-                      ? (isDark ? '#a7f3d0' : '#047857')
-                      : (isDark ? '#fecaca' : '#b91c1c'),
-                    margin: 0,
-                    lineHeight: '1.4'
-                  }}>
+                  <p className={`settings-test-result-message ${apiTestResult.success ? 'success' : 'error'} ${isDark ? 'dark' : 'light'}`}>
                     {apiTestResult.message}
                   </p>
                 </div>
@@ -292,33 +140,10 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose }) => {
         </div>
         
         {/* Footer */}
-        <div style={{
-          borderTop: `1px solid ${isDark ? '#374151' : '#e5e7eb'}`,
-          padding: '20px 24px',
-          display: 'flex',
-          justifyContent: 'flex-end'
-        }}>
+        <div className={`settings-modal-footer ${isDark ? 'dark' : 'light'}`}>
           <button
             onClick={onClose}
-            style={{
-              background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-              color: '#ffffff',
-              border: 'none',
-              borderRadius: '8px',
-              padding: '10px 20px',
-              cursor: 'pointer',
-              fontSize: '14px',
-              fontWeight: '500',
-              transition: 'all 0.2s ease'
-            }}
-            onMouseOver={(e) => {
-              (e.target as HTMLButtonElement).style.transform = 'translateY(-1px)';
-              (e.target as HTMLButtonElement).style.boxShadow = '0 4px 12px rgba(102, 126, 234, 0.4)';
-            }}
-            onMouseOut={(e) => {
-              (e.target as HTMLButtonElement).style.transform = 'translateY(0)';
-              (e.target as HTMLButtonElement).style.boxShadow = 'none';
-            }}
+            className="settings-close-btn"
           >
             Fermer
           </button>

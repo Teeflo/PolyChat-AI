@@ -7,6 +7,7 @@ import {
   getModelPricing, 
   type OpenRouterModel 
 } from '../../services/modelsApi';
+import './ModelSelector.css';
 
 const ModelSelector: React.FC = () => {
   const { selectedModel, setSelectedModel, theme } = useSettings();
@@ -42,67 +43,32 @@ const ModelSelector: React.FC = () => {
   const selectedModelData = models.find(m => m.id === selectedModel);
 
   return (
-    <div>
-      <label style={{
-        display: 'block',
-        fontSize: '14px',
-        fontWeight: '500',
-        color: isDark ? '#e5e7eb' : '#374151',
-        marginBottom: '8px'
-      }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', justifyContent: 'space-between' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+    <div className={`model-selector ${isDark ? 'dark' : 'light'}`}>
+      <div className="ms-header">
+        <label htmlFor="model-select" className={`ms-label ${isDark ? 'dark' : 'light'}`}>
+          <span className="ms-title">
             <Brain size={16} />
-            Modèle d'IA
-          </div>
-          <button
-            onClick={loadModels}
-            disabled={loading}
-            style={{
-              background: 'none',
-              border: 'none',
-              color: isDark ? '#9ca3af' : '#6b7280',
-              cursor: loading ? 'not-allowed' : 'pointer',
-              padding: '4px',
-              borderRadius: '4px',
-              display: 'flex',
-              alignItems: 'center',
-              transition: 'color 0.2s ease'
-            }}
-            onMouseOver={(e) => {
-              if (!loading) {
-                (e.target as HTMLButtonElement).style.color = isDark ? '#e5e7eb' : '#374151';
-              }
-            }}
-            onMouseOut={(e) => {
-              (e.target as HTMLButtonElement).style.color = isDark ? '#9ca3af' : '#6b7280';
-            }}
-            title="Actualiser la liste des modèles"
-          >
-            {loading ? (
-              <Loader2 size={14} className="spin" />
-            ) : (
-              <RefreshCw size={14} />
-            )}
-          </button>
-        </div>
-      </label>
+            <span>Modèle d'IA</span>
+          </span>
+        </label>
+        <button
+          onClick={loadModels}
+          disabled={loading}
+          className={`ms-refresh-btn ${isDark ? 'dark' : 'light'}`}
+          title="Actualiser la liste des modèles"
+          aria-label="Actualiser la liste des modèles"
+        >
+          {loading ? (
+            <Loader2 size={14} className="spin" />
+          ) : (
+            <RefreshCw size={14} />
+          )}
+        </button>
+      </div>
       
       {error && (
-        <div style={{
-          padding: '8px 12px',
-          backgroundColor: '#fee2e2',
-          border: '1px solid #fecaca',
-          borderRadius: '6px',
-          marginBottom: '8px'
-        }}>
-          <p style={{
-            fontSize: '12px',
-            color: '#dc2626',
-            margin: 0
-          }}>
-            {error}
-          </p>
+        <div className="ms-error">
+          <p id="model-select-error">{error}</p>
         </div>
       )}
 
@@ -110,27 +76,10 @@ const ModelSelector: React.FC = () => {
         value={selectedModel}
         onChange={(e) => setSelectedModel(e.target.value)}
         disabled={loading || models.length === 0}
-        style={{
-          width: '100%',
-          border: `1px solid ${isDark ? '#4b5563' : '#d1d5db'}`,
-          borderRadius: '8px',
-          padding: '10px 12px',
-          fontSize: '14px',
-          backgroundColor: isDark ? '#374151' : '#ffffff',
-          color: isDark ? '#e5e7eb' : '#374151',
-          outline: 'none',
-          cursor: loading ? 'not-allowed' : 'pointer',
-          transition: 'border-color 0.2s ease',
-          opacity: loading ? 0.6 : 1
-        }}
-        onFocus={(e) => {
-          if (!loading) {
-            (e.target as HTMLSelectElement).style.borderColor = '#667eea';
-          }
-        }}
-        onBlur={(e) => {
-          (e.target as HTMLSelectElement).style.borderColor = isDark ? '#4b5563' : '#d1d5db';
-        }}
+        id="model-select"
+        name="model-select"
+  className={`ms-select ${isDark ? 'dark' : 'light'}`}
+  aria-describedby={error ? 'model-select-error' : undefined}
       >
         {loading ? (
           <option>Chargement des modèles...</option>
@@ -147,54 +96,21 @@ const ModelSelector: React.FC = () => {
       
       {/* Description du modèle sélectionné */}
       {selectedModelData && (
-        <div style={{
-          marginTop: '8px',
-          padding: '12px',
-          backgroundColor: isDark ? '#111827' : '#f8fafc',
-          border: `1px solid ${isDark ? '#374151' : '#e2e8f0'}`,
-          borderRadius: '6px'
-        }}>
-          <div style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'flex-start',
-            marginBottom: '6px'
-          }}>
-            <h4 style={{
-              fontSize: '13px',
-              fontWeight: '600',
-              color: isDark ? '#e5e7eb' : '#374151',
-              margin: 0
-            }}>
+        <div className={`ms-card ${isDark ? 'dark' : 'light'}`}>
+          <div className="ms-card-header">
+            <h4 className={`ms-card-title ${isDark ? 'dark' : 'light'}`}>
               {formatModelName(selectedModelData.id)}
             </h4>
-            <span style={{
-              fontSize: '11px',
-              padding: '2px 6px',
-              backgroundColor: selectedModelData.pricing.prompt === '0' ? '#10b981' : '#f59e0b',
-              color: 'white',
-              borderRadius: '4px',
-              fontWeight: '500'
-            }}>
+            <span className={`ms-badge ${selectedModelData.pricing.prompt === '0' ? 'free' : 'paid'}`}>
               {getModelPricing(selectedModelData)}
             </span>
           </div>
           
-          <p style={{
-            fontSize: '12px',
-            color: isDark ? '#9ca3af' : '#6b7280',
-            margin: '0 0 8px 0',
-            lineHeight: '1.4'
-          }}>
+          <p className={`ms-card-desc ${isDark ? 'dark' : 'light'}`}>
             {selectedModelData.description || 'Aucune description disponible'}
           </p>
           
-          <div style={{
-            display: 'flex',
-            gap: '12px',
-            fontSize: '11px',
-            color: isDark ? '#9ca3af' : '#6b7280'
-          }}>
+          <div className={`ms-card-meta ${isDark ? 'dark' : 'light'}`}>
             <span>Contexte: {selectedModelData.context_length.toLocaleString()} tokens</span>
             <span>•</span>
             <span>Tokenizer: {selectedModelData.architecture.tokenizer}</span>
@@ -202,12 +118,7 @@ const ModelSelector: React.FC = () => {
         </div>
       )}
       
-      <p style={{
-        fontSize: '12px',
-        color: isDark ? '#9ca3af' : '#6b7280',
-        marginTop: '8px',
-        lineHeight: '1.4'
-      }}>
+      <p className={`ms-note ${isDark ? 'dark' : 'light'}`}>
         ✨ Liste automatiquement mise à jour depuis OpenRouter ({models.length} modèles disponibles)
       </p>
     </div>

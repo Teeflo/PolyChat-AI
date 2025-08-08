@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Send, Loader2, Zap } from 'lucide-react';
 import { useChat } from '../../hooks/useChat';
+import './ChatInputPixel.css';
 
 const ChatInput: React.FC = () => {
   const [message, setMessage] = useState('');
@@ -55,10 +56,6 @@ const ChatInput: React.FC = () => {
               placeholder="ENTER MESSAGE..."
               disabled={isAnyLoading}
               className="pixel-input-textarea"
-              style={{ 
-                color: 'var(--pixel-accent-1)',
-                borderColor: 'rgba(100, 116, 139, 0.3)'
-              }}
             />
             
             {/* Curseur clignotant */}

@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import MessageBubble from './MessageBubblePixel';
 import { useChat } from '../../hooks/useChat';
 import { Loader2, Terminal, Zap } from 'lucide-react';
+import './ChatWindowPixel.css';
 
 interface ChatWindowPixelProps {
   sessions?: any[];
@@ -30,7 +31,7 @@ const ChatWindow: React.FC<ChatWindowPixelProps> = ({ sessions }) => {
       <div className="pixel-chat-header">
         <Terminal size={16} className="pixel-pulse" />
         <span className="pixel-chat-title">CHAT TERMINAL</span>
-        <div className="pixel-chat-status" style={{ display: 'none' }}>
+        <div className="pixel-chat-status">
               <div className="pixel-status-indicator active" />
               <span>ONLINE</span>
             </div>
