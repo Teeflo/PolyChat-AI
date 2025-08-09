@@ -14,6 +14,7 @@ interface ChatStore {
   isAnyLoading: boolean;
   abortControllers: Record<string, AbortController>; // par session
   streamingProgress: Record<string, { chars: number; start: number; lastUpdate: number }>;
+  pendingTemplate: ConversationTemplate | null; // Template en attente d'édition
   addModel: (modelId: string) => void;
   removeModel: (modelId: string) => void;
   sendMessageToAll: (content: string) => Promise<void>;
@@ -27,6 +28,7 @@ interface ChatStore {
   stopStreaming: (sessionId?: string) => void;
   // New template and quick action methods
   applyTemplate: (template: ConversationTemplate) => void;
+  prepareTemplate: (template: ConversationTemplate) => void; // Nouvelle fonction
   executeQuickAction: (action: QuickAction, selectedText?: string) => void;
 }
 
@@ -34,14 +36,6 @@ const createMessage = (role: 'user' | 'assistant', content: string, modelId?: st
   id: Math.random().toString(36).substring(2, 9),
   role,
   content,
-  timestamp: new Date(),
-  modelId,
-});
-
-const createWelcomeMessage = (modelId: string): Message => ({
-  id: `welcome-${modelId}`,
-  role: 'assistant',
-  content: 'Bonjour ! Je suis votre assistant IA. Comment puis-je vous aider aujourd\'hui ?',
   timestamp: new Date(),
   modelId,
 });
@@ -54,6 +48,7 @@ export const useChat = create<ChatStore>((set, get) => ({
   isAnyLoading: false,
   abortControllers: {},
   streamingProgress: {},
+  pendingTemplate: null,
   
   initializeChat: () => {
     // Charger l'historique depuis localStorage
@@ -68,27 +63,81 @@ export const useChat = create<ChatStore>((set, get) => ({
         currentSessionId: firstSession.id,
         selectedModels: [firstSession.modelId]
       });
-  } else {
-      // Initialiser avec le modèle par défaut
+    } else {
+      // Initialiser avec le modèle par défaut si déjà connu, sinon attendre qu'il soit défini
       const { selectedModel } = useSettings.getState();
       if (selectedModel) {
-        const defaultSession: ChatSession = {
+        const modelId = selectedModel;
+        const newSession: ChatSession = {
           id: `session-${Date.now()}`,
-          modelId: selectedModel,
-          modelName: selectedModel,
-          messages: [createWelcomeMessage(selectedModel)],
-          isLoading: false,
-          error: null,
+          modelId,
+            modelName: modelId,
+            messages: [], // Pas de message de bienvenue automatique
+            isLoading: false,
+            error: null
         };
         set({
-          allSessions: [defaultSession],
-          activeSessions: [defaultSession],
-          currentSessionId: defaultSession.id,
-          selectedModels: [selectedModel]
+          allSessions: [newSession],
+          activeSessions: [newSession],
+          currentSessionId: newSession.id,
+          selectedModels: [modelId]
         });
-    try { useUsageStats.getState().recordNewConversation(selectedModel); } catch {}
+        try { useUsageStats.getState().recordNewConversation(modelId); } catch {}
+      } else {
+        // Surveiller l'arrivée du modèle sélectionné automatiquement
+        const unsubscribe = useSettings.subscribe((state) => {
+          if (get().activeSessions.length === 0 && state.selectedModel) {
+            const modelId = state.selectedModel;
+            const newSession: ChatSession = {
+              id: `session-${Date.now()}`,
+              modelId,
+              modelName: modelId,
+              messages: [], // Pas de message de bienvenue automatique
+              isLoading: false,
+              error: null
+            };
+            set({
+              allSessions: [newSession],
+              activeSessions: [newSession],
+              currentSessionId: newSession.id,
+              selectedModels: [modelId]
+            });
+            try { useUsageStats.getState().recordNewConversation(modelId); } catch {}
+            unsubscribe();
+          }
+        });
       }
     }
+
+    // Surveiller les changements du modèle par défaut pour synchroniser le chat
+    useSettings.subscribe((state, prevState) => {
+      const { selectedModels, activeSessions } = get();
+      
+      // Si le modèle par défaut change et qu'on a une seule session active
+      if (state.selectedModel !== prevState?.selectedModel && 
+          state.selectedModel && 
+          selectedModels.length === 1 && 
+          activeSessions.length === 1) {
+        
+        // Remplacer le modèle actuel par le nouveau modèle par défaut
+        const currentSession = activeSessions[0];
+        const newSession: ChatSession = {
+          ...currentSession,
+          id: `session-${Date.now()}`,
+          modelId: state.selectedModel,
+          modelName: state.selectedModel,
+        };
+        
+        set({
+          activeSessions: [newSession],
+          allSessions: get().allSessions.map(s => s.id === currentSession.id ? newSession : s),
+          currentSessionId: newSession.id,
+          selectedModels: [state.selectedModel]
+        });
+        
+        console.log('🔄 Modèle par défaut changé, session mise à jour :', state.selectedModel);
+      }
+    });
   },
   
   addModel: (modelId: string) => {
@@ -100,7 +149,7 @@ export const useChat = create<ChatStore>((set, get) => ({
         id: `${modelId}-${Date.now()}`,
         modelId,
         modelName: modelId,
-        messages: [createWelcomeMessage(modelId)],
+        messages: [], // Pas de message de bienvenue automatique
         isLoading: false,
         error: null,
       };
@@ -280,7 +329,7 @@ export const useChat = create<ChatStore>((set, get) => ({
         id: currentSessionId,
         modelId: selectedModels[0] || 'default',
         modelName: selectedModels[0] || 'default',
-        messages: [createWelcomeMessage(selectedModels[0] || 'default')],
+        messages: [], // Pas de message de bienvenue automatique
         isLoading: false,
         error: null,
       };
@@ -429,10 +478,8 @@ export const useChat = create<ChatStore>((set, get) => ({
       if (session.id === sessionId) {
         const filteredMessages = session.messages.filter(m => m.id !== messageId);
         
-        // S'assurer qu'il reste au moins le message d'accueil
-        const finalMessages = filteredMessages.length === 0
-          ? [createWelcomeMessage(session.modelId)]
-          : filteredMessages;
+        // Si tous les messages sont supprimés, laisser la session vide
+        const finalMessages = filteredMessages;
 
         return {
           ...session,
@@ -472,7 +519,7 @@ export const useChat = create<ChatStore>((set, get) => ({
         id: `session-${Date.now()}`,
         modelId: selectedModel,
         modelName: selectedModel,
-        messages: [createWelcomeMessage(selectedModel)],
+        messages: [], // Pas de message de bienvenue automatique
         isLoading: false,
         error: null,
       };
@@ -510,6 +557,11 @@ export const useChat = create<ChatStore>((set, get) => ({
   },
 
   // Template and Quick Action methods
+  prepareTemplate: (template: ConversationTemplate) => {
+    // Simplement stocker le template pour que l'input puisse l'utiliser
+    set({ pendingTemplate: template });
+  },
+
   applyTemplate: (template: ConversationTemplate) => {
     const { activeSessions, allSessions } = get();
     const { apiKey } = useSettings.getState();

@@ -1,12 +1,12 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Send } from 'lucide-react';
+import { Send, X, Sparkles } from 'lucide-react';
 import { useChat } from '../../hooks/useChat';
 import './ChatInputModern.css';
 
 const ChatInputModern: React.FC = () => {
   const [message, setMessage] = useState('');
   const textareaRef = useRef<HTMLTextAreaElement>(null);
-  const { sendMessageToAll, isAnyLoading } = useChat();
+  const { sendMessageToAll, isAnyLoading, pendingTemplate, prepareTemplate } = useChat();
 
   // Auto-resize textarea
   useEffect(() => {
@@ -15,6 +15,22 @@ const ChatInputModern: React.FC = () => {
       textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
     }
   }, [message]);
+
+  // Appliquer le template pending quand il change
+  useEffect(() => {
+    if (pendingTemplate) {
+      setMessage(pendingTemplate.userMessage);
+      // Effacer le pending template après l'avoir utilisé
+      prepareTemplate(null as any);
+      // Focus sur le textarea
+      setTimeout(() => {
+        if (textareaRef.current) {
+          textareaRef.current.focus();
+          textareaRef.current.setSelectionRange(textareaRef.current.value.length, textareaRef.current.value.length);
+        }
+      }, 100);
+    }
+  }, [pendingTemplate, prepareTemplate]);
 
   const handleSend = async () => {
     if (message.trim() && !isAnyLoading) {
@@ -30,8 +46,23 @@ const ChatInputModern: React.FC = () => {
     }
   };
 
+  const clearMessage = () => {
+    setMessage('');
+    if (textareaRef.current) {
+      textareaRef.current.focus();
+    }
+  };
+
   return (
     <div className="chat-input-modern-container">
+      {/* Indicateur de template actif */}
+      {pendingTemplate && (
+        <div className="chat-input-template-indicator">
+          <Sparkles size={14} />
+          <span>Template "{pendingTemplate.name}" préparé - Modifiez le message ci-dessous</span>
+        </div>
+      )}
+      
       <div className="chat-input-modern-wrapper">
         {/* Zone de saisie principale */}
         <div className="chat-input-modern-input-area">
@@ -46,6 +77,18 @@ const ChatInputModern: React.FC = () => {
             rows={1}
             maxLength={4000}
           />
+          
+          {/* Bouton pour effacer */}
+          {message.length > 0 && (
+            <button
+              onClick={clearMessage}
+              className="chat-input-clear-btn"
+              aria-label="Effacer le message"
+              title="Effacer le message"
+            >
+              <X size={16} />
+            </button>
+          )}
           
           {/* Compteur de caractères */}
           <div className="chat-input-modern-char-counter">

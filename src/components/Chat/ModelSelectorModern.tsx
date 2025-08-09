@@ -6,7 +6,7 @@ import { getModelPricing } from '../../services/modelsApi';
 import type { ModelFilters } from '../../services/modelsApi';
 import './ModelSelectorModern.css';
 
-const ModelSelectorModern: React.FC = () => {
+const ModelSelectorModern: React.FC<{ compact?: boolean }> = ({ compact = true }) => {
   const { activeSessions, selectedModels, addModel, removeModel } = useChat();
   const { models, availableProviders, updateFilters, filters, loading, refreshModels } = useModels();
   const [isExpanded, setIsExpanded] = useState(false);
@@ -67,12 +67,13 @@ const ModelSelectorModern: React.FC = () => {
                           filters.contextLength !== 'all' || filters.priceRange !== 'all';
 
   return (
-    <div className="model-selector-modern">
+    <div className={`model-selector-modern ${compact ? 'compact' : ''}`}>
       {/* Header avec statistiques */}
-      <div className="model-selector-modern-header">
+    <div className="model-selector-modern-header">
         <div className="model-selector-modern-title">
           <Cpu size={18} />
-          <span>Modèles IA Actifs</span>
+      {!compact && <span>Modèles IA Actifs</span>}
+      {compact && <span>Modèles</span>}
           <div className="model-selector-modern-badge">
             {selectedModels.length}/3
           </div>
@@ -198,18 +199,22 @@ const ModelSelectorModern: React.FC = () => {
                 <div className="model-card-modern-name">
                   {getModelDisplayName(session.modelId)}
                 </div>
-                <div className="model-card-modern-provider">
-                  {getModelProvider(session.modelId)}
-                </div>
+                {!compact && (
+                  <div className="model-card-modern-provider">
+                    {getModelProvider(session.modelId)}
+                  </div>
+                )}
               </div>
             </div>
             
-            <div className="model-card-modern-status">
-              <div className={`model-card-modern-indicator ${session.isLoading ? 'loading' : 'ready'}`} />
-              <span className="model-card-modern-status-text">
-                {session.isLoading ? 'Actif' : 'Prêt'}
-              </span>
-            </div>
+            {!compact && (
+              <div className="model-card-modern-status">
+                <div className={`model-card-modern-indicator ${session.isLoading ? 'loading' : 'ready'}`} />
+                <span className="model-card-modern-status-text">
+                  {session.isLoading ? 'Actif' : 'Prêt'}
+                </span>
+              </div>
+            )}
 
             {selectedModels.length > 1 && (
               <button
@@ -248,12 +253,16 @@ const ModelSelectorModern: React.FC = () => {
                   <div className="model-option-modern-name">
                     {getModelDisplayName(model.id)}
                   </div>
-                  <div className="model-option-modern-provider">
-                    {getModelProvider(model.id)}
-                  </div>
-                  <div className="model-option-modern-price">
-                    {getModelPricing(model)}
-                  </div>
+                  {!compact && (
+                    <>
+                      <div className="model-option-modern-provider">
+                        {getModelProvider(model.id)}
+                      </div>
+                      <div className="model-option-modern-price">
+                        {getModelPricing(model)}
+                      </div>
+                    </>
+                  )}
                 </div>
                 <div className="model-option-modern-add">
                   <Plus size={12} />
@@ -287,7 +296,7 @@ const ModelSelectorModern: React.FC = () => {
       )}
 
       {/* État vide */}
-      {selectedModels.length === 0 && (
+  {selectedModels.length === 0 && (
         <div className="model-selector-modern-empty">
           <Cpu size={24} />
           <span>Aucun modèle sélectionné</span>

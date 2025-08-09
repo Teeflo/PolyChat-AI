@@ -14,6 +14,8 @@ const DEFAULT_SETTINGS: Settings = {
 
 interface SettingsStore extends Settings {
   isSettingsOpen: boolean;
+  showConfigurationPopup: boolean;
+  configurationPopupType: 'missing-api-key' | 'configuration-error' | null;
   setApiKey: (apiKey: string) => void;
   setSelectedModel: (model: string) => void;
   setTheme: (theme: 'light' | 'dark') => void;
@@ -21,6 +23,7 @@ interface SettingsStore extends Settings {
   setTone: (tone: NonNullable<Settings['tone']>) => void;
   setNotificationsEnabled: (enabled: boolean) => void;
   setHasOnboarded: (hasOnboarded: boolean) => void;
+  setShowConfigurationPopup: (show: boolean, type?: 'missing-api-key' | 'configuration-error') => void;
   toggleTheme: () => void;
   toggleSettings: () => void;
   closeSettings: () => void;
@@ -31,6 +34,8 @@ export const useSettings = create<SettingsStore>()(
     (set, get) => ({
       ...DEFAULT_SETTINGS,
       isSettingsOpen: false,
+      showConfigurationPopup: false,
+      configurationPopupType: null,
       setApiKey: (apiKey) => set({ apiKey }),
       setSelectedModel: (selectedModel) => set({ selectedModel }),
       setTheme: (theme) => set({ theme }),
@@ -38,6 +43,10 @@ export const useSettings = create<SettingsStore>()(
   setTone: (tone) => set({ tone }),
   setNotificationsEnabled: (notificationsEnabled) => set({ notificationsEnabled }),
   setHasOnboarded: (hasOnboarded) => set({ hasOnboarded }),
+      setShowConfigurationPopup: (show, type) => set({ 
+        showConfigurationPopup: show, 
+        configurationPopupType: show ? type || null : null 
+      }),
       toggleTheme: () => set({ theme: get().theme === 'light' ? 'dark' : 'light' }),
       toggleSettings: () => set({ isSettingsOpen: !get().isSettingsOpen }),
       closeSettings: () => set({ isSettingsOpen: false }),

@@ -41,6 +41,9 @@ export const useModels = () => {
         }
         
         setModels(allModels);
+
+        // Ne pas auto-sélectionner de modèle - l'utilisateur choisira dans l'onboarding
+        console.log('✅ Modèles chargés, aucun modèle par défaut sélectionné');
         
       } catch (err) {
         console.error('❌ Erreur lors du chargement des modèles:', err);

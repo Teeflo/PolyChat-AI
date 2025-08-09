@@ -3,7 +3,7 @@ import { ChatProvider } from './context/ChatProvider'
 import HeaderModern from './components/Layout/HeaderModern'
 import MultiChatWindowModern from './components/Chat/MultiChatWindowModern'
 import ChatInputModern from './components/Chat/ChatInputModern'
-import ModelSelectorModern from './components/Chat/ModelSelectorModern'
+import ModelSwitcher from './components/Chat/ModelSwitcher'
 import SettingsModalModern from './components/Settings/SettingsModalModern'
 import { ChatHistorySidebar } from './components/Layout/ChatHistorySidebar'
 import { useSettings } from './hooks/useSettings'
@@ -12,13 +12,24 @@ import { useEffect } from 'react'
 import { fetchAvailableModels } from './services/modelsApi'
 import { Menu } from 'lucide-react'
 import './styles/modern-pixel.css'
-import OnboardingModal from './components/Onboarding/OnboardingModal.tsx'
+import OnboardingModalFresh from './components/Onboarding/OnboardingModalFresh'
+import ConfigurationPopup from './components/Onboarding/ConfigurationPopup'
 import UsageDashboard from './components/Settings/UsageDashboard.tsx'
 import SmartSuggestions from './components/Chat/SmartSuggestions.tsx'
 
 // Composant interne qui utilise les hooks
 const AppContent: React.FC = () => {
-  const { isSettingsOpen, toggleSettings, theme } = useSettings()
+  const { 
+    isSettingsOpen, 
+    toggleSettings, 
+    theme, 
+    hasOnboarded, 
+    setHasOnboarded, 
+    apiKey,
+    showConfigurationPopup,
+    configurationPopupType,
+    setShowConfigurationPopup
+  } = useSettings()
   const { activeSessions } = useChat()
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
   const [showDashboard, setShowDashboard] = useState(false)
@@ -75,6 +86,13 @@ const AppContent: React.FC = () => {
     return ()=>window.removeEventListener('focus', onFocus);
   },[])
 
+  // Logique pour afficher le pop-up de configuration
+  useEffect(() => {
+    if (hasOnboarded && !apiKey && !showConfigurationPopup) {
+      setShowConfigurationPopup(true, 'missing-api-key');
+    }
+  }, [hasOnboarded, apiKey, showConfigurationPopup, setShowConfigurationPopup]);
+
   return (
     <div className={`pixel-container pixel-app-container theme-${theme}`}>
       {/* Effet de grille rétro en arrière-plan */}
@@ -106,8 +124,8 @@ const AppContent: React.FC = () => {
       {/* Main Chat Area */}
       <div className={`pixel-main-chat-area ${isSidebarOpen ? 'sidebar-open' : ''}`}>
         {/* Model Selector Modernisé */}
-        <div className="pixel-model-selector-container">
-          <ModelSelectorModern />
+  <div className="pixel-model-selector-container pixel-model-switcher-bar">
+          <ModelSwitcher />
         </div>
         
   {/* Suggestions intelligentes selon le contexte */}
@@ -133,9 +151,18 @@ const AppContent: React.FC = () => {
       )}
 
   {/* Onboarding pour nouveaux utilisateurs */}
-  <OnboardingModal />
+      <OnboardingModalFresh 
+        isOpen={!hasOnboarded} 
+        onClose={() => setHasOnboarded(true)} 
+      />  {/* Onboarding Modal */}
 
-  {/* Tableau de bord d'usage (toggle via clavier: Ctrl+U) */}
+      {/* Pop-up de configuration */}
+      <ConfigurationPopup 
+        isOpen={showConfigurationPopup}
+        onClose={() => setShowConfigurationPopup(false)}
+        type={configurationPopupType || 'missing-api-key'}
+      />
+
   {showDashboard && (<UsageDashboard onClose={() => setShowDashboard(false)} />)}
       
       {/* Effet de particules flottantes */}

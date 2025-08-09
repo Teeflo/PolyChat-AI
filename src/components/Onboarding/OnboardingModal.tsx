@@ -1,7 +1,24 @@
-import React, { useState } from 'react';
+import React,  {
+    title: 'Ajoutez votre clé API',
+    description: 'Rendez-vous dans Paramètres > API pour coller votre clé OpenRouter.',
+    icon: <SettingsIcon size={24} />,
+  },
+  {
+    title: 'Choisissez votre modèle IA',
+    description: 'Sélectionnez le modèle qui correspond le mieux à vos besoins.',
+    icon: <Bot size={24} />,
+    isModelSelection: true,
+  },
+  {
+    title: 'Choisissez un ton',
+    description: 'Définissez le style de l'IA: formel, amical, professionnel, etc.',
+    icon: <Zap size={24} />,
+  },e } from 'react';
 import { useSettings } from '../../hooks/useSettings';
-import { Cpu, Zap, Settings as SettingsIcon, Bell } from 'lucide-react';
+import { Cpu, Zap, Settings as SettingsIcon, Bell, Bot } from 'lucide-react';
+import ModelSelectionStep from './ModelSelectionStep';
 import './OnboardingModal.css';
+import './ModelSelectionStep.css';
 
 const steps = [
   {
