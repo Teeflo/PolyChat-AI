@@ -129,9 +129,38 @@ const MessageBubbleModern: React.FC<MessageBubbleModernProps> = ({
             </div>
           ) : (
             <div className="message-bubble-modern-text markdown-body">
-              <ReactMarkdown remarkPlugins={[remarkGfm]} components={markdownComponents}>
-                {message.content}
-              </ReactMarkdown>
+              {(() => {
+                const content = message.content;
+                const fenceCount = (content.match(/```/g) || []).length;
+                const hasOpenFence = message.streaming && fenceCount % 2 === 1;
+                if (hasOpenFence) {
+                  const lastIndex = content.lastIndexOf('```');
+                  const head = content.slice(0, lastIndex);
+                  const partial = content.slice(lastIndex + 3);
+                  return (
+                    <>
+                      {head && (
+                        <ReactMarkdown remarkPlugins={[remarkGfm]} components={markdownComponents}>
+                          {head}
+                        </ReactMarkdown>
+                      )}
+                      <div className="partial-code-block-modern">
+                        <pre>{partial || ' '}</pre>
+                        <div className="partial-code-hint-modern">Code en cours…</div>
+                      </div>
+                      {message.streaming && <span className="streaming-cursor">▌</span>}
+                    </>
+                  );
+                }
+                return (
+                  <>
+                    <ReactMarkdown remarkPlugins={[remarkGfm]} components={markdownComponents}>
+                      {content}
+                    </ReactMarkdown>
+                    {message.streaming && <span className="streaming-cursor">▌</span>}
+                  </>
+                );
+              })()}
             </div>
           )}
         </div>

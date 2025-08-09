@@ -4,6 +4,7 @@ export interface Message {
   content: string;
   timestamp: Date;
   modelId?: string; // Ajout pour identifier quel modèle a généré la réponse
+  streaming?: boolean; // Indique si le message est en cours de streaming
 }
 
 export interface Model {

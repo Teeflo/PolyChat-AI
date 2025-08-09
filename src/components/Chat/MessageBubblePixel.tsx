@@ -94,9 +94,38 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({ message }) => {
         )}
 
         <div className="pixel-message-content markdown-body">
-          <ReactMarkdown remarkPlugins={[remarkGfm]} components={markdownComponents}>
-            {message.content}
-          </ReactMarkdown>
+          {(() => {
+            const content = message.content;
+            const fenceCount = (content.match(/```/g) || []).length;
+            const hasOpenFence = message.streaming && fenceCount % 2 === 1;
+            if (hasOpenFence) {
+              const lastIndex = content.lastIndexOf('```');
+              const head = content.slice(0, lastIndex);
+              const partial = content.slice(lastIndex + 3);
+              return (
+                <>
+                  {head && (
+                    <ReactMarkdown remarkPlugins={[remarkGfm]} components={markdownComponents}>
+                      {head}
+                    </ReactMarkdown>
+                  )}
+                  <div className="pixel-partial-code-block">
+                    <pre>{partial || ' '}</pre>
+                    <div className="pixel-partial-code-hint">CODE...</div>
+                  </div>
+                  {message.streaming && <span className="pixel-streaming-cursor">▌</span>}
+                </>
+              );
+            }
+            return (
+              <>
+                <ReactMarkdown remarkPlugins={[remarkGfm]} components={markdownComponents}>
+                  {content}
+                </ReactMarkdown>
+                {message.streaming && <span className="pixel-streaming-cursor">▌</span>}
+              </>
+            );
+          })()}
         </div>
 
         <div className="pixel-message-footer">

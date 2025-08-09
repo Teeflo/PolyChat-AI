@@ -11,7 +11,7 @@ interface MultiChatWindowModernProps {
 
 const MultiChatWindowModern: React.FC<MultiChatWindowModernProps> = ({ sessions }) => {
   const messagesEndRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
-  const { regenerateMessage, deleteMessage } = useChat();
+  const { regenerateMessage, deleteMessage, streamingProgress } = useChat();
 
   useEffect(() => {
     // Faire défiler vers le bas pour toutes les sessions
@@ -53,6 +53,22 @@ const MultiChatWindowModern: React.FC<MultiChatWindowModernProps> = ({ sessions 
 
         {/* Contenu du chat */}
         <div className="chat-content-modern">
+          {session.isLoading && streamingProgress[session.id] && (
+            <div className="chat-stream-progress" aria-label="Progression du flux">
+              <div className="chat-stream-bar">
+                {(() => {
+                  const chars = streamingProgress[session.id].chars;
+                  const pct = Math.min(90, 10 + (Math.log10(chars + 10) * 25));
+                  const bucket = Math.round(pct / 5) * 5; // step 5%
+                  const cls = `w-${bucket}`; // will map in CSS
+                  return <div className={`chat-stream-bar-fill ${cls}`} />;
+                })()}
+              </div>
+              <span className="chat-stream-metric">
+                {streamingProgress[session.id].chars} caractères
+              </span>
+            </div>
+          )}
           {/* Messages du chat - TOUT dans la zone scrollable */}
           <div className="chat-messages-modern">
             {/* Message d'accueil stylisé */}

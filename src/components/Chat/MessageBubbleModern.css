@@ -307,6 +307,13 @@
   transition: var(--transition-normal);
 }
 
+/* Streaming & partial code */
+.streaming-cursor { display:inline-block; width:8px; margin-left:2px; animation:blink 1s steps(2,start) infinite; color:var(--pixel-accent-primary); font-weight:bold; }
+@keyframes blink { 0%,50%{opacity:1;} 50.01%,100%{opacity:0;} }
+.partial-code-block-modern { background:rgba(255,255,255,0.04); border:1px dashed var(--pixel-accent-muted); border-radius:10px; padding:10px 12px; font-family:monospace; font-size:13px; position:relative; margin:6px 0; }
+.partial-code-block-modern pre { margin:0; white-space:pre-wrap; word-break:break-word; }
+.partial-code-hint-modern { position:absolute; top:4px; right:8px; font-size:10px; opacity:.55; text-transform:uppercase; }
+
 .message-bubble-modern-content:hover .message-bubble-modern-actions {
   opacity: 1;
 }

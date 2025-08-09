@@ -7,9 +7,7 @@ import type { Message } from '../../types/index';
 import { useSettings } from '../../hooks/useSettings';
 import './MessageBubble.css';
 
-interface MessageBubbleProps {
-  message: Message;
-}
+interface MessageBubbleProps { message: Message; }
 
 const MessageBubble: React.FC<MessageBubbleProps> = ({ message }) => {
   const { theme } = useSettings();
@@ -87,9 +85,39 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({ message }) => {
         )}
 
         <div className="message-bubble-content">
-          <ReactMarkdown remarkPlugins={[remarkGfm]} components={markdownComponents}>
-            {message.content}
-          </ReactMarkdown>
+          {(() => {
+            const content = message.content;
+            const fenceCount = (content.match(/```/g) || []).length;
+            const hasOpenFence = message.streaming && fenceCount % 2 === 1;
+            if (hasOpenFence) {
+              // Render only completed part before last fence and raw partial after
+              const lastIndex = content.lastIndexOf('```');
+              const head = content.slice(0, lastIndex);
+              const partial = content.slice(lastIndex + 3); // after fence delimiter
+              return (
+                <>
+                  {head && (
+                    <ReactMarkdown remarkPlugins={[remarkGfm]} components={markdownComponents}>
+                      {head}
+                    </ReactMarkdown>
+                  )}
+                  <div className="partial-code-block">
+                    <pre>{partial || ' '}</pre>
+                    <div className="partial-code-hint">Bloc de code en cours…</div>
+                  </div>
+                  {message.streaming && <span className="streaming-cursor">▌</span>}
+                </>
+              );
+            }
+            return (
+              <>
+                <ReactMarkdown remarkPlugins={[remarkGfm]} components={markdownComponents}>
+                  {content}
+                </ReactMarkdown>
+                {message.streaming && <span className="streaming-cursor">▌</span>}
+              </>
+            );
+          })()}
         </div>
 
         <div className={`message-bubble-timestamp ${isUser ? 'user' : 'assistant'}`}>

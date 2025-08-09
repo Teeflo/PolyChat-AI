@@ -9,7 +9,7 @@ interface ChatWindowProps {
 }
 
 const ChatWindow: React.FC<ChatWindowProps> = ({ sessions }) => {
-  const { activeSessions, isAnyLoading } = useChat();
+  const { activeSessions, isAnyLoading, stopStreaming } = useChat();
   const { theme } = useSettings();
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
@@ -49,7 +49,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ sessions }) => {
           <MessageBubble key={message.id} message={message} />
         ))}
         
-        {isAnyLoading && (
+  {isAnyLoading && (
           <div className="chat-loading-container">
             <div className={`chat-loading-bubble ${isDark ? 'dark' : 'light'}`}>
               {/* Effet de shimmer */}
@@ -67,6 +67,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ sessions }) => {
                 <span className="chat-loading-text">
                   Génération de la réponse...
                 </span>
+    <button onClick={() => stopStreaming()} className="stop-stream-btn">Arrêter</button>
               </div>
             </div>
           </div>

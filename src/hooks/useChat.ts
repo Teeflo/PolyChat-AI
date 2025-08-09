@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import type { Message, ChatSession, ConversationTemplate, QuickAction } from '../types/index';
 import { saveChatHistory, loadChatHistory } from '../services/localStorage';
-import { fetchAIResponse } from '../services/openRouter';
+import { streamAIResponse } from '../services/openRouter';
 import { useSettings } from './useSettings';
 import { useUsageStats } from './useUsageStats';
 import { notify } from '../utils/notify';
@@ -12,6 +12,8 @@ interface ChatStore {
   currentSessionId: string | null; // Session actuellement active
   selectedModels: string[]; // Max 3 modèles
   isAnyLoading: boolean;
+  abortControllers: Record<string, AbortController>; // par session
+  streamingProgress: Record<string, { chars: number; start: number; lastUpdate: number }>;
   addModel: (modelId: string) => void;
   removeModel: (modelId: string) => void;
   sendMessageToAll: (content: string) => Promise<void>;
@@ -22,6 +24,7 @@ interface ChatStore {
   setActiveSession: (sessionId: string) => void;
   createNewSession: () => void;
   deleteSession: (sessionId: string) => void;
+  stopStreaming: (sessionId?: string) => void;
   // New template and quick action methods
   applyTemplate: (template: ConversationTemplate) => void;
   executeQuickAction: (action: QuickAction, selectedText?: string) => void;
@@ -49,6 +52,8 @@ export const useChat = create<ChatStore>((set, get) => ({
   currentSessionId: null,
   selectedModels: [],
   isAnyLoading: false,
+  abortControllers: {},
+  streamingProgress: {},
   
   initializeChat: () => {
     // Charger l'historique depuis localStorage
@@ -164,24 +169,72 @@ export const useChat = create<ChatStore>((set, get) => ({
 
     // Envoyer les requêtes en parallèle pour tous les modèles
     const promises = updatedSessions.map(async (session) => {
+      const tonePrefix = tone && tone !== 'neutre' ? `[Ton: ${tone}] ` : '';
+      const effectiveSystem = systemPrompt && systemPrompt.trim()
+        ? `${tonePrefix}${systemPrompt.trim()}`
+        : (tonePrefix ? `${tonePrefix}Tu es un assistant IA utile.` : undefined);
+      const start = performance.now();
+      // Create placeholder assistant message first for streaming UI
+      let placeholderId = `stream-${Date.now()}-${session.modelId}`;
+      const placeholderMessage = {
+        id: placeholderId,
+        role: 'assistant' as const,
+        content: '…',
+        timestamp: new Date(),
+        modelId: session.modelId,
+        streaming: true
+      };
+      // Create abort controller per session
+      const ac = new AbortController();
+      set(state => ({ abortControllers: { ...state.abortControllers, [session.id]: ac } }));
+      // Insert placeholder immediately
+      set(state => ({
+        activeSessions: state.activeSessions.map(s => s.id === session.id ? { ...s, messages: [...s.messages, placeholderMessage] } : s),
+        allSessions: state.allSessions.map(s => s.id === session.id ? { ...s, messages: [...s.messages, placeholderMessage] } : s)
+      }));
       try {
-        const tonePrefix = tone && tone !== 'neutre' ? `[Ton: ${tone}] ` : '';
-        const effectiveSystem = systemPrompt && systemPrompt.trim()
-          ? `${tonePrefix}${systemPrompt.trim()}`
-          : (tonePrefix ? `${tonePrefix}Tu es un assistant IA utile.` : undefined);
-        const start = performance.now();
-        const aiResponse = await fetchAIResponse(session.messages, apiKey, session.modelId, effectiveSystem);
+        await streamAIResponse(session.messages, apiKey, session.modelId, (delta) => {
+          const now = performance.now();
+          set(state => ({
+            activeSessions: state.activeSessions.map(s => s.id === session.id ? {
+              ...s,
+              messages: s.messages.map(m => m.id === placeholderId ? { ...m, content: m.content === '…' ? delta : m.content + delta } : m)
+            } : s),
+            allSessions: state.allSessions.map(s => s.id === session.id ? {
+              ...s,
+              messages: s.messages.map(m => m.id === placeholderId ? { ...m, content: m.content === '…' ? delta : m.content + delta } : m)
+            } : s),
+            streamingProgress: {
+              ...state.streamingProgress,
+              [session.id]: state.streamingProgress[session.id]
+                ? { ...state.streamingProgress[session.id], chars: (state.streamingProgress[session.id].chars + delta.length), lastUpdate: now }
+                : { chars: delta.length, start: now, lastUpdate: now }
+            }
+          }));
+  }, effectiveSystem, get().abortControllers[session.id]);
         const end = performance.now();
         try { useUsageStats.getState().recordAssistantResponse(session.modelId, Math.round(end - start)); } catch {}
-        const aiMessage = createMessage('assistant', aiResponse, session.modelId);
+        // Fetch current streamed messages from store to keep progressive content
+        const current = get().activeSessions.find(s => s.id === session.id) || session;
         return {
           ...session,
-          messages: [...session.messages, aiMessage],
+          messages: current.messages.map(m => m.id === placeholderId ? { ...m, streaming: false } : m),
           isLoading: false,
           error: null
         };
       } catch (error) {
         const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred';
+        // Replace placeholder with error message
+        set(state => ({
+          activeSessions: state.activeSessions.map(s => s.id === session.id ? {
+            ...s,
+            messages: s.messages.map(m => m.id === placeholderId ? { ...m, content: `Erreur: ${errorMessage}`, streaming: false } : m)
+          } : s),
+          allSessions: state.allSessions.map(s => s.id === session.id ? {
+            ...s,
+            messages: s.messages.map(m => m.id === placeholderId ? { ...m, content: `Erreur: ${errorMessage}`, streaming: false } : m)
+          } : s)
+        }));
         return {
           ...session,
           isLoading: false,
@@ -190,8 +243,8 @@ export const useChat = create<ChatStore>((set, get) => ({
       }
     });
     
-    try {
-      const resolvedSessions = await Promise.all(promises);
+  try {
+  const resolvedSessions = await Promise.all(promises);
       
       // Mettre à jour allSessions avec les nouvelles conversations
       const updatedAllSessions = allSessions.map(session => {
@@ -279,7 +332,8 @@ export const useChat = create<ChatStore>((set, get) => ({
       isAnyLoading: true
     });
 
-    try {
+  let regenPlaceholderId: string | null = null;
+  try {
       // Récupérer les messages jusqu'au message à régénérer (sans l'inclure)
       const conversationHistory = session.messages.slice(0, messageIndex);
       
@@ -290,24 +344,48 @@ export const useChat = create<ChatStore>((set, get) => ({
         ? `${tonePrefix}${systemPrompt.trim()}`
         : (tonePrefix ? `${tonePrefix}Tu es un assistant IA utile.` : undefined);
       const start = performance.now();
-      const aiResponse = await fetchAIResponse(conversationHistory, apiKey, session.modelId, effectiveSystem);
-      const end = performance.now();
-      try { useUsageStats.getState().recordAssistantResponse(session.modelId, Math.round(end - start)); } catch {}
-      
-      // Remplacer le message régénéré
-      const newMessage = createMessage('assistant', aiResponse, session.modelId);
-      const newMessages = [
+      // Streaming regenerate
+  const placeholderMessage = { ...createMessage('assistant', '…', session.modelId), streaming: true };
+  regenPlaceholderId = placeholderMessage.id;
+      const msgsWithoutOld = [
         ...conversationHistory,
-        newMessage,
+        placeholderMessage,
         ...session.messages.slice(messageIndex + 1)
       ];
-
-      const finalUpdateSession = (s: ChatSession) => s.id === sessionId ? {
-        ...s,
-        messages: newMessages,
-        isLoading: false,
-        error: null
-      } : s;
+      set(state => ({
+        activeSessions: state.activeSessions.map(s => s.id===session.id ? { ...s, messages: msgsWithoutOld } : s),
+        allSessions: state.allSessions.map(s => s.id===session.id ? { ...s, messages: msgsWithoutOld } : s)
+      }));
+  const ac = new AbortController();
+  set(state => ({ abortControllers: { ...state.abortControllers, [session.id]: ac } }));
+      await streamAIResponse(conversationHistory, apiKey, session.modelId, (delta)=>{
+        const now = performance.now();
+        set(state => ({
+          activeSessions: state.activeSessions.map(s => s.id===session.id ? {
+            ...s,
+            messages: s.messages.map(m => m.id===placeholderMessage.id ? { ...m, content: m.content === '…' ? delta : m.content + delta } : m)
+          } : s),
+          allSessions: state.allSessions.map(s => s.id===session.id ? {
+            ...s,
+            messages: s.messages.map(m => m.id===placeholderMessage.id ? { ...m, content: m.content === '…' ? delta : m.content + delta } : m)
+          } : s),
+          streamingProgress: {
+            ...state.streamingProgress,
+            [session.id]: state.streamingProgress[session.id]
+              ? { ...state.streamingProgress[session.id], chars: (state.streamingProgress[session.id].chars + delta.length), lastUpdate: now }
+              : { chars: delta.length, start: now, lastUpdate: now }
+          }
+        }));
+  }, effectiveSystem, ac);
+      const end = performance.now();
+      try { useUsageStats.getState().recordAssistantResponse(session.modelId, Math.round(end - start)); } catch {}
+          const regenId = placeholderMessage.id;
+          const finalUpdateSession = (s: ChatSession) => s.id === sessionId ? {
+            ...s,
+            messages: s.messages.map(m => m.id === regenId ? { ...m, streaming: false } : m),
+            isLoading: false,
+            error: null
+          } : s;
 
       const finalActiveSessions = activeSessions.map(finalUpdateSession);
       const finalAllSessions = allSessions.map(finalUpdateSession);
@@ -325,8 +403,10 @@ export const useChat = create<ChatStore>((set, get) => ({
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Erreur lors de la régénération';
       
+  const regenIdErr = regenPlaceholderId;
       const errorUpdateSession = (s: ChatSession) => s.id === sessionId ? {
         ...s,
+        messages: s.messages.map(m => m.id === regenIdErr ? { ...m, streaming: false } : m),
         isLoading: false,
         error: errorMessage
       } : s;
@@ -539,6 +619,17 @@ export const useChat = create<ChatStore>((set, get) => ({
 
     // Send the quick action message
     get().sendMessageToAll(messageContent);
+  }
+  ,
+  stopStreaming: (sessionId?: string) => {
+    const { abortControllers } = get();
+    if (sessionId) {
+      const ac = abortControllers[sessionId];
+      if (ac) ac.abort();
+    } else {
+      Object.values(abortControllers).forEach(ac => ac.abort());
+    }
+  set(() => ({ abortControllers: {}, streamingProgress: {} }));
   }
 }));
 

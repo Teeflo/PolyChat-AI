@@ -259,6 +259,37 @@
   transition: var(--transition-normal);
 }
 
+/* Streaming progress */
+.chat-stream-progress {
+  display:flex;
+  align-items:center;
+  gap:8px;
+  padding:4px 12px 8px;
+  font-family:'JetBrains Mono', monospace;
+  font-size:10px;
+  color:var(--pixel-text-secondary);
+}
+.chat-stream-bar { flex:1; height:6px; background:rgba(255,255,255,0.08); border-radius:4px; overflow:hidden; position:relative; }
+.chat-stream-bar-fill { height:100%; background:linear-gradient(90deg, var(--pixel-accent-primary), var(--pixel-accent-secondary)); transition:width .25s ease; width:10%; }
+/* Width buckets (steps of 5%) */
+.chat-stream-bar-fill.w-15{width:15%;}
+.chat-stream-bar-fill.w-20{width:20%;}
+.chat-stream-bar-fill.w-25{width:25%;}
+.chat-stream-bar-fill.w-30{width:30%;}
+.chat-stream-bar-fill.w-35{width:35%;}
+.chat-stream-bar-fill.w-40{width:40%;}
+.chat-stream-bar-fill.w-45{width:45%;}
+.chat-stream-bar-fill.w-50{width:50%;}
+.chat-stream-bar-fill.w-55{width:55%;}
+.chat-stream-bar-fill.w-60{width:60%;}
+.chat-stream-bar-fill.w-65{width:65%;}
+.chat-stream-bar-fill.w-70{width:70%;}
+.chat-stream-bar-fill.w-75{width:75%;}
+.chat-stream-bar-fill.w-80{width:80%;}
+.chat-stream-bar-fill.w-85{width:85%;}
+.chat-stream-bar-fill.w-90{width:90%;}
+.chat-stream-metric { white-space:nowrap; }
+
 .chat-welcome-modern-feature:hover {
   background: var(--pixel-accent-primary);
   color: var(--pixel-text-inverse);
