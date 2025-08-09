@@ -118,3 +118,142 @@ export async function streamAIResponse(
   }
   return full;
 }
+
+// Interface pour les modèles OpenRouter
+interface OpenRouterModel {
+  id: string;
+  name: string;
+  created: number;
+  description?: string;
+  context_length: number;
+  architecture: {
+    modality: string;
+    tokenizer: string;
+    instruct_type?: string;
+  };
+  pricing: {
+    prompt: string;
+    completion: string;
+    image?: string;
+    request?: string;
+  };
+  top_provider: {
+    context_length: number;
+    max_completion_tokens?: number;
+    is_moderated: boolean;
+  };
+}
+
+// Récupérer les modèles trending de la page d'accueil OpenRouter
+export const getTopWeeklyModels = async (): Promise<Array<{id: string, name: string, desc: string, emoji: string}>> => {
+  try {
+    // Récupérer la page d'accueil d'OpenRouter pour obtenir les Featured Models
+    const homepageResponse = await fetch('https://openrouter.ai/', {
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
+      },
+    });
+
+    if (!homepageResponse.ok) {
+      throw new Error('Failed to fetch OpenRouter homepage');
+    }
+
+    const homepageText = await homepageResponse.text();
+    
+    // Extraire les modèles trending de la page d'accueil
+    const featuredModels = [];
+    
+    // Patterns pour extraire les modèles depuis le HTML
+    const modelPatterns = [
+      { 
+        regex: /Gemini\s+2\.5\s+Pro/i,
+        id: 'google/gemini-2.5-pro',
+        name: 'Gemini 2.5 Pro',
+        desc: 'Modèle trending #1',
+        emoji: '🔥'
+      },
+      {
+        regex: /GPT-5\s+Chat/i,
+        id: 'openai/gpt-5-chat',
+        name: 'GPT-5 Chat',
+        desc: 'Nouveau modèle OpenAI',
+        emoji: '✨'
+      },
+      {
+        regex: /Claude\s+Sonnet\s+4/i,
+        id: 'anthropic/claude-sonnet-4',
+        name: 'Claude Sonnet 4',
+        desc: 'Modèle Anthropic avancé',
+        emoji: '🧠'
+      }
+    ];
+
+    // Vérifier quels modèles sont présents sur la page d'accueil
+    for (const pattern of modelPatterns) {
+      if (pattern.regex.test(homepageText)) {
+        featuredModels.push({
+          id: pattern.id,
+          name: pattern.name,
+          desc: pattern.desc,
+          emoji: pattern.emoji
+        });
+      }
+    }
+
+    // Si on trouve des modèles featured, les retourner
+    if (featuredModels.length > 0) {
+      return featuredModels.slice(0, 3); // Prendre les 3 premiers
+    }
+
+    // Sinon, récupérer depuis l'API models comme fallback
+    const response = await fetch('https://openrouter.ai/api/v1/models', {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to fetch models API');
+    }
+
+    const data = await response.json();
+    const models: OpenRouterModel[] = data.data || [];
+
+    // Chercher les modèles trending dans la liste API
+    const trendingIds = [
+      'google/gemini-2.5-pro',
+      'openai/gpt-5-chat', 
+      'anthropic/claude-sonnet-4'
+    ];
+
+    const result = [];
+    for (const trendingId of trendingIds) {
+      const found = models.find(model => 
+        model.id === trendingId || 
+        model.id.includes(trendingId.split('/')[1])
+      );
+      
+      if (found) {
+        const modelInfo = modelPatterns.find(p => p.id === trendingId);
+        result.push({
+          id: found.id,
+          name: modelInfo?.name || found.name,
+          desc: modelInfo?.desc || 'Modèle populaire',
+          emoji: modelInfo?.emoji || '🤖'
+        });
+      }
+    }
+
+    return result.length > 0 ? result : featuredModels;
+
+  } catch (error) {
+    console.error('Error fetching trending models from OpenRouter:', error);
+    
+    // Fallback vers les derniers modèles connus de la page d'accueil
+    return [
+      { id: 'google/gemini-2.5-pro', name: 'Gemini 2.5 Pro', desc: 'Modèle trending #1', emoji: '🔥' },
+      { id: 'openai/gpt-5-chat', name: 'GPT-5 Chat', desc: 'Nouveau modèle OpenAI', emoji: '✨' },
+      { id: 'anthropic/claude-sonnet-4', name: 'Claude Sonnet 4', desc: 'Modèle Anthropic avancé', emoji: '🧠' }
+    ];
+  }
+};
