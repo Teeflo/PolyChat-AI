@@ -10,12 +10,11 @@ import { useSettings } from './hooks/useSettings'
 import { useChat } from './hooks/useChat'
 import { useEffect } from 'react'
 import { fetchAvailableModels } from './services/modelsApi'
-import { Menu } from 'lucide-react'
 import './styles/modern-pixel.css'
 import OnboardingModalFresh from './components/Onboarding/OnboardingModalFresh'
 import ConfigurationPopup from './components/Onboarding/ConfigurationPopup'
 import UsageDashboard from './components/Settings/UsageDashboard.tsx'
-import SmartSuggestions from './components/Chat/SmartSuggestions.tsx'
+
 
 // Composant interne qui utilise les hooks
 const AppContent: React.FC = () => {
@@ -98,18 +97,6 @@ const AppContent: React.FC = () => {
       {/* Effet de grille rétro en arrière-plan */}
       <div className="pixel-grid-background" />
       
-      {/* Sidebar Toggle Button */}
-      {!isSidebarOpen && (
-        <button
-          className="pixel-sidebar-toggle"
-          onClick={() => setIsSidebarOpen(true)}
-          aria-label="Toggle conversation history"
-          title="Conversation History"
-        >
-          <Menu size={20} />
-        </button>
-      )}
-      
       {/* Chat History Sidebar */}
       <ChatHistorySidebar
         isOpen={isSidebarOpen}
@@ -118,7 +105,18 @@ const AppContent: React.FC = () => {
       
       {/* Header Modernisé */}
       <div className="pixel-header-container">
-        <HeaderModern onSettingsClick={toggleSettings} />
+        <HeaderModern 
+          onSettingsClick={toggleSettings}
+          onHistoryClick={() => setIsSidebarOpen(!isSidebarOpen)}
+          onModelClick={() => {
+            // Ouvrir le sélecteur de modèle
+            // Pour l'instant, on peut faire défiler vers le sélecteur de modèle
+            const modelSwitcher = document.querySelector('.pixel-model-switcher-bar');
+            if (modelSwitcher) {
+              modelSwitcher.scrollIntoView({ behavior: 'smooth' });
+            }
+          }}
+        />
       </div>
       
       {/* Main Chat Area */}
@@ -127,9 +125,6 @@ const AppContent: React.FC = () => {
   <div className="pixel-model-selector-container pixel-model-switcher-bar">
           <ModelSwitcher />
         </div>
-        
-  {/* Suggestions intelligentes selon le contexte */}
-  <SmartSuggestions />
 
   {/* Chat Messages Modernisé */}
         <div className="pixel-messages-container">

@@ -368,6 +368,11 @@ input[type="text"], input[type="password"], textarea, .cursor-text {
   box-shadow: 
     0 4px 8px rgba(0, 0, 0, 0.2),
     inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  min-height: 44px;
 }
 
 .popup-content .popup-main-btn:hover {
@@ -493,8 +498,14 @@ input[type="text"], input[type="password"], textarea, .cursor-text {
   color: #adb5bd;
   font-family: 'Space Grotesk', sans-serif;
   font-size: 0.875rem;
+  font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  min-height: 44px;
 }
 
 .popup-content .popup-secondary-btn:hover {

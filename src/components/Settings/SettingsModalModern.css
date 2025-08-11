@@ -22,7 +22,7 @@
   backdrop-filter: blur(30px);
   border: var(--border-medium);
   border-color: var(--pixel-accent-primary);
-  border-radius: var(--radius-xl);
+  border-radius: 26px;
   box-shadow: var(--shadow-xl);
   width: 90%;
   max-width: 600px;
@@ -60,22 +60,26 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 40px;
-  height: 40px;
-  background: transparent;
-  border: var(--border-thin);
-  border-color: var(--pixel-accent-muted);
-  border-radius: var(--radius-md);
-  color: var(--pixel-text-muted);
+  width: 44px;
+  height: 44px;
+  background: rgba(100, 116, 139, 0.1);
+  border: 1px solid rgba(100, 116, 139, 0.3);
+  border-radius: 18px;
+  color: #adb5bd;
   cursor: pointer;
-  transition: var(--transition-normal);
+  transition: all 0.2s ease;
+  position: relative;
 }
 
 .settings-modal-modern-close:hover {
-  background: var(--pixel-error);
-  border-color: var(--pixel-error);
-  color: var(--pixel-text-primary);
+  background: rgba(239, 68, 68, 0.15);
+  border-color: rgba(239, 68, 68, 0.4);
+  color: #ff6b6b;
   transform: scale(1.05);
+}
+
+.settings-modal-modern-close:active {
+  transform: scale(0.95);
 }
 
 /* Contenu */
@@ -109,7 +113,7 @@
   background: var(--pixel-bg-secondary);
   border: var(--border-thin);
   border-color: var(--pixel-accent-muted);
-  border-radius: var(--radius-lg);
+  border-radius: 22px;
   transition: var(--transition-normal);
 }
 
@@ -139,7 +143,7 @@
   font-size: 9px;
   font-weight: 600;
   padding: 4px 8px;
-  border-radius: var(--radius-pill);
+  border-radius: 30px;
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
@@ -183,7 +187,7 @@
   color: var(--pixel-text-primary);
   border: var(--border-thin);
   border-color: var(--pixel-accent-muted);
-  border-radius: var(--radius-md);
+  border-radius: 18px;
   padding: var(--spacing-md) var(--spacing-lg);
   outline: none;
   transition: var(--transition-normal);
@@ -193,7 +197,7 @@
 
 /* New: radio chip group for tone */
 .settings-radio-group-modern{display:flex;flex-wrap:wrap;gap:8px}
-.settings-radio-chip-modern{display:inline-flex;align-items:center;gap:6px;padding:8px 10px;border:var(--border-thin);border-color:var(--pixel-accent-muted);border-radius:var(--radius-pill);cursor:pointer;background:var(--pixel-bg-secondary)}
+.settings-radio-chip-modern{display:inline-flex;align-items:center;gap:6px;padding:8px 10px;border:var(--border-thin);border-color:var(--pixel-accent-muted);border-radius:30px;cursor:pointer;background:var(--pixel-bg-secondary)}
 .settings-radio-chip-modern input{display:none}
 .settings-radio-chip-modern.active{background:var(--pixel-accent-primary);color:var(--pixel-text-inverse);border-color:var(--pixel-accent-primary)}
 
@@ -219,7 +223,7 @@
   color: var(--pixel-text-primary);
   border: var(--border-thin);
   border-color: var(--pixel-accent-muted);
-  border-radius: var(--radius-md);
+  border-radius: 18px;
   padding: var(--spacing-md) var(--spacing-lg);
   outline: none;
   cursor: pointer;
@@ -241,7 +245,7 @@
   color: var(--pixel-text-primary);
   border: var(--border-thin);
   border-color: var(--pixel-accent-muted);
-  border-radius: var(--radius-md);
+  border-radius: 18px;
   padding: var(--spacing-md) var(--spacing-lg);
   outline: none;
   transition: var(--transition-normal);
@@ -301,7 +305,7 @@
   background: var(--pixel-bg-tertiary);
   border: var(--border-medium);
   border-color: var(--pixel-accent-muted);
-  border-radius: var(--radius-md);
+  border-radius: 18px;
   padding: var(--spacing-md);
   cursor: pointer;
   transition: var(--transition-normal);
@@ -339,7 +343,7 @@
 .settings-theme-preview-modern {
   width: 60px;
   height: 40px;
-  border-radius: var(--radius-sm);
+  border-radius: 14px;
   overflow: hidden;
   border: 1px solid var(--pixel-accent-muted);
   display: flex;
@@ -425,7 +429,7 @@
   background: var(--pixel-bg-tertiary);
   border: var(--border-thin);
   border-color: var(--pixel-accent-muted);
-  border-radius: var(--radius-md);
+  border-radius: 18px;
 }
 .settings-info-item-modern.span-2 {
   grid-column: span 2;
@@ -473,7 +477,7 @@
   font-size: 13px;
   font-weight: 500;
   padding: var(--spacing-md) var(--spacing-lg);
-  border-radius: var(--radius-md);
+  border-radius: 18px;
   cursor: pointer;
   transition: var(--transition-bounce);
   text-transform: uppercase;

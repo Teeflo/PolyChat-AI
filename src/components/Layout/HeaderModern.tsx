@@ -1,14 +1,16 @@
 import React from 'react';
-import { Settings, Cpu, Zap, Activity } from 'lucide-react';
+import { Settings, Cpu, Zap, Activity, MessageSquare } from 'lucide-react';
 import ThemeToggle from './ThemeTogglePixel';
 import { useSettings } from '../../hooks/useSettings';
 import './HeaderModern.css';
 
 interface HeaderProps {
   onSettingsClick: () => void;
+  onModelClick?: () => void;
+  onHistoryClick?: () => void;
 }
 
-const HeaderModern: React.FC<HeaderProps> = ({ onSettingsClick }) => {
+const HeaderModern: React.FC<HeaderProps> = ({ onSettingsClick, onModelClick, onHistoryClick }) => {
   const { selectedModel } = useSettings();
   
   // Obtenir le nom d'affichage du modèle
@@ -57,24 +59,31 @@ const HeaderModern: React.FC<HeaderProps> = ({ onSettingsClick }) => {
         
         {/* Barre de statut centrale */}
         <div className="header-modern-status-bar">
-          {/* Indicateur de connexion */}
-          <div className="header-modern-connection-status">
-            <div className="header-modern-connection-dot" />
-            Connecté
-          </div>
-          
-          {/* Séparateur */}
-          <div className="header-modern-separator" />
-          
-          {/* Indicateur de modèle */}
-          <div className="header-modern-model-indicator">
+          {/* Indicateur de modèle cliquable */}
+          <button 
+            onClick={onModelClick}
+            className="header-modern-model-indicator"
+            aria-label="Changer de modèle"
+          >
             <Zap size={12} />
             {getModelDisplayName(selectedModel)}
-          </div>
+          </button>
         </div>
 
         {/* Actions à droite */}
         <div className="header-modern-actions">
+          {/* Bouton Historique */}
+          {onHistoryClick && (
+            <button 
+              onClick={onHistoryClick}
+              className="header-modern-history-btn"
+              aria-label="Ouvrir l'historique"
+              title="Historique des conversations"
+            >
+              <MessageSquare size={18} />
+            </button>
+          )}
+          
           {/* Toggle de thème modernisé */}
           <div className="header-modern-theme-toggle">
             <ThemeToggle />

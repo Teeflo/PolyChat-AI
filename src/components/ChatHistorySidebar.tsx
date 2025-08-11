@@ -1,7 +1,8 @@
 import React from 'react';
 import { useChat } from '../hooks/useChat';
 import { useSettings } from '../hooks/useSettings';
-import { Trash2, Plus, MessageSquare } from 'lucide-react';
+import { Trash2, Plus, MessageSquare, X } from 'lucide-react';
+import './ChatHistorySidebar.css';
 
 interface ChatHistorySidebarProps {
   isOpen: boolean;
@@ -40,39 +41,48 @@ export const ChatHistorySidebar: React.FC<ChatHistorySidebarProps> = ({ isOpen, 
       )}
       
       {/* Sidebar */}
-      <div className={`fixed inset-y-0 left-0 w-64 bg-gray-900 text-white transform transition-transform duration-300 ease-in-out z-50 lg:translate-x-0 ${isOpen ? 'translate-x-0' : '-translate-x-full'}`}>
-        <div className="flex flex-col h-full">
+      <div className={`chat-history-sidebar ${isOpen ? 'open' : 'closed'}`}>
+        <div className="chat-history-sidebar-content">
           {/* Header */}
-          <div className="p-4 border-b border-gray-700">
-            <div className="flex items-center justify-between">
-              <h2 className="text-lg font-semibold">Historique</h2>
-              <button
-                onClick={onClose}
-                className="lg:hidden text-gray-400 hover:text-white"
-              >
-                ×
-              </button>
+          <div className="chat-history-header">
+            <div className="chat-history-header-content">
+              <div className="chat-history-icon">
+                <MessageSquare size={18} />
+              </div>
+              <h2 className="chat-history-title">Historique</h2>
             </div>
+            <button
+              onClick={onClose}
+              className="chat-history-close-btn"
+              aria-label="Fermer l'historique"
+            >
+              <X size={18} />
+            </button>
           </div>
 
           {/* New Chat Button */}
-          <div className="p-4">
+          <div className="chat-history-new-section">
             <button
               onClick={handleNewSession}
               disabled={!selectedModel}
-              className="w-full flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-600 disabled:cursor-not-allowed rounded-lg transition-colors"
+              className="chat-history-new-btn"
             >
-              <Plus size={20} />
+              <div className="chat-history-new-btn-icon">
+                <Plus size={18} />
+              </div>
               <span>Nouvelle conversation</span>
             </button>
           </div>
 
           {/* Sessions List */}
-          <div className="flex-1 overflow-y-auto px-4">
+          <div className="chat-history-list">
             {activeSessions.length === 0 ? (
-              <p className="text-gray-400 text-center py-8">Aucune conversation</p>
+              <div className="chat-history-empty">
+                <MessageSquare size={24} />
+                <p>Aucune conversation</p>
+              </div>
             ) : (
-              <div className="space-y-2">
+              <div className="chat-history-sessions">
                 {activeSessions.map((session) => {
                   const lastMessage = session.messages[session.messages.length - 1];
                   const lastMessageContent = lastMessage?.content || 'Nouvelle conversation';
@@ -83,32 +93,32 @@ export const ChatHistorySidebar: React.FC<ChatHistorySidebarProps> = ({ isOpen, 
                   return (
                     <div
                       key={session.id}
-                      className="group relative p-3 bg-gray-800 hover:bg-gray-700 rounded-lg cursor-pointer transition-colors"
+                      className="chat-history-session"
                       onClick={() => handleSwitchSession(session.id)}
                     >
-                      <div className="flex items-start justify-between">
-                        <div className="flex-1 min-w-0">
-                          <div className="flex items-center gap-2 mb-1">
-                            <MessageSquare size={16} className="text-gray-400" />
-                            <span className="text-sm font-medium text-gray-300">
-                              {session.modelName}
-                            </span>
+                      <div className="chat-history-session-content">
+                        <div className="chat-history-session-header">
+                          <div className="chat-history-session-icon">
+                            <MessageSquare size={14} />
                           </div>
-                          <p className="text-xs text-gray-400 truncate">
-                            {truncatedContent}
-                          </p>
+                          <span className="chat-history-session-model">
+                            {session.modelName}
+                          </span>
                         </div>
-                        {activeSessions.length > 1 && (
-                          <button
-                            onClick={(e) => handleDeleteSession(session.id, e)}
-                            className="opacity-0 group-hover:opacity-100 p-1 hover:bg-gray-600 rounded transition-all"
-                            title="Supprimer la conversation"
-                            aria-label="Supprimer la conversation"
-                          >
-                            <Trash2 size={14} className="text-gray-400 hover:text-red-400" />
-                          </button>
-                        )}
+                        <p className="chat-history-session-preview">
+                          {truncatedContent}
+                        </p>
                       </div>
+                      {activeSessions.length > 1 && (
+                        <button
+                          onClick={(e) => handleDeleteSession(session.id, e)}
+                          className="chat-history-session-delete"
+                          title="Supprimer la conversation"
+                          aria-label="Supprimer la conversation"
+                        >
+                          <Trash2 size={12} />
+                        </button>
+                      )}
                     </div>
                   );
                 })}
@@ -117,10 +127,12 @@ export const ChatHistorySidebar: React.FC<ChatHistorySidebarProps> = ({ isOpen, 
           </div>
 
           {/* Footer */}
-          <div className="p-4 border-t border-gray-700">
-            <p className="text-xs text-gray-400 text-center">
-              {activeSessions.length} conversation{activeSessions.length !== 1 ? 's' : ''}
-            </p>
+          <div className="chat-history-footer">
+            <div className="chat-history-footer-content">
+              <span className="chat-history-count">
+                {activeSessions.length} conversation{activeSessions.length !== 1 ? 's' : ''}
+              </span>
+            </div>
           </div>
         </div>
       </div>

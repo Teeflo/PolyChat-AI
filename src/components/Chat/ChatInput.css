@@ -86,8 +86,18 @@
 }
 
 .chat-input-send-btn.enabled {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #64748b 0%, #475569 100%);
   color: #ffffff;
+  border: 1px solid rgba(100, 116, 139, 0.3);
+  box-shadow: 
+    0 2px 4px rgba(0, 0, 0, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.chat-input-send-btn.enabled svg {
+  width: 16px;
+  height: 16px;
+  stroke-width: 2;
 }
 
 .chat-input-send-btn.disabled.dark {
@@ -104,6 +114,10 @@
 
 .chat-input-send-btn.enabled:hover {
   transform: scale(1.05);
+  background: linear-gradient(135deg, #475569 0%, #374151 100%);
+  box-shadow: 
+    0 4px 8px rgba(0, 0, 0, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15);
 }
 
 .chat-input-info {

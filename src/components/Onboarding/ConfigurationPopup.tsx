@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { X, AlertTriangle, Key } from 'lucide-react';
+import { AlertTriangle, Key } from 'lucide-react';
 import { useSettings } from '../../hooks/useSettings';
 
 interface ConfigurationPopupProps {
@@ -60,16 +60,18 @@ export function ConfigurationPopup({ isOpen, onClose, type }: ConfigurationPopup
               <div className="popup-card">
                 <p className="popup-tip">
                   <Key className="w-4 h-4 text-blue-400" />
-                  <strong>Gratuit :</strong> Créez un compte sur{' '}
-                  <a 
-                    href="https://openrouter.ai" 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="popup-link"
-                  >
-                    openrouter.ai
-                  </a>
-                  {' '}pour obtenir votre clé API.
+                  <span>
+                    <strong>Gratuit :</strong> Créez un compte sur{' '}
+                    <a 
+                      href="https://openrouter.ai" 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="popup-link"
+                    >
+                      openrouter.ai
+                    </a>
+                    {' '}pour obtenir votre clé API.
+                  </span>
                 </p>
               </div>
             </div>
@@ -169,13 +171,6 @@ export function ConfigurationPopup({ isOpen, onClose, type }: ConfigurationPopup
               </p>
             </div>
           </div>
-          <button
-            onClick={onClose}
-            className="popup-close-btn"
-            title="Fermer"
-          >
-            <X className="w-4 h-4" />
-          </button>
         </div>
 
         <div className="popup-body">

@@ -25,7 +25,7 @@
   justify-content: center;
   width: 40px;
   height: 40px;
-  border-radius: var(--radius-md);
+  border-radius: 20px;
   flex-shrink: 0;
   transition: var(--transition-normal);
 }
@@ -111,7 +111,7 @@
 .message-bubble-modern-body {
   background: var(--pixel-bg-glass-light);
   border: var(--border-thin);
-  border-radius: var(--radius-lg);
+  border-radius: 18px;
   padding: var(--spacing-md) var(--spacing-lg);
   position: relative;
   -webkit-backdrop-filter: blur(10px);
@@ -124,12 +124,12 @@
   background: var(--gradient-cyber);
   border-color: var(--pixel-accent-primary);
   color: var(--pixel-text-inverse);
-  border-bottom-right-radius: var(--radius-sm);
+  border-bottom-right-radius: 6px;
 }
 
 .message-bubble-modern.assistant .message-bubble-modern-body {
   border-color: var(--pixel-accent-muted);
-  border-bottom-left-radius: var(--radius-sm);
+  border-bottom-left-radius: 6px;
 }
 
 .message-bubble-modern-body:hover {
@@ -189,7 +189,7 @@
   padding: 0.6em 0.8em;
   border-left: 3px solid var(--pixel-accent-muted);
   background: var(--pixel-bg-glass-light);
-  border-radius: var(--radius-sm);
+  border-radius: 14px;
 }
 
 /* Code blocks */
@@ -197,7 +197,7 @@
   background: var(--pixel-bg-secondary);
   border: var(--border-thin);
   border-color: var(--pixel-accent-muted);
-  border-radius: var(--radius-md);
+  border-radius: 18px;
   padding: 10px 12px;
   overflow: auto;
   margin: 6px 0;
@@ -249,7 +249,7 @@
   color: var(--pixel-text-secondary);
   padding: var(--spacing-sm);
   background: var(--pixel-bg-glass-light);
-  border-radius: var(--radius-md);
+  border-radius: 18px;
   border: var(--border-thin);
   border-color: var(--pixel-accent-primary);
   position: relative;
@@ -327,7 +327,7 @@
   background: var(--pixel-bg-secondary);
   border: var(--border-thin);
   border-color: var(--pixel-accent-muted);
-  border-radius: var(--radius-sm);
+  border-radius: 14px;
   color: var(--pixel-text-muted);
   cursor: pointer;
   transition: var(--transition-normal);
@@ -358,7 +358,7 @@
   padding: var(--spacing-sm) var(--spacing-md);
   background: rgba(255, 107, 107, 0.1);
   border: 1px solid var(--pixel-error);
-  border-radius: var(--radius-md);
+  border-radius: 18px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -375,7 +375,7 @@
   background: var(--pixel-error);
   color: var(--pixel-text-primary);
   border: none;
-  border-radius: var(--radius-sm);
+  border-radius: 14px;
   padding: var(--spacing-xs) var(--spacing-sm);
   font-size: 11px;
   font-weight: 500;
