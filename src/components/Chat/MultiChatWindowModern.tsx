@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import MessageBubbleModern from './MessageBubbleModern';
 import { Terminal, Zap, Bot } from 'lucide-react';
 import { useChat } from '../../hooks/useChat';
+import InlineModelPicker from './InlineModelPicker';
 import type { ChatSession } from '../../types/index';
 import './MultiChatWindowModern.css';
 
@@ -11,7 +12,7 @@ interface MultiChatWindowModernProps {
 
 const MultiChatWindowModern: React.FC<MultiChatWindowModernProps> = ({ sessions }) => {
   const messagesEndRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
-  const { regenerateMessage, deleteMessage, streamingProgress } = useChat();
+  const { regenerateMessage, deleteMessage, streamingProgress, setSessionModel } = useChat();
 
   useEffect(() => {
     // Faire défiler vers le bas pour toutes les sessions
@@ -34,9 +35,16 @@ const MultiChatWindowModern: React.FC<MultiChatWindowModernProps> = ({ sessions 
               <Bot size={18} />
             </div>
             <div className="chat-header-modern-details">
-              <span className="chat-header-modern-title">
-                {session.modelName.split('/').pop() || session.modelName}
-              </span>
+              {session.modelId.startsWith('pending-') ? (
+                <InlineModelPicker
+                  sessionId={session.id}
+                  onSelect={(id)=> setSessionModel(session.id, id)}
+                />
+              ) : (
+                <span className="chat-header-modern-title">
+                  {session.modelName.split('/').pop() || session.modelName}
+                </span>
+              )}
               <span className="chat-header-modern-subtitle">
                 {session.messages.length - 1} messages
               </span>

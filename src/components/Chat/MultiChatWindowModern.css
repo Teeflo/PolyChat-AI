@@ -113,6 +113,81 @@
   line-height: 1.2;
 }
 
+/* Select inline pour sessions pending */
+.chat-model-inline-select {
+  -webkit-appearance: none;
+  appearance: none;
+  background: linear-gradient(135deg, rgba(45,52,64,.6) 0%, rgba(40,47,59,.55) 100%);
+  border: 1px solid rgba(139,92,246,.35);
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--pixel-text-primary);
+  padding: 6px 26px 6px 10px;
+  border-radius: 10px;
+  cursor: pointer;
+  position: relative;
+  outline: none;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.08), 0 2px 6px -2px rgba(0,0,0,.4);
+  transition: all .3s cubic-bezier(.4,0,.2,1);
+}
+.chat-model-inline-select:hover {
+  background: linear-gradient(135deg, rgba(90,60,170,.75) 0%, rgba(70,40,140,.7) 100%);
+  border-color: rgba(139,92,246,.6);
+  box-shadow: 0 4px 14px -4px rgba(139,92,246,.5), inset 0 1px 0 rgba(255,255,255,0.12);
+  color: #fff;
+}
+.chat-model-inline-select:focus-visible {
+  outline: 2px solid var(--pixel-accent-primary);
+  outline-offset: 2px;
+}
+.chat-model-inline-select option {
+  background: #1d2330;
+  color: var(--pixel-text-primary);
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 13px;
+  padding: 4px 8px;
+}
+
+/* InlineModelPicker (custom popover) */
+.inline-model-picker { position: relative; display:inline-block; }
+.imp-trigger { display:inline-flex; align-items:center; gap:6px; background:linear-gradient(135deg,rgba(45,52,64,.6) 0%,rgba(40,47,59,.55) 100%); border:1px solid rgba(139,92,246,.35); color:var(--pixel-text-primary); font-family:'Space Grotesk',sans-serif; font-size:12px; padding:6px 12px; border-radius:12px; cursor:pointer; transition:all .3s cubic-bezier(.4,0,.2,1); box-shadow:0 2px 6px -2px rgba(0,0,0,.5), inset 0 1px 0 rgba(255,255,255,.08); }
+.imp-trigger:hover { background:linear-gradient(135deg,rgba(96,52,180,.75) 0%,rgba(74,36,150,.7) 100%); border-color:rgba(139,92,246,.65); color:#fff; box-shadow:0 4px 14px -4px rgba(139,92,246,.5), inset 0 1px 0 rgba(255,255,255,.15); }
+.inline-model-picker.open .imp-trigger { background:linear-gradient(135deg,#8b5cf6 0%,#7c3aed 100%); color:#fff; border-color:#8b5cf6; box-shadow:0 0 0 1px rgba(139,92,246,.6),0 8px 22px -8px rgba(139,92,246,.55), inset 0 1px 0 rgba(255,255,255,.22); }
+.imp-caret { transition:transform .35s cubic-bezier(.65,-0.4,.3,1.4); opacity:.75; }
+.inline-model-picker.open .imp-caret { transform:rotate(180deg); opacity:1; }
+.imp-pop { position:absolute; top:110%; left:0; z-index:60; min-width:280px; max-width:340px; background:rgba(18,22,30,.95); -webkit-backdrop-filter:blur(24px); backdrop-filter:blur(24px); border:1px solid rgba(139,92,246,.25); border-radius:16px; padding:14px 14px 10px; box-shadow:0 16px 32px -8px rgba(0,0,0,.5), 0 6px 14px -4px rgba(139,92,246,.2), inset 0 1px 0 rgba(255,255,255,.06); animation:modernFadeIn .4s ease; }
+.imp-search { display:flex; align-items:center; gap:8px; background:linear-gradient(135deg,rgba(30,35,45,.85) 0%,rgba(25,30,40,.9) 100%); border:1px solid rgba(139,92,246,.25); padding:6px 10px; border-radius:10px; margin-bottom:10px; }
+.imp-search input { background:transparent; border:none; outline:none; color:var(--pixel-text-primary); font-size:12px; font-family:'Space Grotesk',sans-serif; flex:1; }
+.imp-search input::placeholder { color:rgba(156,163,175,.65); }
+.imp-list { list-style:none; margin:0; padding:0; max-height:220px; overflow-y:auto; display:flex; flex-direction:column; gap:6px; }
+.imp-item { display:flex; flex-direction:column; align-items:flex-start; text-align:left; background:linear-gradient(135deg,rgba(45,52,64,.35) 0%,rgba(40,47,59,.4) 100%); border:1px solid rgba(139,92,246,.22); padding:8px 10px; border-radius:10px; cursor:pointer; transition:all .25s cubic-bezier(.4,0,.2,1); position:relative; font-family:'Space Grotesk',sans-serif; }
+.imp-item:hover, .imp-item:focus { background:linear-gradient(135deg,rgba(139,92,246,.18) 0%,rgba(124,58,237,.16) 100%); border-color:rgba(139,92,246,.5); outline:none; box-shadow:0 4px 12px -4px rgba(139,92,246,.35); }
+.imp-name { font-size:12px; font-weight:600; color:var(--pixel-text-primary); line-height:1.1; }
+.imp-desc { font-size:10px; font-family:'JetBrains Mono', monospace; color:var(--pixel-text-secondary); opacity:.85; margin-top:3px; letter-spacing:.3px; }
+.imp-meta-row { display:flex; flex-wrap:wrap; gap:6px; align-items:center; margin-top:4px; }
+.imp-provider { font-size:10px; font-family:'JetBrains Mono',monospace; background:rgba(139,92,246,.15); color:var(--pixel-accent-primary); padding:2px 6px; border-radius:6px; letter-spacing:.5px; text-transform:uppercase; }
+.imp-price { font-size:10px; font-family:'JetBrains Mono',monospace; color:var(--pixel-text-secondary); background:rgba(255,255,255,.05); padding:2px 6px; border-radius:6px; letter-spacing:.3px; }
+.imp-price-free { 
+  background:linear-gradient(135deg, rgba(16,185,129,.28) 0%, rgba(16,185,129,.18) 100%);
+  color: var(--pixel-success);
+  border:1px solid rgba(16,185,129,.55);
+  box-shadow:0 0 0 1px rgba(16,185,129,.25), inset 0 1px 0 rgba(255,255,255,.08);
+}
+.imp-price-paid { 
+  /* Harmonized with Settings .price-block.paid (blue palette) */
+  background:rgba(59,130,246,.15);
+  color:#60a5fa;
+  border:1px solid rgba(59,130,246,.35);
+  box-shadow:0 0 0 1px rgba(59,130,246,.25), inset 0 1px 0 rgba(255,255,255,.08);
+}
+.imp-price-free:hover, .imp-price-free:focus { border-color:rgba(16,185,129,.75); }
+.imp-price-paid:hover, .imp-price-paid:focus { border-color:rgba(59,130,246,.55); box-shadow:0 0 0 1px rgba(59,130,246,.4), inset 0 1px 0 rgba(255,255,255,.12); }
+.imp-empty { font-size:12px; font-style:italic; text-align:center; padding:12px 0 4px; color:rgba(156,163,175,.7); }
+.imp-list::-webkit-scrollbar { width:8px; }
+.imp-list::-webkit-scrollbar-track { background:rgba(255,255,255,.05); border-radius:10px; }
+.imp-list::-webkit-scrollbar-thumb { background:linear-gradient(var(--pixel-accent-primary),var(--pixel-accent-secondary)); border-radius:10px; border:1px solid rgba(0,0,0,.35); }
+
 .chat-header-modern-subtitle {
   font-family: 'JetBrains Mono', monospace;
   font-size: 10px;

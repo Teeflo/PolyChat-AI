@@ -17,6 +17,8 @@ interface ChatStore {
   pendingTemplate: ConversationTemplate | null; // Template en attente d'édition
   addModel: (modelId: string) => void;
   removeModel: (modelId: string) => void;
+  setWindowCount: (count: number) => void; // Définir le nombre de fenêtres actives
+  setSessionModel: (sessionId: string, modelId: string) => void; // Assigner un modèle à une fenêtre "pending"
   sendMessageToAll: (content: string) => Promise<void>;
   regenerateMessage: (sessionId: string, messageId: string) => Promise<void>;
   deleteMessage: (sessionId: string, messageId: string) => void;
@@ -168,6 +170,52 @@ export const useChat = create<ChatStore>((set, get) => ({
   try { useUsageStats.getState().recordNewConversation(modelId); } catch {}
     }
   },
+  setWindowCount: (count: number) => {
+    // Limiter entre 1 et 3
+    const target = Math.min(3, Math.max(1, count));
+  const { activeSessions } = get();
+    let sessions = [...activeSessions];
+    // Ajouter des sessions pending si besoin
+    if (target > sessions.length) {
+      const toAdd = target - sessions.length;
+      for (let i = 0; i < toAdd; i++) {
+        const pid = `pending-${Date.now()}-${Math.random().toString(36).slice(2,7)}`;
+        const pendingSession: ChatSession = {
+          id: pid,
+          modelId: pid, // Utiliser l'id comme modelId placeholder
+          modelName: 'Sélectionner…',
+          messages: [],
+          isLoading: false,
+          error: null
+        };
+        sessions.push(pendingSession);
+      }
+      // Ajouter aux allSessions (historique) également
+      set(state => ({
+        allSessions: [...state.allSessions, ...sessions.slice(activeSessions.length)],
+        activeSessions: sessions,
+        selectedModels: sessions.map(s => s.modelId)
+      }));
+    } else if (target < sessions.length) {
+      const newSessions = sessions.slice(0, target);
+      set({
+        activeSessions: newSessions,
+        selectedModels: newSessions.map(s => s.modelId)
+      });
+    } // sinon identique
+  },
+  setSessionModel: (sessionId: string, modelId: string) => {
+    const { activeSessions, allSessions, selectedModels } = get();
+    // Ne rien faire si déjà présent
+    if (selectedModels.includes(modelId)) {
+      // Juste remplacer la session ciblée par un clone du modèle existant? On garde unique.
+    }
+    const updatedActive = activeSessions.map(s => s.id === sessionId ? { ...s, modelId, modelName: modelId } : s);
+    const updatedAll = allSessions.map(s => s.id === sessionId ? { ...s, modelId, modelName: modelId } : s);
+    // Remplacer l'id placeholder dans selectedModels en conservant l'ordre
+    const updatedSelected = selectedModels.map(id => (activeSessions.find(s => s.id===sessionId)?.modelId === id ? modelId : id));
+    set({ activeSessions: updatedActive, allSessions: updatedAll, selectedModels: updatedActive.map(s=>s.modelId) || updatedSelected });
+  },
   
   removeModel: (modelId: string) => {
     const { activeSessions, selectedModels } = get();
@@ -183,8 +231,10 @@ export const useChat = create<ChatStore>((set, get) => ({
   
   sendMessageToAll: async (content: string) => {
     if (!content.trim()) return;
-    
-  const { activeSessions, allSessions } = get();
+    const { activeSessions, allSessions } = get();
+    // Ignorer les sessions pending (modelId qui commence par 'pending-')
+    const runnableSessions = activeSessions.filter(s => !s.modelId.startsWith('pending-'));
+    if (runnableSessions.length === 0) return; // rien à envoyer
   const { apiKey, systemPrompt, tone } = useSettings.getState();
   const stats = useUsageStats.getState();
     
@@ -201,7 +251,7 @@ export const useChat = create<ChatStore>((set, get) => ({
     
   // Ajouter le message utilisateur à toutes les sessions actives
     const userMessage = createMessage('user', content);
-    const updatedSessions = activeSessions.map(session => ({
+    const updatedSessions = runnableSessions.map(session => ({
       ...session,
       messages: [...session.messages, userMessage],
       isLoading: true,
@@ -217,7 +267,7 @@ export const useChat = create<ChatStore>((set, get) => ({
     try { stats.recordUserMessage(updatedSessions.map(s => s.modelId)); } catch {}
 
     // Envoyer les requêtes en parallèle pour tous les modèles
-    const promises = updatedSessions.map(async (session) => {
+  const promises = updatedSessions.map(async (session) => {
       const tonePrefix = tone && tone !== 'neutre' ? `[Ton: ${tone}] ` : '';
       const effectiveSystem = systemPrompt && systemPrompt.trim()
         ? `${tonePrefix}${systemPrompt.trim()}`

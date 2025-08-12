@@ -1,8 +1,6 @@
 import React, { useState, useMemo, useRef, useEffect } from 'react';
-import { Sparkles, ChevronDown, X, Plus, Search, Settings } from 'lucide-react';
+import { Sparkles, ChevronDown } from 'lucide-react';
 import { useChat } from '../../hooks/useChat';
-import { useModels } from '../../hooks/useModels';
-import { useSettings } from '../../hooks/useSettings';
 import './ModelSwitcher.css';
 
 /**
@@ -11,11 +9,8 @@ import './ModelSwitcher.css';
  * - Popover flottant minimaliste sur clic pour gérer les modèles (multi ≤3)
  */
 const ModelSwitcher: React.FC = () => {
-  const { selectedModels, addModel, removeModel, activeSessions } = useChat();
-  const { models, loading } = useModels();
-  const { toggleSettings, isSettingsOpen } = useSettings();
+  const { activeSessions, setWindowCount } = useChat();
   const [open, setOpen] = useState(false);
-  const [query, setQuery] = useState('');
   const ref = useRef<HTMLDivElement | null>(null);
 
   // Fermer en cliquant dehors
@@ -29,134 +24,46 @@ const ModelSwitcher: React.FC = () => {
     return () => document.removeEventListener('mousedown', handler);
   }, []);
 
-  const currentLabel = useMemo(() => {
-    if (selectedModels.length === 0) return 'Sélectionner IA';
-    if (selectedModels.length === 1) {
-      const id = selectedModels[0];
-      const name = id.split('/').pop() || id;
-      return name.length > 12 ? name.substring(0, 12) + '…' : name;
-    }
-    return `${selectedModels.length} IA actives`;
-  }, [selectedModels]);
-
-  const available = useMemo(() => {
-    const base = models.filter(m => !selectedModels.includes(m.id));
-    if (!query.trim()) return base.slice(0, 40);
-    const q = query.toLowerCase();
-    return base.filter(m => m.id.toLowerCase().includes(q) || m.name?.toLowerCase().includes(q)).slice(0, 50);
-  }, [models, selectedModels, query]);
-
-  const canAdd = selectedModels.length < 3;
-
+  const currentLabel = useMemo(() => `${activeSessions.length} fenêtre${activeSessions.length>1?'s':''}`, [activeSessions.length]);
   const handleToggle = () => setOpen(o => !o);
-
-  const handleAdd = (id: string) => {
-    if (!canAdd) return;
-    addModel(id);
-    setQuery('');
-  };
-
-  const handleRemove = (id: string) => {
-    if (selectedModels.length > 1) removeModel(id);
-  };
 
   return (
     <div className="model-switcher" ref={ref}>
       <button
         className={`model-switcher-pill ${open ? 'open' : ''}`}
         onClick={handleToggle}
-        aria-label="Sélecteur de modèles"
-        title={selectedModels.join(', ') || 'Sélectionner un modèle'}
+        aria-label="Sélecteur du nombre de fenêtres"
+        title="Choisir le nombre de fenêtres (Alt+clic pour fermer)"
         type="button"
       >
-        <Sparkles size={14} />
-        <span className="model-switcher-label">{currentLabel}</span>
+  <Sparkles size={14} />
+  <span className="model-switcher-label">{currentLabel}</span>
         <ChevronDown size={14} className="model-switcher-caret" />
       </button>
 
       {open && (
         <div className="model-switcher-popover" role="dialog">
           <div className="model-switcher-section active">
-            <div className="model-switcher-section-title">Actifs</div>
-            {selectedModels.length === 0 && (
-              <div className="model-switcher-empty">Aucun modèle actif</div>
-            )}
+            <div className="model-switcher-section-title">Fenêtres ({activeSessions.length}/3)</div>
+            <div className="model-switcher-window-buttons">
+              {[1,2,3].map(n => (
+                <button
+                  key={n}
+                  className={`window-count-btn ${activeSessions.length===n ? 'active' : ''}`}
+                  onClick={()=> { setWindowCount(n); setOpen(false); }}
+                  type="button"
+                >{n}</button>
+              ))}
+            </div>
             <ul className="model-switcher-active-list">
-              {activeSessions.map(s => (
+              {activeSessions.map((s,i) => (
                 <li key={s.id} className="model-switcher-active-item">
-                  <span className="model-switcher-active-name">{s.modelId.split('/').pop()}</span>
-                  {selectedModels.length > 1 && (
-                    <button
-                      onClick={() => handleRemove(s.modelId)}
-                      className="model-switcher-remove"
-                      aria-label={`Retirer ${s.modelId}`}
-                    >
-                      <X size={12} />
-                    </button>
-                  )}
+                  <span className="model-switcher-active-name">
+                    Fenêtre {i+1} {s.modelId.startsWith('pending-') ? '• (choisir modèle dans la fenêtre)' : `• ${s.modelId.split('/').pop()}`}
+                  </span>
                 </li>
               ))}
             </ul>
-          </div>
-
-          <div className="model-switcher-section add">
-            <div className="model-switcher-section-header">
-              <div className="model-switcher-section-title">Ajouter</div>
-              <div className="model-switcher-counter">{selectedModels.length}/3</div>
-            </div>
-            <div className="model-switcher-search">
-              <Search size={14} />
-              <input
-                placeholder="Rechercher un modèle..."
-                aria-label="Rechercher un modèle"
-                value={query}
-                onChange={e => setQuery(e.target.value)}
-              />
-            </div>
-            {loading && <div className="model-switcher-loading">Chargement...</div>}
-            {!loading && available.length === 0 && (
-              <div className="model-switcher-empty">Aucun résultat</div>
-            )}
-            {!loading && available.length > 0 && (
-        <ul className="model-switcher-available-list">
-                {available.map(m => (
-                  <li key={m.id}>
-                    <button
-                      disabled={!canAdd}
-                      onClick={() => handleAdd(m.id)}
-                      className="model-switcher-available-btn"
-                      title={m.id}
-          type="button"
-                    >
-                      <span className="model-switcher-model-name">{m.id.split('/').pop()}</span>
-                      {canAdd && <Plus size={12} />}
-                    </button>
-                  </li>
-                ))}
-              </ul>
-            )}
-            <div className="model-switcher-footer">
-              <button
-                type="button"
-                className="model-switcher-settings-link"
-                onClick={() => {
-                  const wasClosed = !isSettingsOpen;
-                  if (wasClosed) toggleSettings();
-                  setTimeout(()=>{
-                    const section = document.getElementById('default-model-section');
-                    if (section) {
-                      section.classList.add('flash-highlight');
-                      section.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                      setTimeout(()=> section.classList.remove('flash-highlight'), 2400);
-                    }
-                  }, wasClosed ? 120 : 40);
-                  setOpen(false);
-                }}
-                aria-label="Ouvrir les paramètres pour définir le modèle par défaut"
-              >
-                <Settings size={12} /> Paramètres modèle par défaut
-              </button>
-            </div>
           </div>
         </div>
       )}
