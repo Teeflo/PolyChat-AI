@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import MessageBubble from './MessageBubble';
+import ThinkingAnimation from './ThinkingAnimation';
 import { useChat } from '../../hooks/useChat';
 import { useSettings } from '../../hooks/useSettings';
 import './ChatWindow.css';
@@ -19,10 +20,11 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ sessions }) => {
   const currentSessions = sessions || activeSessions;
   const messages = currentSessions[0]?.messages || [];
   const error = currentSessions[0]?.error || null;
+  const modelName = currentSessions[0]?.modelName || currentSessions[0]?.modelId || 'Modèle inconnu';
 
   useEffect(() => {
     scrollToBottom();
-  }, [messages]);
+  }, [messages, isAnyLoading]);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -42,36 +44,24 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ sessions }) => {
             <p className="chat-welcome-subtitle">
               Posez-moi n'importe quelle question !
             </p>
-          </div>
-        )}
-
-        {messages.map((message: any) => (
-          <MessageBubble key={message.id} message={message} />
-        ))}
-        
-  {isAnyLoading && (
-          <div className="chat-loading-container">
-            <div className={`chat-loading-bubble ${isDark ? 'dark' : 'light'}`}>
-              {/* Effet de shimmer */}
-              <div className={`chat-loading-shimmer ${isDark ? 'dark' : 'light'}`} />
-              <div className="chat-loading-content">
-                <div className="chat-loading-dots">
-                  {[1, 2, 3].map((i) => (
-                    <div
-                      key={i}
-                      className={`chat-loading-dot ${isDark ? 'dark' : 'light'}`}
-                      style={{ animationDelay: `${(i - 1) * 0.16}s` }}
-                    />
-                  ))}
-                </div>
-                <span className="chat-loading-text">
-                  Génération de la réponse...
-                </span>
-    <button onClick={() => stopStreaming()} className="stop-stream-btn">Arrêter</button>
-              </div>
+            <div className="chat-model-default">
+              <span style={{ fontWeight: 'bold', fontSize: '0.95em' }}>Modèle : </span>
+              <span>{modelName}</span>
             </div>
           </div>
         )}
+
+        {messages
+          .filter((message: any) => {
+            if (message.role !== 'assistant') return true;
+            const content = (message.content ?? '').trim();
+            // Exclure tout message assistant vide, ne contenant que des espaces, en streaming, '…', ou qui commence/termine par '…'
+            if (!content || message.streaming || content === '…' || content.startsWith('…') || content.endsWith('…')) return false;
+            return true;
+          })
+          .map((message: any) => (
+            <MessageBubble key={message.id} message={message} />
+        ))}
         
         {error && (
           <div className="chat-error-container">
@@ -89,6 +79,14 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ sessions }) => {
         
         <div ref={messagesEndRef} />
       </div>
+      {/* Animation en bas de page, hors du flux des messages */}
+      {isAnyLoading && (
+        <ThinkingAnimation 
+          theme={isDark ? 'dark' : 'light'} 
+          position="bottom"
+          onStop={stopStreaming}
+        />
+      )}
     </div>
   );
 };

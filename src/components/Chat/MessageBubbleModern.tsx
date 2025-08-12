@@ -7,6 +7,7 @@ import remarkGfm from 'remark-gfm';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { oneDark, oneLight } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import { useSettings } from '../../hooks/useSettings';
+import ThinkingAnimation from './ThinkingAnimation';
 
 interface MessageBubbleModernProps {
   message: Message;
@@ -30,6 +31,11 @@ const MessageBubbleModern: React.FC<MessageBubbleModernProps> = ({
   const isUser = message.role === 'user';
   const isAssistant = message.role === 'assistant';
   const [copiedBlockId, setCopiedBlockId] = useState<string | null>(null);
+
+  // Guard: ne rien rendre si le contenu est vide après trim (évite bulle vide)
+  if (isAssistant && (!message.content || message.content.trim() === '')) {
+    return null;
+  }
 
   const handleCopy = () => {
     navigator.clipboard.writeText(message.content);
@@ -118,51 +124,40 @@ const MessageBubbleModern: React.FC<MessageBubbleModernProps> = ({
 
         {/* Corps du message */}
         <div className="message-bubble-modern-body">
-          {isLoading ? (
-            <div className="message-bubble-modern-loading">
-              <div className="message-bubble-modern-typing-dots">
-                <span></span>
-                <span></span>
-                <span></span>
-              </div>
-              <span>Génération de la réponse...</span>
-            </div>
-          ) : (
-            <div className="message-bubble-modern-text markdown-body">
-              {(() => {
-                const content = message.content;
-                const fenceCount = (content.match(/```/g) || []).length;
-                const hasOpenFence = message.streaming && fenceCount % 2 === 1;
-                if (hasOpenFence) {
-                  const lastIndex = content.lastIndexOf('```');
-                  const head = content.slice(0, lastIndex);
-                  const partial = content.slice(lastIndex + 3);
-                  return (
-                    <>
-                      {head && (
-                        <ReactMarkdown remarkPlugins={[remarkGfm]} components={markdownComponents}>
-                          {head}
-                        </ReactMarkdown>
-                      )}
-                      <div className="partial-code-block-modern">
-                        <pre>{partial || ' '}</pre>
-                        <div className="partial-code-hint-modern">Code en cours…</div>
-                      </div>
-                      {message.streaming && <span className="streaming-cursor">▌</span>}
-                    </>
-                  );
-                }
+          <div className="message-bubble-modern-text markdown-body">
+            {(() => {
+              const content = message.content;
+              const fenceCount = (content.match(/```/g) || []).length;
+              const hasOpenFence = message.streaming && fenceCount % 2 === 1;
+              if (hasOpenFence) {
+                const lastIndex = content.lastIndexOf('```');
+                const head = content.slice(0, lastIndex);
+                const partial = content.slice(lastIndex + 3);
                 return (
                   <>
-                    <ReactMarkdown remarkPlugins={[remarkGfm]} components={markdownComponents}>
-                      {content}
-                    </ReactMarkdown>
+                    {head && (
+                      <ReactMarkdown remarkPlugins={[remarkGfm]} components={markdownComponents}>
+                        {head}
+                      </ReactMarkdown>
+                    )}
+                    <div className="partial-code-block-modern">
+                      <pre>{partial || ' '}</pre>
+                      <div className="partial-code-hint-modern">Code en cours…</div>
+                    </div>
                     {message.streaming && <span className="streaming-cursor">▌</span>}
                   </>
                 );
-              })()}
-            </div>
-          )}
+              }
+              return (
+                <>
+                  <ReactMarkdown remarkPlugins={[remarkGfm]} components={markdownComponents}>
+                    {content}
+                  </ReactMarkdown>
+                  {message.streaming && <span className="streaming-cursor">▌</span>}
+                </>
+              );
+            })()}
+          </div>
         </div>
 
         {/* Actions - Pour tous les messages */}

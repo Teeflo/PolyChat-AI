@@ -5,12 +5,14 @@ import { useChat } from '../../hooks/useChat';
 import { getModelPricing } from '../../services/modelsApi';
 
 interface InlineModelPickerProps {
-  sessionId?: string; // Optionnel si non utilisé directement
+  sessionId?: string;
+  currentModelId?: string;
+  currentModelName?: string;
   onSelect: (modelId: string) => void;
 }
 
-// Sélecteur custom pour choisir un modèle dans une fenêtre pending
-const InlineModelPicker: React.FC<InlineModelPickerProps> = ({ onSelect }) => {
+// Sélecteur custom pour choisir ou changer un modèle dans une fenêtre
+const InlineModelPicker: React.FC<InlineModelPickerProps> = ({ onSelect, currentModelId }) => {
   const { models, loading } = useModels();
   const { selectedModels } = useChat();
   const [open, setOpen] = useState(false);
@@ -27,24 +29,40 @@ const InlineModelPicker: React.FC<InlineModelPickerProps> = ({ onSelect }) => {
     return () => document.removeEventListener('mousedown', handler);
   }, []);
 
+  // Allow current model to be re-selected in this window
   const filtered = useMemo(() => {
-    const base = models.filter(m => !selectedModels.includes(m.id));
+    let base = models.filter(m => !selectedModels.includes(m.id) || m.id === currentModelId);
     if (!query.trim()) return base.slice(0, 40);
     const q = query.toLowerCase();
     return base.filter(m => m.id.toLowerCase().includes(q) || m.name?.toLowerCase().includes(q)).slice(0, 60);
-  }, [models, selectedModels, query]);
+  }, [models, selectedModels, query, currentModelId]);
+
+  // Find current model for display
+  const currentModel = useMemo(() => {
+    if (!currentModelId) return null;
+    return models.find(m => m.id === currentModelId) || null;
+  }, [models, currentModelId]);
 
   return (
     <div className={`inline-model-picker ${open ? 'open' : ''}`} ref={ref}>
       <button
         type="button"
         className="imp-trigger"
-        aria-haspopup="true"
-        aria-expanded={open ? 'true' : 'false'}
+        aria-haspopup="listbox"
+        aria-expanded={open}
         onClick={()=> setOpen(o=>!o)}
+        title={currentModel ? `Changer de modèle (actuel: ${currentModel.name || currentModel.id})` : 'Choisir un modèle'}
       >
-        <Sparkles size={14} />
-        <span>Choisir un modèle</span>
+        {currentModel ? (
+          <>
+            <span className="imp-name">{currentModel.name?.split('/').pop() || currentModel.id}</span>
+          </>
+        ) : (
+          <>
+            <Sparkles size={14} />
+            <span>Choisir un modèle</span>
+          </>
+        )}
         <ChevronDown size={14} className="imp-caret" />
       </button>
       {open && (
@@ -70,9 +88,20 @@ const InlineModelPicker: React.FC<InlineModelPickerProps> = ({ onSelect }) => {
                   role="option"
                   aria-selected="false"
                   className="imp-item"
-                  onClick={() => { onSelect(m.id); setOpen(false); }}
+                  onClick={() => {
+                    const isInitial = !currentModelId || currentModelId.startsWith('pending-');
+                    if (!isInitial && m.id !== currentModelId) {
+                      if (!window.confirm('Changer de modèle ? Cette action peut réinitialiser le contexte.')) return;
+                    }
+                    onSelect(m.id); setOpen(false);
+                  }}
                   tabIndex={0}
-                  onKeyDown={(e)=>{ if(e.key==='Enter'||e.key===' ') { e.preventDefault(); onSelect(m.id); setOpen(false);} }}
+                  onKeyDown={(e)=>{
+                    const isInitial = !currentModelId || currentModelId.startsWith('pending-');
+                    if((e.key==='Enter'||e.key===' ') && (isInitial || m.id === currentModelId || window.confirm('Changer de modèle ? Cette action peut réinitialiser le contexte.'))) {
+                      e.preventDefault(); onSelect(m.id); setOpen(false);
+                    }
+                  }}
                 >
                   {(() => {
                     const provider = m.id.split('/')[0];

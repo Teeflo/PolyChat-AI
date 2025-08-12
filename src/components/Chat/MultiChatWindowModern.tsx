@@ -35,27 +35,24 @@ const MultiChatWindowModern: React.FC<MultiChatWindowModernProps> = ({ sessions 
               <Bot size={18} />
             </div>
             <div className="chat-header-modern-details">
-              {session.modelId.startsWith('pending-') ? (
-                <InlineModelPicker
-                  sessionId={session.id}
-                  onSelect={(id)=> setSessionModel(session.id, id)}
-                />
-              ) : (
-                <span className="chat-header-modern-title">
-                  {session.modelName.split('/').pop() || session.modelName}
-                </span>
-              )}
+              <InlineModelPicker
+                sessionId={session.id}
+                currentModelId={session.modelId}
+                currentModelName={session.modelName}
+                onSelect={(id)=> setSessionModel(session.id, id)}
+              />
               <span className="chat-header-modern-subtitle">
-                {session.messages.length - 1} messages
+                {/* Affiche 0 si aucun message utilisateur n'a été envoyé */}
+                {Math.max(0, session.messages.length - 1)} messages
               </span>
             </div>
           </div>
           
           <div className="chat-header-modern-status">
-            <div className={`chat-status-indicator-modern ${session.isLoading ? 'loading' : 'active'}`} />
-            <span className="chat-status-text-modern">
-              {session.isLoading ? 'Réflexion...' : 'Prêt'}
-            </span>
+            {/* Point vert retiré */}
+            {session.isLoading && (
+              <span className="chat-status-text-modern">Réflexion...</span>
+            )}
           </div>
         </div>
 

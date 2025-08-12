@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import MessageBubble from './MessageBubblePixel';
-import { Loader2, Terminal, Zap } from 'lucide-react';
+import ThinkingAnimation from './ThinkingAnimation';
+import { Terminal, Zap } from 'lucide-react';
 import type { ChatSession } from '../../types/index';
 
 interface MultiChatWindowProps {
@@ -10,12 +11,15 @@ interface MultiChatWindowProps {
 const MultiChatWindow: React.FC<MultiChatWindowProps> = ({ sessions }) => {
   const messagesEndRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
 
+  // Scroll individuel par session : chaque session scroll si ses messages changent ou si elle est en génération
   useEffect(() => {
-    // Faire défiler vers le bas pour toutes les sessions
-    Object.values(messagesEndRefs.current).forEach(ref => {
-      ref?.scrollIntoView({ behavior: 'smooth' });
+    sessions.forEach(session => {
+      const ref = messagesEndRefs.current[session.id];
+      if (ref && (session.isLoading || session.messages.length > 0)) {
+        ref.scrollIntoView({ behavior: 'smooth' });
+      }
     });
-  }, [sessions]);
+  }, [sessions.map(s => s.messages.length).join(','), sessions.map(s => s.isLoading).join(',')]);
 
   const setMessagesEndRef = (sessionId: string) => (el: HTMLDivElement) => {
     messagesEndRefs.current[sessionId] = el;
@@ -51,16 +55,23 @@ const MultiChatWindow: React.FC<MultiChatWindowProps> = ({ sessions }) => {
             </div>
           )}
 
-          {session.messages.map((message) => (
-            <MessageBubble key={message.id} message={message} />
+          {session.messages
+            .filter((message) => {
+              if (message.role !== 'assistant') return true;
+              const content = (message.content || '').replace(/\s|\n|\r/g, '');
+              if (!content || content === '…' || content.startsWith('…') || content.endsWith('…')) return false;
+              return true;
+            })
+            .map((message) => (
+              <MessageBubble key={message.id} message={message} />
           ))}
 
           {session.isLoading && (
             <div className="pixel-loading-container">
-              <div className="pixel-loading-message">
-                <Loader2 size={16} className="pixel-spinner" />
-                <span className="pixel-loading-text">AI is thinking...</span>
-              </div>
+              <ThinkingAnimation 
+                theme="dark" 
+                position="inline"
+              />
             </div>
           )}
 

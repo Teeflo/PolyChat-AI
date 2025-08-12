@@ -53,62 +53,52 @@ export const useChat = create<ChatStore>((set, get) => ({
   pendingTemplate: null,
   
   initializeChat: () => {
-    // Charger l'historique depuis localStorage
+    // Charger l'historique depuis localStorage (pour la sidebar)
     const savedSessions = loadChatHistory();
-    
-    if (savedSessions.length > 0) {
-      // Utiliser la première session comme active par défaut
-      const firstSession = savedSessions[0];
+    set({
+      allSessions: savedSessions,
+    });
+
+    // Toujours créer une nouvelle session vide au refresh
+    const { selectedModel } = useSettings.getState();
+    if (selectedModel) {
+      const modelId = selectedModel;
+      const newSession: ChatSession = {
+        id: `session-${Date.now()}`,
+        modelId,
+        modelName: modelId,
+        messages: [],
+        isLoading: false,
+        error: null
+      };
       set({
-        allSessions: savedSessions,
-        activeSessions: [firstSession],
-        currentSessionId: firstSession.id,
-        selectedModels: [firstSession.modelId]
+        activeSessions: [newSession],
+        currentSessionId: newSession.id,
+        selectedModels: [modelId]
       });
+      try { useUsageStats.getState().recordNewConversation(modelId); } catch {}
     } else {
-      // Initialiser avec le modèle par défaut si déjà connu, sinon attendre qu'il soit défini
-      const { selectedModel } = useSettings.getState();
-      if (selectedModel) {
-        const modelId = selectedModel;
-        const newSession: ChatSession = {
-          id: `session-${Date.now()}`,
-          modelId,
+      // Surveiller l'arrivée du modèle sélectionné automatiquement
+      const unsubscribe = useSettings.subscribe((state) => {
+        if (get().activeSessions.length === 0 && state.selectedModel) {
+          const modelId = state.selectedModel;
+          const newSession: ChatSession = {
+            id: `session-${Date.now()}`,
+            modelId,
             modelName: modelId,
-            messages: [], // Pas de message de bienvenue automatique
+            messages: [],
             isLoading: false,
             error: null
-        };
-        set({
-          allSessions: [newSession],
-          activeSessions: [newSession],
-          currentSessionId: newSession.id,
-          selectedModels: [modelId]
-        });
-        try { useUsageStats.getState().recordNewConversation(modelId); } catch {}
-      } else {
-        // Surveiller l'arrivée du modèle sélectionné automatiquement
-        const unsubscribe = useSettings.subscribe((state) => {
-          if (get().activeSessions.length === 0 && state.selectedModel) {
-            const modelId = state.selectedModel;
-            const newSession: ChatSession = {
-              id: `session-${Date.now()}`,
-              modelId,
-              modelName: modelId,
-              messages: [], // Pas de message de bienvenue automatique
-              isLoading: false,
-              error: null
-            };
-            set({
-              allSessions: [newSession],
-              activeSessions: [newSession],
-              currentSessionId: newSession.id,
-              selectedModels: [modelId]
-            });
-            try { useUsageStats.getState().recordNewConversation(modelId); } catch {}
-            unsubscribe();
-          }
-        });
-      }
+          };
+          set({
+            activeSessions: [newSession],
+            currentSessionId: newSession.id,
+            selectedModels: [modelId]
+          });
+          try { useUsageStats.getState().recordNewConversation(modelId); } catch {}
+          unsubscribe();
+        }
+      });
     }
 
     // Surveiller les changements du modèle par défaut pour synchroniser le chat

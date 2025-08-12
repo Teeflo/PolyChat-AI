@@ -15,6 +15,11 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({ message }) => {
   const isDark = theme === 'dark';
   const [copiedBlockId, setCopiedBlockId] = useState<string | null>(null);
 
+  // Guard: ne rien rendre si le contenu est vide après trim (évite bulle vide)
+  if (message.role === 'assistant' && (!message.content || message.content.trim() === '')) {
+    return null;
+  }
+
   const markdownComponents = useMemo(() => ({
     a: ({ href, children, ...props }: React.ComponentProps<'a'>) => (
       <a href={href} target="_blank" rel="noreferrer noopener" {...props}>
