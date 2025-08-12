@@ -109,12 +109,22 @@ const AppContent: React.FC = () => {
           onSettingsClick={toggleSettings}
           onHistoryClick={() => setIsSidebarOpen(!isSidebarOpen)}
           onModelClick={() => {
-            // Ouvrir le sélecteur de modèle
-            // Pour l'instant, on peut faire défiler vers le sélecteur de modèle
-            const modelSwitcher = document.querySelector('.pixel-model-switcher-bar');
-            if (modelSwitcher) {
-              modelSwitcher.scrollIntoView({ behavior: 'smooth' });
+            // Ouvrir les paramètres directement sur la section modèle par défaut
+            // Si déjà ouvert, simplement mettre en évidence la section
+            const wasClosed = !isSettingsOpen;
+            if (wasClosed) {
+              toggleSettings();
             }
+            // Laisser le temps au modal de s'afficher
+            setTimeout(() => {
+              const section = document.getElementById('default-model-section');
+              if (section) {
+                section.classList.add('flash-highlight');
+                section.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                setTimeout(()=> section.classList.remove('flash-highlight'), 2600);
+              }
+              // Ne plus forcer le focus sur le champ de recherche pour centrer sur la section
+            }, wasClosed ? 120 : 40);
           }}
         />
       </div>

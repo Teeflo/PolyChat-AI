@@ -13,3 +13,4 @@
 .onboard-btn.primary { background: var(--pixel-accent-primary); color: var(--pixel-text-inverse); border-color: var(--pixel-accent-primary); }
 .onboard-btn.secondary { background: var(--pixel-bg-secondary); color: var(--pixel-text-primary); border-color: var(--pixel-accent-muted); }
 .onboard-tip { margin-top: var(--spacing-sm); font-size: 11px; color: var(--pixel-text-secondary); }
+.model-empty { font-size:12px; opacity:.65; font-family:'JetBrains Mono', monospace; padding:8px 4px; }

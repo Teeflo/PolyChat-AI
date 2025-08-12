@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { X, Zap, Bot, Sparkles } from 'lucide-react';
 import { useSettings } from '../../hooks/useSettings';
-import { ModelSelectionStep } from './ModelSelectionStep';
+import ModelSelectionStep from './ModelSelectionStep';
 
 interface OnboardingModalProps {
   isOpen: boolean;
@@ -73,7 +73,7 @@ export function OnboardingModal({ isOpen, onClose }: OnboardingModalProps) {
           <p className="text-gray-600">
             Sélectionnez le modèle d'IA que vous souhaitez utiliser par défaut.
           </p>
-          <ModelSelectionStep />
+          <ModelSelectionStep onNext={()=> setCurrentStep(s=> Math.min(s+1, steps.length-1))} />
         </div>
       )
     }

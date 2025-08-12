@@ -1,7 +1,8 @@
 import React, { useState, useMemo, useRef, useEffect } from 'react';
-import { Sparkles, ChevronDown, X, Plus, Search } from 'lucide-react';
+import { Sparkles, ChevronDown, X, Plus, Search, Settings } from 'lucide-react';
 import { useChat } from '../../hooks/useChat';
 import { useModels } from '../../hooks/useModels';
+import { useSettings } from '../../hooks/useSettings';
 import './ModelSwitcher.css';
 
 /**
@@ -12,6 +13,7 @@ import './ModelSwitcher.css';
 const ModelSwitcher: React.FC = () => {
   const { selectedModels, addModel, removeModel, activeSessions } = useChat();
   const { models, loading } = useModels();
+  const { toggleSettings, isSettingsOpen } = useSettings();
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState('');
   const ref = useRef<HTMLDivElement | null>(null);
@@ -133,6 +135,28 @@ const ModelSwitcher: React.FC = () => {
                 ))}
               </ul>
             )}
+            <div className="model-switcher-footer">
+              <button
+                type="button"
+                className="model-switcher-settings-link"
+                onClick={() => {
+                  const wasClosed = !isSettingsOpen;
+                  if (wasClosed) toggleSettings();
+                  setTimeout(()=>{
+                    const section = document.getElementById('default-model-section');
+                    if (section) {
+                      section.classList.add('flash-highlight');
+                      section.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                      setTimeout(()=> section.classList.remove('flash-highlight'), 2400);
+                    }
+                  }, wasClosed ? 120 : 40);
+                  setOpen(false);
+                }}
+                aria-label="Ouvrir les paramètres pour définir le modèle par défaut"
+              >
+                <Settings size={12} /> Paramètres modèle par défaut
+              </button>
+            </div>
           </div>
         </div>
       )}

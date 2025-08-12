@@ -1,22 +1,6 @@
-import React,  {
-    title: 'Ajoutez votre clé API',
-    description: 'Rendez-vous dans Paramètres > API pour coller votre clé OpenRouter.',
-    icon: <SettingsIcon size={24} />,
-  },
-  {
-    title: 'Choisissez votre modèle IA',
-    description: 'Sélectionnez le modèle qui correspond le mieux à vos besoins.',
-    icon: <Bot size={24} />,
-    isModelSelection: true,
-  },
-  {
-    title: 'Choisissez un ton',
-    description: 'Définissez le style de l'IA: formel, amical, professionnel, etc.',
-    icon: <Zap size={24} />,
-  },e } from 'react';
+import React, { useState } from 'react';
 import { useSettings } from '../../hooks/useSettings';
-import { Cpu, Zap, Settings as SettingsIcon, Bell, Bot } from 'lucide-react';
-import ModelSelectionStep from './ModelSelectionStep';
+import { Cpu, Zap, Settings as SettingsIcon, Bell } from 'lucide-react';
 import './OnboardingModal.css';
 import './ModelSelectionStep.css';
 
@@ -33,12 +17,12 @@ const steps = [
   },
   {
     title: 'Choisissez un ton',
-    description: 'Définissez le style de l’IA: formel, amical, professionnel, etc.',
+    description: 'Définissez le style de l\u2019IA: formel, amical, professionnel, etc.',
     icon: <Zap size={24} />,
   },
   {
     title: 'Activez les notifications',
-    description: 'Recevez une alerte lorsqu’une réponse est prête (navigateur).',
+    description: 'Recevez une alerte lorsqu\u2019une réponse est prête (navigateur).',
     icon: <Bell size={24} />,
   },
 ];

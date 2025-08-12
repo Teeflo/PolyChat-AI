@@ -207,8 +207,11 @@ export async function fetchAvailableModels(filters?: Partial<ModelFilters>): Pro
         }
       })
       .sort((a, b) => {
-        // Trier par nom pour un affichage cohérent
-        return a.name?.localeCompare(b.name) || 0;
+        // Trier par date de création (plus récent d'abord). Fallback sur nom ensuite.
+        const ca = a.created || 0;
+        const cb = b.created || 0;
+        if (cb !== ca) return cb - ca;
+        return (a.name || a.id).localeCompare(b.name || b.id);
       });
     
     console.log(`✅ ${filteredModels.length} modèles filtrés et triés`);
