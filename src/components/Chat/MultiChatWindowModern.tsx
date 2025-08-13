@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React from 'react';
 import MessageBubbleModern from './MessageBubbleModern';
 import { Terminal, Zap, Bot } from 'lucide-react';
 import { useChat } from '../../hooks/useChat';
@@ -11,19 +11,7 @@ interface MultiChatWindowModernProps {
 }
 
 const MultiChatWindowModern: React.FC<MultiChatWindowModernProps> = ({ sessions }) => {
-  const messagesEndRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
   const { regenerateMessage, deleteMessage, streamingProgress, setSessionModel } = useChat();
-
-  useEffect(() => {
-    // Faire défiler vers le bas pour toutes les sessions
-    Object.values(messagesEndRefs.current).forEach(ref => {
-      ref?.scrollIntoView({ behavior: 'smooth' });
-    });
-  }, [sessions]);
-
-  const setMessagesEndRef = (sessionId: string) => (el: HTMLDivElement) => {
-    messagesEndRefs.current[sessionId] = el;
-  };
 
   const renderChatWindow = (session: ChatSession) => (
     <div key={session.id} className="chat-session-modern">
@@ -122,8 +110,6 @@ const MultiChatWindowModern: React.FC<MultiChatWindowModernProps> = ({ sessions 
               />
             )}
             
-            {/* Référence pour le scroll automatique */}
-            <div ref={setMessagesEndRef(session.id)} />
           </div>
         </div>
 

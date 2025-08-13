@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React from 'react';
 import MessageBubble from './MessageBubble';
 import ThinkingAnimation from './ThinkingAnimation';
 import { useChat } from '../../hooks/useChat';
@@ -12,23 +12,24 @@ interface ChatWindowProps {
 const ChatWindow: React.FC<ChatWindowProps> = ({ sessions }) => {
   const { activeSessions, isAnyLoading, stopStreaming } = useChat();
   const { theme } = useSettings();
-  const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const isDark = theme === 'dark';
-  
   // Utiliser les sessions passées en prop ou les sessions actives du store
   const currentSessions = sessions || activeSessions;
   const messages = currentSessions[0]?.messages || [];
   const error = currentSessions[0]?.error || null;
   const modelName = currentSessions[0]?.modelName || currentSessions[0]?.modelId || 'Modèle inconnu';
 
-  useEffect(() => {
-    scrollToBottom();
-  }, [messages, isAnyLoading]);
 
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  };
+
+
+  // Gestion du scroll utilisateur : active/désactive l'auto-scroll
+  // Scroll automatique désactivé : aucun effet, l'utilisateur contrôle le scroll.
+
+
+
+  // Scroll intelligent : ne scrolle que si auto-scroll actif
+  // Aucune logique de scroll automatique, l'utilisateur contrôle le scroll.
 
   return (
     <div className={`chat-window-container ${isDark ? 'dark' : 'light'}`}>
@@ -45,7 +46,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ sessions }) => {
               Posez-moi n'importe quelle question !
             </p>
             <div className="chat-model-default">
-              <span style={{ fontWeight: 'bold', fontSize: '0.95em' }}>Modèle : </span>
+              <span className="chat-model-label">Modèle : </span>
               <span>{modelName}</span>
             </div>
           </div>
@@ -77,7 +78,6 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ sessions }) => {
           </div>
         )}
         
-        <div ref={messagesEndRef} />
       </div>
       {/* Animation en bas de page, hors du flux des messages */}
       {isAnyLoading && (

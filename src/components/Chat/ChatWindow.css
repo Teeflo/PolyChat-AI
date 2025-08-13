@@ -1,6 +1,8 @@
 .chat-window-container {
   flex: 1;
-  overflow-y: auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
   padding: 24px;
   background-color: #f8fafc;
   background-image: radial-gradient(circle at 25% 25%, #f1f5f9 0%, transparent 50%), radial-gradient(circle at 75% 75%, #e2e8f0 0%, transparent 50%);
@@ -19,6 +21,10 @@
 .chat-window-content {
   max-width: 800px;
   margin: 0 auto;
+  height: 100%;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
 }
 
 .chat-welcome-container {
@@ -247,4 +253,9 @@
     transform: scale(1.2);
     opacity: 1;
   }
+}
+
+.chat-model-label {
+  font-weight: bold;
+  font-size: 0.95em;
 }
