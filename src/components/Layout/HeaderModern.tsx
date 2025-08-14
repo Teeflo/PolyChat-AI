@@ -22,29 +22,58 @@ const HeaderModern: React.FC<HeaderProps> = ({ onSettingsClick, onModelClick, on
   return (
     <header className="pixel-header">
       <div className="header-modern-container">
-        {/* Logo et titre modernisés */}
+        {/* Brand section + bouton historique à gauche */}
         <div className="header-modern-brand">
-          {/* Logo moderne avec effet de glow */}
-          <div className="header-modern-logo pixel-glow">
-            <picture className="header-modern-logo-picture">
-              <source srcSet="/logo.webp" type="image/webp" />
-              <img
-                src="/logo.svg"
-                alt="PolyChat logo"
-                className="header-modern-logo-img"
-                onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }}
-              />
-            </picture>
-            <Cpu size={28} style={{ 
-              color: 'var(--pixel-text-inverse)',
-              filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.3))',
-              zIndex: 1
-            }} />
-            
-            {/* Indicateur d'activité */}
-            <div className="header-modern-activity-indicator" />
-          </div>
-          
+          {/* Logo = bouton historique */}
+          {onHistoryClick ? (
+            <button
+              onClick={onHistoryClick}
+              className="header-modern-logo-btn pixel-glow"
+              aria-label="Ouvrir l'historique"
+              title="Historique des conversations"
+            >
+              <span className="header-modern-logo-btn-inner">
+                <picture className="header-modern-logo-picture">
+                  <source srcSet="/logo.webp" type="image/webp" />
+                  <img
+                    src="/logo.svg"
+                    alt="PolyChat logo"
+                    className="header-modern-logo-img"
+                    onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }}
+                  />
+                </picture>
+                <Cpu size={28} style={{ 
+                  color: 'var(--pixel-text-inverse)',
+                  filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.3))',
+                  zIndex: 1
+                }} />
+                {/* Indicateur d'activité */}
+                <div className="header-modern-activity-indicator" />
+                {/* Icône historique qui apparaît au hover */}
+                <span className="header-modern-logo-history-hover">
+                  <MessageSquare size={28} />
+                </span>
+              </span>
+            </button>
+          ) : (
+            <div className="header-modern-logo pixel-glow">
+              <picture className="header-modern-logo-picture">
+                <source srcSet="/logo.webp" type="image/webp" />
+                <img
+                  src="/logo.svg"
+                  alt="PolyChat logo"
+                  className="header-modern-logo-img"
+                  onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }}
+                />
+              </picture>
+              <Cpu size={28} style={{ 
+                color: 'var(--pixel-text-inverse)',
+                filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.3))',
+                zIndex: 1
+              }} />
+              <div className="header-modern-activity-indicator" />
+            </div>
+          )}
           {/* Titre avec hiérarchie moderne */}
           <div>
             <h1 className="header-modern-title">
@@ -72,23 +101,10 @@ const HeaderModern: React.FC<HeaderProps> = ({ onSettingsClick, onModelClick, on
 
         {/* Actions à droite */}
         <div className="header-modern-actions">
-          {/* Bouton Historique */}
-          {onHistoryClick && (
-            <button 
-              onClick={onHistoryClick}
-              className="header-modern-history-btn"
-              aria-label="Ouvrir l'historique"
-              title="Historique des conversations"
-            >
-              <MessageSquare size={18} />
-            </button>
-          )}
-          
           {/* Toggle de thème modernisé */}
           <div className="header-modern-theme-toggle">
             <ThemeToggle />
           </div>
-          
           {/* Bouton Settings simple et élégant */}
           <button 
             onClick={onSettingsClick}

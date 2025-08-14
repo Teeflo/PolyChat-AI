@@ -1,11 +1,112 @@
+.header-modern-logo-btn-inner picture,
+.header-modern-logo-btn-inner .lucide-cpu,
+.header-modern-activity-indicator {
+  transition: opacity 0.25s cubic-bezier(0.4,0,0.2,1);
+}
+
+.header-modern-logo-btn:hover .header-modern-logo-btn-inner picture,
+.header-modern-logo-btn:focus .header-modern-logo-btn-inner picture,
+.header-modern-logo-btn:hover .header-modern-logo-btn-inner .lucide-cpu,
+.header-modern-logo-btn:focus .header-modern-logo-btn-inner .lucide-cpu,
+.header-modern-logo-btn:hover .header-modern-activity-indicator,
+.header-modern-logo-btn:focus .header-modern-activity-indicator {
+  opacity: 0;
+}
+
+.header-modern-logo-btn .header-modern-logo-btn-inner picture,
+.header-modern-logo-btn .header-modern-logo-btn-inner .lucide-cpu,
+.header-modern-logo-btn .header-modern-activity-indicator {
+  opacity: 1;
+}
+
+.header-modern-logo-btn .header-modern-logo-history-hover {
+  opacity: 0;
+}
+
+.header-modern-logo-btn:hover .header-modern-logo-history-hover,
+.header-modern-logo-btn:focus .header-modern-logo-history-hover {
+  opacity: 1;
+}
+
+.header-modern-logo-btn {
+  position: relative;
+  width: 56px;
+  height: 56px;
+  border: 2.5px solid var(--pixel-accent-primary, #38bdf8);
+  background: linear-gradient(135deg, rgba(100,116,139,0.18) 0%, rgba(71,85,105,0.22) 100%);
+  box-shadow:
+    0 0 0 4px rgba(56,189,248,0.10),
+    0 0 16px 2px var(--pixel-accent-primary, #38bdf8),
+    0 4px 16px rgba(0,0,0,0.13),
+    inset 0 1px 0 rgba(255,255,255,0.10);
+  padding: 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 18px;
+  outline: none;
+  transition: box-shadow 0.25s, border-color 0.25s;
+  z-index: 2;
+}
+
+.header-modern-logo-btn:hover,
+.header-modern-logo-btn:focus {
+  border-color: var(--pixel-accent-secondary, #f472b6);
+  box-shadow:
+    0 0 0 6px rgba(244,114,182,0.13),
+    0 0 24px 4px var(--pixel-accent-secondary, #f472b6),
+    0 6px 20px rgba(0,0,0,0.18),
+    inset 0 1px 0 rgba(255,255,255,0.13);
+}
+
+.header-modern-logo-btn.pixel-glow {
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.1);
+}
+
+.header-modern-logo-btn-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.header-modern-logo-history-hover {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s cubic-bezier(0.4,0,0.2,1);
+  z-index: 3;
+  color: var(--pixel-accent-primary);
+  background: rgba(0,0,0,0.08);
+  border-radius: 18px;
+}
+
+.header-modern-logo-btn:hover .header-modern-logo-history-hover,
+.header-modern-logo-btn:focus .header-modern-logo-history-hover {
+  opacity: 1;
+}
 /* Header Moderne - Styles */
+
 
 .header-modern-container {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 20px 32px;
-  max-width.header-modern-actions {
+  position: relative;
+}
+
+.header-modern-actions {
   display: flex;
   align-items: center;
   gap: 12px;
@@ -145,6 +246,11 @@
   border-radius: 30px;
   border: var(--border-thin);
   box-shadow: var(--shadow-sm);
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
 }
 
 .header-modern-model-indicator {
