@@ -1,5 +1,5 @@
 import React from 'react';
-import { Settings, Cpu, Zap, Activity, MessageSquare } from 'lucide-react';
+import { Settings, Cpu, Zap, Activity, History } from 'lucide-react';
 import ThemeToggle from './ThemeTogglePixel';
 import { useSettings } from '../../hooks/useSettings';
 import './HeaderModern.css';
@@ -51,7 +51,7 @@ const HeaderModern: React.FC<HeaderProps> = ({ onSettingsClick, onModelClick, on
                 <div className="header-modern-activity-indicator" />
                 {/* Icône historique qui apparaît au hover */}
                 <span className="header-modern-logo-history-hover">
-                  <MessageSquare size={28} />
+                  <History size={28} />
                 </span>
               </span>
             </button>
