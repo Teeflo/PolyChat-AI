@@ -41,98 +41,181 @@ Pour lancer une instance locale de PolyChat-AI, suivez ces étapes simples.
 1.  **Clonez le dépôt**
     ```bash
     git clone https://github.com/Teeflo/PolyChat-AI.git
-    ```
-2.  **Naviguez vers le répertoire du projet**
-    ```bash
+    ```markdown
+    <div align="center">
+      <img src="./public/logo.svg" alt="Logo PolyChat-AI" width="160" />
+      <h1>PolyChat-AI</h1>
+      <p><em>Votre compagnon de conversation IA — personnalisable, léger et élégant.</em></p>
+
+      <!-- Badges -->
+      <p>
+        <img src="https://img.shields.io/badge/version-1.0.0-blue.svg" alt="Version">
+        <img src="https://img.shields.io/badge/licence-MIT-green.svg" alt="Licence">
+        <img src="https://img.shields.io/badge/React-18.2.0-blue?logo=react" alt="React">
+        <img src="https://img.shields.io/badge/TypeScript-5.2.2-blue?logo=typescript" alt="TypeScript">
+        <img src="https://img.shields.io/badge/Vite-5.2.0-purple?logo=vite" alt="Vite">
+        <img src="https://img.shields.io/badge/Tailwind_CSS-3.4.3-blue?logo=tailwind-css" alt="Tailwind CSS">
+      </p>
+    </div>
+    ---
+
+    ## Aperçu
+
+    PolyChat-AI est une application web de chat alimentée par des modèles LLM via l'API OpenRouter. Elle propose une interface moderne et stylisée (avec un thème pixel-art optionnel), un sélecteur de modèles, un historique de conversations et des réglages persistants côté client.
+
+    Demo rapide
+
+    - Démarrage local : lancez `npm run dev` et ouvrez `http://localhost:5173`.
+    - Configuration : entrez votre clé API OpenRouter dans la modal de configuration au premier démarrage.
+
+    <div align="center">
+      <img src="./public/logo.svg" alt="Logo PolyChat-AI" width="160" />
+      <h1>PolyChat-AI</h1>
+      <p><em>Votre compagnon de conversation IA — personnalisable, léger et élégant.</em></p>
+
+      <!-- Badges -->
+      <p>
+        <img src="https://img.shields.io/badge/version-1.0.0-blue.svg" alt="Version">
+        <img src="https://img.shields.io/badge/licence-MIT-green.svg" alt="Licence">
+        <img src="https://img.shields.io/badge/React-18.2.0-blue?logo=react" alt="React">
+        <img src="https://img.shields.io/badge/TypeScript-5.2.2-blue?logo=typescript" alt="TypeScript">
+        <img src="https://img.shields.io/badge/Vite-5.2.0-purple?logo=vite" alt="Vite">
+        <img src="https://img.shields.io/badge/Tailwind_CSS-3.4.3-blue?logo=tailwind-css" alt="Tailwind CSS">
+      </p>
+    </div>
+
+    ---
+
+    ## Aperçu
+
+    PolyChat-AI est une application web de chat alimentée par des modèles LLM via l'API OpenRouter. Elle propose une interface moderne et stylisée (avec un thème pixel-art optionnel), un sélecteur de modèles, un historique de conversations et des réglages persistants côté client.
+
+    Demo rapide
+
+    - Démarrage local : lancez `npm run dev` et ouvrez `http://localhost:5173`.
+    - Configuration : entrez votre clé API OpenRouter dans la modal de configuration au premier démarrage.
+
+    ## Principales fonctionnalités
+
+    - Interface thématique (moderne / pixel) avec bascule de thème.
+    - Sélectionnaire de modèles via OpenRouter.
+    - Historique local des conversations (persisté en localStorage).
+    - Entrée et rendu des messages optimisés (suggestions, animations, etc.).
+    - Architecture React + TypeScript, état géré avec Zustand.
+
+    ## Contrat minimal (inputs/outputs)
+
+    - Input : clé API OpenRouter (string), messages utilisateur (string), option de modèle.
+    - Output : réponses du modèle LLM en texte (string), historique de conversation stocké localement.
+    - Erreurs : affichage de l'état réseau / erreurs d'API dans l'UI.
+
+    ## Cas limites à considérer
+
+    1. Clé API manquante ou invalide — l'application doit demander la clé et afficher une erreur claire.
+    2. Modèle indisponible / rate limit — afficher message et proposer d'essayer un autre modèle.
+    3. Historique vide — afficher un état vide et une invite pour commencer une nouvelle conversation.
+    ## Installation
+
+    Pour lancer une instance locale de PolyChat-AI, suivez ces étapes simples.
+
+
+    1. **Clonez le dépôt**
+
+    ```powershell
+    git clone https://github.com/Teeflo/PolyChat-AI.git
     cd PolyChat-AI
     ```
-3.  **Installez les dépendances**
-    ```bash
+
+    1. **Installez les dépendances**
+
+    ```powershell
     npm install
     ```
 
-## ⚙️ Configuration
+    1. **Démarrage en développement**
 
-Pour que l'application puisse communiquer avec les modèles de langage, une clé API **OpenRouter** est nécessaire.
-
-1.  Rendez-vous sur [OpenRouter.ai](https://openrouter.ai/) pour obtenir votre clé API gratuite.
-2.  Lancez l'application (`npm run dev`).
-3.  Une fenêtre modale apparaîtra vous invitant à entrer votre clé API.
-4.  Votre clé sera stockée de manière sécurisée dans le `localStorage` de votre navigateur pour les utilisations futures.
-
-## ▶️ Commandes disponibles
-
-Ce projet utilise `npm` pour la gestion des scripts. Voici les commandes principales :
-
--   **Lancer le serveur de développement :**
-    ```bash
+    ```powershell
     npm run dev
     ```
-    L'application sera disponible à l'adresse `http://localhost:5173`.
 
--   **Compiler pour la production :**
-    ```bash
-    npm run build
+    L'application sera accessible sur `http://localhost:5173` par défaut.
+
+    ## Configuration
+
+    1. Obtenez une clé API gratuite sur [OpenRouter](https://openrouter.ai/).
+    1. Lancez l'application (`npm run dev`).
+    1. À la première utilisation, la modal demandera votre clé OpenRouter ; entrez-la pour l'enregistrer dans `localStorage`.
+
+    Notes de sécurité
+
+    - La clé est stockée côté client dans `localStorage` pour faciliter l'usage local — évitez de partager cette clé.
+    - Pour un usage en production, il est recommandé de proxyfier les appels via un backend pour garder la clé secrète.
+
+    ## Scripts utiles
+
+    - `npm run dev` — démarre le serveur de développement Vite.
+    - `npm run build` — crée le build de production dans `dist/`.
+    - `npm run preview` — prévisualise le build de production localement.
+    - `npm run lint` — lance ESLint selon la configuration du projet.
+
+    ## Structure du projet (extrait)
+
+    La structure principale du dépôt :
+
+    ```text
+    public/              # ressources statiques (logo, icônes, manifest)
+    src/
+      ├─ assets/         # images, svgs
+      ├─ components/     # UI découpée par feature (Chat, Layout, Settings...)
+      ├─ context/        # providers (ChatProvider)
+      ├─ hooks/          # useChat, useModels, useSettings, useUsageStats
+      ├─ services/       # appels API, stockage local
+      ├─ styles/         # thèmes et CSS globaux
+      ├─ types/          # types TypeScript
+      └─ utils/          # helpers
+
+    package.json         # scripts & dépendances
+    vite.config.ts       # configuration Vite
+    tsconfig*.json       # TypeScript config
     ```
-    Les fichiers optimisés seront générés dans le dossier `dist/`.
 
--   **Linter le code :**
-    ```bash
-    npm run lint
-    ```
-    Vérifie la qualité du code avec ESLint selon les règles configurées.
+    ## Développement et tests rapides
 
--   **Prévisualiser la version de production :**
-    ```bash
-    npm run preview
-    ```
-    Lance un serveur local pour tester le build de production.
+    - Ouvrez le projet dans VS Code.
+    - Installez les dépendances (`npm install`).
+    - Démarrez en dev (`npm run dev`).
 
-## 📂 Structure du projet
+    Quality gates rapides (local)
 
-Le projet est organisé de manière modulaire pour faciliter la maintenance et l'évolution.
+    1. Build : `npm run build` — doit compléter sans erreurs.
+    1. Lint : `npm run lint` — corrigez les erreurs signalées.
 
-```
-/
-├── public/          # Fichiers statiques (logos, polices)
-├── src/
-│   ├── assets/      # Ressources (images, svgs)
-│   ├── components/  # Composants React réutilisables
-│   │   ├── Chat/
-│   │   ├── Layout/
-│   │   └── Settings/
-│   ├── context/     # Contexte React (ChatProvider)
-│   ├── hooks/       # Hooks personnalisés (useChat, useModels)
-│   ├── services/    # Logique métier et appels API
-│   ├── styles/      # Fichiers CSS globaux et thèmes
-│   ├── types/       # Définitions de types TypeScript
-│   └── utils/       # Fonctions utilitaires
-├── .gitignore       # Fichiers ignorés par Git
-├── eslint.config.js # Configuration ESLint
-├── package.json     # Dépendances et scripts
-├── tsconfig.json    # Configuration TypeScript
-└── vite.config.ts   # Configuration Vite
-```
+    ## Contribution
 
-## 🤝 Contribution
+    Contributions bienvenues — suivez ce workflow simple :
 
-Les contributions sont ce qui fait vivre la communauté open-source. Toute contribution que vous apporterez sera **grandement appréciée**.
+    1. Forkez le dépôt et clonez votre fork.
+    1. Créez une branche : `git checkout -b feature/ma-fonctionnalite`.
+    1. Faites vos changements et committez.
+    1. Poussez et ouvrez une Pull Request décrivant les changements.
 
-Si vous avez une suggestion pour améliorer ce projet, n'hésitez pas à forker le dépôt et à créer une pull request. Vous pouvez aussi simplement ouvrir une issue avec le tag "enhancement".
+    Guides rapides
 
-1.  **Forkez le Projet**
-2.  Créez votre branche de fonctionnalité (`git checkout -b feature/NouvelleFonctionnalite`)
-3.  Commitez vos changements (`git commit -m 'Ajout de NouvelleFonctionnalite'`)
-4.  Pushez vers la branche (`git push origin feature/NouvelleFonctionnalite`)
-5.  Ouvrez une **Pull Request**
+    - Respectez la configuration TypeScript et ESLint existante.
+    - Ajoutez des tests ou vérifications minimales pour les nouvelles fonctionnalités quand c'est possible.
 
-## 📄 Licence
+    ## Roadmap (idées)
 
+    - Ajouter proxy backend pour garder la clé API côté serveur.
+    - Support multi-utilisateurs et sauvegarde distante.
+    - Intégration de nouveaux fournisseurs LLM.
+    - Amélioration des tests unitaires et e2e.
 
-Distribué sous la licence MIT. Voir `LICENSE.txt` pour plus d'informations.
+    ## Licence
 
----
+    Ce projet est distribué sous la licence MIT — voir le fichier `LICENSE`.
 
-<div align="center">
-  <p>Créé avec ❤️ par Teeflo</p>
-</div>
+    ---
+
+    Créé avec ❤️ par Teeflo — contributions bienvenues.
+
