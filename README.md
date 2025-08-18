@@ -24,8 +24,6 @@ L'application se connecte à l'API **OpenRouter** pour donner accès à une mult
 
 L'interface, inspirée par une esthétique pixel-art moderne, est entièrement stylée avec **Tailwind CSS** pour une personnalisation et une maintenance aisées.
 
-![Capture d'écran de l'application PolyChat-AI](./DESIGN-MODERNE.md)
-*(Note: Remplacez `DESIGN-MODERNE.md` par une véritable image de l'application, par exemple `screenshot.png`)*
 
 ## ✨ Fonctionnalités
 
@@ -42,7 +40,7 @@ Pour lancer une instance locale de PolyChat-AI, suivez ces étapes simples.
 
 1.  **Clonez le dépôt**
     ```bash
-    git clone https://github.com/votre-utilisateur/PolyChat-AI.git
+    git clone https://github.com/Teeflo/PolyChat-AI.git
     ```
 2.  **Naviguez vers le répertoire du projet**
     ```bash
@@ -130,10 +128,11 @@ Si vous avez une suggestion pour améliorer ce projet, n'hésitez pas à forker 
 
 ## 📄 Licence
 
+
 Distribué sous la licence MIT. Voir `LICENSE.txt` pour plus d'informations.
 
 ---
 
 <div align="center">
-  <p>Créé avec ❤️ par votre nom</p>
+  <p>Créé avec ❤️ par Teeflo</p>
 </div>
