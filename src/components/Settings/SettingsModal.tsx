@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
-import { X, Wifi, WifiOff, Loader2, MousePointer } from 'lucide-react';
+import { X, Wifi, WifiOff, Loader2 } from 'lucide-react';
 import ApiKeyInput from './ApiKeyInput';
 import ModelSelector from './ModelSelector';
 import { useSettings } from '../../hooks/useSettings';
 import { testOpenRouterAPI } from '../../services/apiTest';
-import { toggleHackerCursor } from '../../utils/hackerCursor';
 import './SettingsModal.css';
 
 interface SettingsModalProps {
@@ -20,7 +19,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose }) => {
     modelCount?: number;
   } | null>(null);
   const [testingAPI, setTestingAPI] = useState(false);
-  const [hackerCursorEnabled, setHackerCursorEnabled] = useState(true);
+  // Hacker cursor feature removed
   const isDark = theme === 'dark';
 
   const handleTestAPI = async () => {
@@ -70,26 +69,15 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose }) => {
             <ApiKeyInput />
             <ModelSelector />
             
-            {/* Hacker Cursor Effects Section */}
+            {/* Hacker Cursor Effects Section (removed) */}
             <div>
               <div className="settings-section-header">
                 <h3 className={`settings-section-title ${isDark ? 'dark' : 'light'}`}>
                   Effets de Curseur Hacker
                 </h3>
-                <button
-                  onClick={() => {
-                    toggleHackerCursor();
-                    setHackerCursorEnabled(!hackerCursorEnabled);
-                  }}
-                  className={`settings-toggle-btn ${hackerCursorEnabled ? 'enabled' : 'disabled'} ${isDark ? 'dark' : 'light'}`}
-                >
-                  <MousePointer size={14} />
-                  {hackerCursorEnabled ? 'Désactiver' : 'Activer'}
-                </button>
               </div>
-              
               <p className={`settings-section-description ${isDark ? 'dark' : 'light'}`}>
-                Active les effets de curseur personnalisés avec des particules et animations pour une expérience plus immersive.
+                Cette option a été supprimée. L'application utilise désormais le skin "modern-pixel" uniquement.
               </p>
             </div>
             

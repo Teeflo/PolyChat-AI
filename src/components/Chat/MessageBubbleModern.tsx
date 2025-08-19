@@ -7,7 +7,6 @@ import remarkGfm from 'remark-gfm';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { oneDark, oneLight } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import { useSettings } from '../../hooks/useSettings';
-import ThinkingAnimation from './ThinkingAnimation';
 
 interface MessageBubbleModernProps {
   message: Message;
