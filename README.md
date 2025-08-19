@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="./public/logo.svg" alt="Logo PolyChat-AI" width="150" />
+  <img src="./public/logo.webp" alt="Logo PolyChat-AI" width="150" />
   <h1>PolyChat-AI</h1>
   <p><strong>Votre compagnon de conversation IA, personnalisable et stylé.</strong></p>
   <p>Une interface moderne et intuitive pour interagir avec les meilleurs modèles de langage via OpenRouter</p>
