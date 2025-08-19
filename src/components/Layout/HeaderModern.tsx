@@ -1,6 +1,6 @@
 import React from 'react';
 import { Settings, Cpu, Zap, Activity, History } from 'lucide-react';
-import ThemeToggle from './ThemeTogglePixel';
+import ThemeToggle from './ThemeToggle';
 import { useSettings } from '../../hooks/useSettings';
 import './HeaderModern.css';
 
