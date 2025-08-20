@@ -1,3 +1,15 @@
+/* Adjust single-window header: keep header visually lighter but preserve inline model picker button styling */
+.single-chat-modern .chat-header-modern {
+  /* make header visually minimal but keep a subtle separator to distinguish header from messages */
+  background: none;
+  /* restore a thin subtle border to separate header and content in single-window view */
+  border-bottom: var(--border-thin);
+  border-color: var(--polychat-accent-muted);
+  box-shadow: none;
+  padding-left: 0;
+  padding-right: 0;
+}
+
 /* Multi Chat Window Moderne - Styles */
 
 .multi-chat-container-modern {
@@ -13,6 +25,7 @@
   display: flex;
   flex-direction: column;
   min-height: 0;
+  margin: var(--spacing-md);
 }
 
 .multi-chat-grid-modern {
@@ -45,8 +58,9 @@
   display: flex;
   flex-direction: column;
   height: 100%;
-  min-height: 500px; /* Augmenté de 400px à 500px */
-  max-height: 80vh; /* Augmenté de 70vh à 80vh */
+  min-height: 0;
+  max-height: none;
+  background: none !important;
 }
 
 .chat-window-modern {
@@ -74,7 +88,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: var(--spacing-md) var(--spacing-lg);
+  padding: var(--spacing-md) var(--spacing-lg) var(--spacing-md) var(--spacing-4xl);
   background: var(--gradient-dark);
   border-bottom: var(--border-thin);
   border-color: var(--polychat-accent-muted);
@@ -85,6 +99,21 @@
   display: flex;
   align-items: center;
   gap: var(--spacing-sm);
+  margin-left: var(--spacing-md);
+}
+
+/* Prevent header details from overflowing: allow truncation and proper flex behavior */
+.chat-header-modern-details {
+  display: flex;
+  flex-direction: column;
+  min-width: 0; /* allow children to shrink */
+  max-width: 40vw; /* limit width relative to viewport to avoid overflow */
+}
+
+.chat-header-modern-details > * {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .chat-header-modern-icon {
@@ -111,6 +140,13 @@
   color: var(--polychat-text-primary);
   margin: 0;
   line-height: 1.2;
+}
+
+.chat-header-modern-subtitle {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 38vw; /* keep subtitle slightly narrower */
 }
 
 /* Select inline pour sessions pending */

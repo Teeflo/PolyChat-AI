@@ -1,7 +1,11 @@
 .message-bubble-container {
   display: flex;
   justify-content: flex-start;
-  margin-bottom: 20px;
+  margin-bottom: 0;
+}
+
+.message-bubble-container + .message-bubble-container {
+  margin-top: 20px; /* Add margin between bubbles */
 }
 
 .message-bubble-container.user {

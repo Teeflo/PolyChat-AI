@@ -5,7 +5,7 @@
   max-width: 1200px;
   margin: 0 auto;
   position: relative;
-  padding: var(--spacing-md);
+  padding: 0; /* Reduced padding */
 }
 
 /* Indicateur de template actif */

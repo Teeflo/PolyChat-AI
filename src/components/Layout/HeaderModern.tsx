@@ -83,8 +83,8 @@ const HeaderModern: React.FC<HeaderProps> = ({ onSettingsClick, onModelClick, on
           </div>
         </div>
         
-        {/* Barre de statut centrale */}
-        <div className="header-modern-status-bar">
+        {/* Section centrale pour l'indicateur de modèle */}
+        <div className="header-modern-middle-section">
           {/* Indicateur de modèle cliquable */}
           <button 
             onClick={onModelClick}

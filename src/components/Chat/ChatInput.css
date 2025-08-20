@@ -1,6 +1,6 @@
 .chat-input-container {
   border-top: 1px solid;
-  padding: 20px 24px;
+  padding: 8px 0 0 0; /* Remove bottom and side padding */
   background-color: #ffffff;
   backdrop-filter: blur(10px);
   box-shadow: 0 -1px 3px 0 rgba(0, 0, 0, 0.1), 0 -1px 2px 0 rgba(0, 0, 0, 0.06);
@@ -19,6 +19,7 @@
 .chat-input-form {
   max-width: 800px;
   margin: 0 auto;
+  padding-bottom: 0;
 }
 
 .chat-input-wrapper {

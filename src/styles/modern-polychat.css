@@ -5,18 +5,18 @@
 
 /* Variables CSS modernisées */
 :root {
-  /* Palette de couleurs modernisée - Tons naturels et doux */
+  /* Palette de couleurs modernisée - Tons violets élégants */
   --polychat-bg-primary: #1a1d23;
   --polychat-bg-secondary: #242830;
   --polychat-bg-tertiary: #2d3142;
   --polychat-bg-glass: rgba(36, 40, 48, 0.85);
   --polychat-bg-glass-light: rgba(45, 49, 66, 0.7);
   
-  /* Nouveaux accents modernes - Tons plus doux */
-  --polychat-accent-primary: #64748b; /* Gris-bleu principal */
-  --polychat-accent-secondary: #475569; /* Gris-bleu secondaire */
-  --polychat-accent-tertiary: #94a3b8; /* Gris-bleu clair */
-  --polychat-accent-muted: #374151; /* Gris sourd pour les éléments discrets */
+  /* Nouveaux accents modernes - Tons violets */
+  --polychat-accent-primary: #8b5cf6; /* Violet principal */
+  --polychat-accent-secondary: #a78bfa; /* Violet secondaire */
+  --polychat-accent-tertiary: #ddd6fe; /* Violet clair */
+  --polychat-accent-muted: #4c1d95; /* Violet sourd pour les éléments discrets */
   
   /* Couleurs d'état modernisées - Moins saturées */
   --polychat-success: #10b981;
@@ -40,12 +40,12 @@
   --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.3);
   --shadow-lg: 0 8px 16px rgba(0, 0, 0, 0.4);
   --shadow-xl: 0 16px 32px rgba(0, 0, 0, 0.5);
-  --shadow-cyber: 0 2px 8px rgba(100, 116, 139, 0.2);
-  --shadow-cyber-strong: 0 4px 12px rgba(100, 116, 139, 0.3);
+  --shadow-cyber: 0 2px 8px rgba(139, 92, 246, 0.2);
+  --shadow-cyber-strong: 0 4px 12px rgba(139, 92, 246, 0.3);
   
   /* Effets subtils - Remplace les effets néon */
-  --subtle-glow: 0 0 0 1px rgba(100, 116, 139, 0.2);
-  --subtle-glow-hover: 0 0 0 2px rgba(100, 116, 139, 0.3);
+  --subtle-glow: 0 0 0 1px rgba(139, 92, 246, 0.2);
+  --subtle-glow-hover: 0 0 0 2px rgba(139, 92, 246, 0.3);
   
   /* Bordures modernes */
   --border-thin: 1px solid var(--polychat-accent-muted);
@@ -336,8 +336,8 @@ body.theme-dark {
   height: 100%;
   opacity: 0.03;
   background-image: 
-    linear-gradient(rgba(100, 116, 139, 0.1) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(100, 116, 139, 0.1) 1px, transparent 1px);
+    linear-gradient(rgba(139, 92, 246, 0.1) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(139, 92, 246, 0.1) 1px, transparent 1px);
   background-size: 50px 50px;
   animation: modernPulse 4s ease-in-out infinite;
   z-index: -2;
@@ -544,7 +544,7 @@ body.theme-dark {
   -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
   appearance: none;
-  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%2364748b' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%238b5cf6' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
   background-position: right 12px center;
   background-repeat: no-repeat;
   background-size: 16px;
@@ -628,7 +628,7 @@ body.theme-dark {
   backdrop-filter: blur(20px);
   border-top: var(--border-medium);
   border-image: var(--gradient-cyber) 1;
-  padding: var(--spacing-xs) var(--spacing-lg);
+  padding: 4px var(--spacing-md); /* Réduction du padding */
 }
 
 /* Animations pour les messages de chargement */
@@ -709,13 +709,19 @@ body.theme-dark {
 
 .polychat-messages-container {
   flex: 1;
-  overflow: hidden; /* Empêcher le scroll global */
-  padding: 0 var(--spacing-lg);
-  min-height: 0; /* Important pour le flexbox */
+  padding: 0;
+  margin: 0;
+  min-height: 0;
+}
+
+.polychat-messages-container > *:last-child {
+    margin-bottom: 0;
 }
 
 .polychat-input-area {
   flex-shrink: 0;
+  padding: 0;
+  margin: 0;
 }
 
 /* États et interactions */

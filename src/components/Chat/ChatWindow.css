@@ -3,9 +3,10 @@
   min-height: 0;
   display: flex;
   flex-direction: column;
-  padding: 24px;
+  /* padding: 24px; */ /* Removed padding */
   background-color: #f8fafc;
   background-image: radial-gradient(circle at 25% 25%, #f1f5f9 0%, transparent 50%), radial-gradient(circle at 75% 75%, #e2e8f0 0%, transparent 50%);
+  height: 100%; /* Added to ensure it takes full height */
 }
 
 .chat-window-container.dark {
@@ -25,11 +26,14 @@
   overflow-y: auto;
   display: flex;
   flex-direction: column;
+  flex-grow: 1;
+  justify-content: flex-end; /* Pushes content to the bottom */
+  padding-bottom: 0; /* Remove any bottom padding */
 }
 
 .chat-welcome-container {
   text-align: center;
-  padding: 60px 20px;
+  padding: 20px 20px 0 20px; /* Reduce bottom padding */
   color: #6b7280;
 }
 
@@ -258,4 +262,9 @@
 .chat-model-label {
   font-weight: bold;
   font-size: 0.95em;
+}
+
+/* Override max-height for single chat window messages */
+.chat-window-container .chat-messages-modern {
+  max-height: none;
 }
