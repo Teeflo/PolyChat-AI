@@ -114,7 +114,7 @@ const InlineSuggestions: React.FC<InlineSuggestionsProps> = ({
     .map(item => item.template);
 
     return scored;
-  }, [inputValue, activeSessions, showAll]);
+  }, [inputValue, showAll]);
 
   if (contextualSuggestions.length === 0) {
     return null;

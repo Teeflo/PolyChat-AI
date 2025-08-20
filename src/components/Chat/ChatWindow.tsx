@@ -6,7 +6,7 @@ import { useSettings } from '../../hooks/useSettings';
 import './ChatWindow.css';
 
 interface ChatWindowProps {
-  sessions?: any[]; // Ajouter la prop sessions si nécessaire
+  sessions?: ChatSession[];
 }
 
 const ChatWindow: React.FC<ChatWindowProps> = ({ sessions }) => {
@@ -53,14 +53,14 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ sessions }) => {
         )}
 
         {messages
-          .filter((message: any) => {
+          .filter((message: Message) => {
             if (message.role !== 'assistant') return true;
             const content = (message.content ?? '').trim();
             // Exclure tout message assistant vide, ne contenant que des espaces, en streaming, '…', ou qui commence/termine par '…'
             if (!content || message.streaming || content === '…' || content.startsWith('…') || content.endsWith('…')) return false;
             return true;
           })
-          .map((message: any) => (
+          .map((message: Message) => (
             <MessageBubble key={message.id} message={message} />
         ))}
         

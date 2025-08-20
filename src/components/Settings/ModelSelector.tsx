@@ -19,7 +19,7 @@ const ModelSelector: React.FC = () => {
   // Charger les modèles au montage du composant
   useEffect(() => {
     loadModels();
-  }, []);
+  }, [loadModels]);
 
   const loadModels = async () => {
     try {

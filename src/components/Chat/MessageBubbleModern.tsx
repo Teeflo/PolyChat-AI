@@ -42,8 +42,8 @@ const MessageBubbleModern: React.FC<MessageBubbleModernProps> = ({
 
   const markdownComponents = useMemo(() => ({
     // Inline code
-    code: ({ className, children, ...props }: React.ComponentProps<"code"> & { inline?: boolean }) => {
-      const inline = (props as any).inline;
+    code: ({ className, children, ...props }: React.ComponentProps<"code"> & { inline?: boolean; 'data-nodeid'?: string; }) => {
+      const inline = props.inline;
       const match = /language-(\w+)/.exec(className || '');
       if (!inline) {
         const language = match ? match[1] : '';

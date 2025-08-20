@@ -28,7 +28,7 @@ const ThinkingAnimation: React.FC<ThinkingAnimationProps> = ({
     }, 2000);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [thinkingMessages.length]);
 
   const getContainerClass = () => {
     switch (position) {

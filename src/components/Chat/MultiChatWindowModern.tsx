@@ -31,7 +31,7 @@ const MultiChatWindowModern: React.FC<MultiChatWindowModernProps> = ({ sessions 
               />
               <span className="chat-header-modern-subtitle">
                 {/* Affiche 0 si aucun message utilisateur n'a été envoyé */}
-                {Math.max(0, session.messages.length - 1)} messages
+                {session.messages.filter(m => m.role !== 'system').length} messages
               </span>
             </div>
           </div>

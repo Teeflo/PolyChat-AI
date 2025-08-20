@@ -30,7 +30,7 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({ message }) => {
       inline?: boolean;
       className?: string;
       children?: React.ReactNode;
-      [key: string]: any;
+      'data-nodeid'?: string;
     }) => {
       const match = /language-(\w+)/.exec(className || '');
       if (!inline) {

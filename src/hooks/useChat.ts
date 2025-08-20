@@ -52,65 +52,87 @@ export const useChat = create<ChatStore>((set, get) => ({
   streamingProgress: {},
   pendingTemplate: null,
   
-  initializeChat: () => {
-    // Charger l'historique depuis localStorage (pour la sidebar)
+    initializeChat: () => {
     const savedSessions = loadChatHistory();
     set({
       allSessions: savedSessions,
     });
 
-    // Toujours créer une nouvelle session vide au refresh
-    const { selectedModel } = useSettings.getState();
-    if (selectedModel) {
-      const modelId = selectedModel;
-      const newSession: ChatSession = {
-        id: `session-${Date.now()}`,
-        modelId,
-        modelName: modelId,
-        messages: [],
-        isLoading: false,
-        error: null
-      };
-      set({
-        activeSessions: [newSession],
-        currentSessionId: newSession.id,
-        selectedModels: [modelId]
-      });
-      try { useUsageStats.getState().recordNewConversation(modelId); } catch {}
+    // Check if there are any saved sessions with messages
+    const hasExistingConversations = savedSessions.some(session => session.messages.length > 0);
+
+    if (hasExistingConversations) {
+      // If there are existing conversations, set the active session to the first one with messages
+      const firstSessionWithMessage = savedSessions.find(session => session.messages.length > 0);
+      if (firstSessionWithMessage) {
+        set({
+          activeSessions: [firstSessionWithMessage],
+          currentSessionId: firstSessionWithMessage.id,
+          selectedModels: [firstSessionWithMessage.modelId]
+        });
+      } else {
+        // Fallback: if all saved sessions are empty, create a new one
+        createNewEmptySession();
+      }
     } else {
-      // Surveiller l'arrivée du modèle sélectionné automatiquement
-      const unsubscribe = useSettings.subscribe((state) => {
-        if (get().activeSessions.length === 0 && state.selectedModel) {
-          const modelId = state.selectedModel;
-          const newSession: ChatSession = {
-            id: `session-${Date.now()}`,
-            modelId,
-            modelName: modelId,
-            messages: [],
-            isLoading: false,
-            error: null
-          };
-          set({
-            activeSessions: [newSession],
-            currentSessionId: newSession.id,
-            selectedModels: [modelId]
-          });
-          try { useUsageStats.getState().recordNewConversation(modelId); } catch {}
-          unsubscribe();
-        }
-      });
+      // If no existing conversations, create a new empty session
+      createNewEmptySession();
+    }
+
+    // Helper function to create a new empty session
+    function createNewEmptySession() {
+      const { selectedModel } = useSettings.getState();
+      if (selectedModel) {
+        const modelId = selectedModel;
+        const newSession: ChatSession = {
+          id: `session-${Date.now()}`,
+          modelId,
+          modelName: modelId,
+          messages: [],
+          isLoading: false,
+          error: null
+        };
+        set({
+          activeSessions: [newSession],
+          currentSessionId: newSession.id,
+          selectedModels: [modelId]
+        });
+        try { useUsageStats.getState().recordNewConversation(modelId); } catch {}
+      } else {
+        // Surveiller l'arrivée du modèle sélectionné automatiquement
+        const unsubscribe = useSettings.subscribe((state) => {
+          if (get().activeSessions.length === 0 && state.selectedModel) {
+            const modelId = state.selectedModel;
+            const newSession: ChatSession = {
+              id: `session-${Date.now()}`,
+              modelId,
+              modelName: modelId,
+              messages: [],
+              isLoading: false,
+              error: null
+            };
+            set({
+              activeSessions: [newSession],
+              currentSessionId: newSession.id,
+              selectedModels: [modelId]
+            });
+            try { useUsageStats.getState().recordNewConversation(modelId); } catch {}
+            unsubscribe();
+          }
+        });
+      }
     }
 
     // Surveiller les changements du modèle par défaut pour synchroniser le chat
     useSettings.subscribe((state, prevState) => {
       const { selectedModels, activeSessions } = get();
-      
+
       // Si le modèle par défaut change et qu'on a une seule session active
-      if (state.selectedModel !== prevState?.selectedModel && 
-          state.selectedModel && 
-          selectedModels.length === 1 && 
+      if (state.selectedModel !== prevState?.selectedModel &&
+          state.selectedModel &&
+          selectedModels.length === 1 &&
           activeSessions.length === 1) {
-        
+
         // Remplacer le modèle actuel par le nouveau modèle par défaut
         const currentSession = activeSessions[0];
         const newSession: ChatSession = {
@@ -119,14 +141,14 @@ export const useChat = create<ChatStore>((set, get) => ({
           modelId: state.selectedModel,
           modelName: state.selectedModel,
         };
-        
+
         set({
           activeSessions: [newSession],
           allSessions: get().allSessions.map(s => s.id === currentSession.id ? newSession : s),
           currentSessionId: newSession.id,
           selectedModels: [state.selectedModel]
         });
-        
+
         console.log('🔄 Modèle par défaut changé, session mise à jour :', state.selectedModel);
       }
     });

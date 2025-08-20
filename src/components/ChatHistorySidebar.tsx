@@ -1,7 +1,7 @@
 import React from 'react';
 import { useChat } from '../hooks/useChat';
-import { useSettings } from '../hooks/useSettings';
-import { Trash2, Plus, MessageSquare, X } from 'lucide-react';
+import { X, Plus, MessageSquare, Trash2 } from 'lucide-react';
+import type { ChatSession } from '../types';
 import './ChatHistorySidebar.css';
 
 interface ChatHistorySidebarProps {
@@ -9,131 +9,138 @@ interface ChatHistorySidebarProps {
   onClose: () => void;
 }
 
-export const ChatHistorySidebar: React.FC<ChatHistorySidebarProps> = ({ isOpen, onClose }) => {
-  const { activeSessions, setActiveSession, createNewSession, deleteSession } = useChat();
-  const { selectedModel } = useSettings.getState();
+export const ChatHistorySidebar: React.FC<ChatHistorySidebarProps> = ({
+  isOpen,
+  onClose,
+}) => {
+  const { 
+    allSessions, 
+    currentSessionId, 
+    setActiveSession, 
+    createNewSession, 
+    deleteSession 
+  } = useChat();
 
-  const handleNewSession = () => {
-    createNewSession();
-    onClose();
-  };
-
-  const handleSwitchSession = (sessionId: string) => {
-    setActiveSession(sessionId);
-    onClose();
-  };
-
-  const handleDeleteSession = (sessionId: string, e: React.MouseEvent) => {
-    e.stopPropagation();
-    if (activeSessions.length > 1) {
-      deleteSession(sessionId);
+  // Fonction pour extraire le titre d'une session (30 premiers caractères du premier message utilisateur)
+  const getSessionTitle = (session: ChatSession): string => {
+    const userMessage = session.messages.find(msg => msg.role === 'user');
+    if (userMessage && userMessage.content.trim()) {
+      const title = userMessage.content.trim();
+      return title.length > 30 ? title.substring(0, 30) + '...' : title;
     }
+    return `${session.modelName} - Nouvelle conversation`;
+  };
+
+  // Fonction pour extraire un aperçu de la conversation
+  const getSessionPreview = (session: ChatSession): string => {
+    const lastMessage = session.messages[session.messages.length - 1];
+    if (lastMessage && lastMessage.content.trim()) {
+      const preview = lastMessage.content.trim();
+      return preview.length > 50 ? preview.substring(0, 50) + '...' : preview;
+    }
+    return 'Aucun message';
+  };
+
+  const handleNewChat = () => {
+    createNewSession();
+    onClose(); // Fermer la sidebar sur mobile après création
+  };
+
+  const handleSessionClick = (sessionId: string) => {
+    setActiveSession(sessionId);
+    onClose(); // Fermer la sidebar sur mobile après sélection
+  };
+
+  const handleDeleteSession = (e: React.MouseEvent, sessionId: string) => {
+    e.stopPropagation(); // Empêcher le clic de sélectionner la session
+    deleteSession(sessionId);
   };
 
   return (
     <>
-      {/* Overlay */}
+      {/* Overlay pour mobile */}
       {isOpen && (
         <div 
-          className="fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden"
+          className="fixed inset-0 bg-black bg-opacity-50 z-150 md:hidden"
           onClick={onClose}
         />
       )}
       
       {/* Sidebar */}
-      <div className={`chat-history-sidebar ${isOpen ? 'open' : 'closed'}`}>
-        <div className="chat-history-sidebar-content">
-          {/* Header */}
-          <div className="chat-history-header">
-            <div className="chat-history-header-content">
-              <div className="chat-history-icon">
-                <MessageSquare size={18} />
-              </div>
-              <h2 className="chat-history-title">Historique</h2>
+      <div className={`chat-history-sidebar ${!isOpen ? 'collapsed' : ''}`} role="complementary" aria-label="Historique des conversations">
+        {/* Header */}
+        <div className="chat-history-header">
+          <h2 className="chat-history-title">
+            <MessageSquare size={20} className="inline mr-2" />
+            Historique
+          </h2>
+          <button
+            className="chat-history-toggle"
+            onClick={onClose}
+            aria-label="Fermer l'historique"
+          >
+            <X size={20} />
+          </button>
+        </div>
+
+        {/* Liste des conversations */}
+        <div className="chat-history-list">
+          {allSessions.length === 0 ? (
+            <div className="text-center py-8 text-polychat-text-muted">
+              <MessageSquare size={48} className="mx-auto mb-4 opacity-50" />
+              <p>Aucune conversation</p>
             </div>
-            <button
-              onClick={onClose}
-              className="chat-history-close-btn"
-              aria-label="Fermer l'historique"
-            >
-              <X size={18} />
-            </button>
-          </div>
-
-          {/* New Chat Button */}
-          <div className="chat-history-new-section">
-            <button
-              onClick={handleNewSession}
-              disabled={!selectedModel}
-              className="chat-history-new-btn"
-            >
-              <div className="chat-history-new-btn-icon">
-                <Plus size={18} />
-              </div>
-              <span>Nouvelle conversation</span>
-            </button>
-          </div>
-
-          {/* Sessions List */}
-          <div className="chat-history-list">
-            {activeSessions.length === 0 ? (
-              <div className="chat-history-empty">
-                <MessageSquare size={24} />
-                <p>Aucune conversation</p>
-              </div>
-            ) : (
-              <div className="chat-history-sessions">
-                {activeSessions.map((session) => {
-                  const lastMessage = session.messages[session.messages.length - 1];
-                  const lastMessageContent = lastMessage?.content || 'Nouvelle conversation';
-                  const truncatedContent = lastMessageContent.length > 50 
-                    ? lastMessageContent.substring(0, 50) + '...' 
-                    : lastMessageContent;
-
-                  return (
-                    <div
-                      key={session.id}
-                      className="chat-history-session"
-                      onClick={() => handleSwitchSession(session.id)}
-                    >
-                      <div className="chat-history-session-content">
-                        <div className="chat-history-session-header">
-                          <div className="chat-history-session-icon">
-                            <MessageSquare size={14} />
-                          </div>
-                          <span className="chat-history-session-model">
-                            {session.modelName}
-                          </span>
-                        </div>
-                        <p className="chat-history-session-preview">
-                          {truncatedContent}
-                        </p>
-                      </div>
-                      {activeSessions.length > 1 && (
-                        <button
-                          onClick={(e) => handleDeleteSession(session.id, e)}
-                          className="chat-history-session-delete"
-                          title="Supprimer la conversation"
-                          aria-label="Supprimer la conversation"
-                        >
-                          <Trash2 size={12} />
-                        </button>
-                      )}
+          ) : (
+            allSessions.map((session) => (
+              <div
+                key={session.id}
+                className={`chat-history-item ${
+                  session.id === currentSessionId ? 'active' : ''
+                }`}
+                onClick={() => handleSessionClick(session.id)}
+              >
+                <div className="flex justify-between items-start">
+                  <div className="flex-1 min-w-0">
+                    <h3 className="chat-history-item-title">
+                      {getSessionTitle(session)}
+                    </h3>
+                    <p className="chat-history-item-preview">
+                      {getSessionPreview(session)}
+                    </p>
+                    <div className="flex items-center gap-2 mt-2">
+                      <span className="text-xs bg-polychat-accent-muted px-2 py-1 rounded text-white">
+                        {session.modelName}
+                      </span>
+                      <span className="text-xs text-polychat-text-muted">
+                        {session.messages.length} messages
+                      </span>
                     </div>
-                  );
-                })}
+                  </div>
+                  {allSessions.length > 1 && (
+                    <button
+                      className="ml-2 p-1 text-polychat-text-muted hover:text-polychat-error transition-colors"
+                      onClick={(e) => handleDeleteSession(e, session.id)}
+                      aria-label="Supprimer la conversation"
+                      title="Supprimer la conversation"
+                    >
+                      <Trash2 size={14} />
+                    </button>
+                  )}
+                </div>
               </div>
-            )}
-          </div>
+            ))
+          )}
+        </div>
 
-          {/* Footer */}
-          <div className="chat-history-footer">
-            <div className="chat-history-footer-content">
-              <span className="chat-history-count">
-                {activeSessions.length} conversation{activeSessions.length !== 1 ? 's' : ''}
-              </span>
-            </div>
-          </div>
+        {/* Footer avec bouton nouvelle conversation */}
+        <div className="chat-history-footer">
+          <button
+            className="new-chat-btn"
+            onClick={handleNewChat}
+          >
+            <Plus size={16} className="inline mr-2" />
+            Nouvelle Conversation
+          </button>
         </div>
       </div>
     </>

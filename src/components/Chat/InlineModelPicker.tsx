@@ -31,7 +31,7 @@ const InlineModelPicker: React.FC<InlineModelPickerProps> = ({ onSelect, current
 
   // Allow current model to be re-selected in this window
   const filtered = useMemo(() => {
-    let base = models.filter(m => !selectedModels.includes(m.id) || m.id === currentModelId);
+    const base = models.filter(m => !selectedModels.includes(m.id) || m.id === currentModelId);
     if (!query.trim()) return base.slice(0, 40);
     const q = query.toLowerCase();
     return base.filter(m => m.id.toLowerCase().includes(q) || m.name?.toLowerCase().includes(q)).slice(0, 60);

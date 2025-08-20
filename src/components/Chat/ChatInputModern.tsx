@@ -214,7 +214,7 @@ const ChatInputModern: React.FC = () => {
     if (pendingTemplate) {
       setMessage(pendingTemplate.userMessage);
       // Effacer le pending template après l'avoir utilisé
-      prepareTemplate(null as any);
+      prepareTemplate(null);
       // Focus sur le textarea
       setTimeout(() => {
         if (textareaRef.current) {

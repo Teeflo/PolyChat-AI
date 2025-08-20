@@ -15,7 +15,7 @@ const ModelSelector: React.FC = () => {
 
   useEffect(() => {
     loadModels();
-  }, []);
+  }, [loadModels]);
 
   const loadModels = async () => {
     try {
