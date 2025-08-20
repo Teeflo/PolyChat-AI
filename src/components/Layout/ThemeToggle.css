@@ -8,11 +8,9 @@
 }
 
 .theme-toggle-btn.dark-theme {
-  background: var(--polychat-accent-2);
-  color: var(--polychat-bg-primary);
+  background: var(--polychat-accent-tertiary);
 }
 
 .theme-toggle-btn.light-theme {
-  background: var(--polychat-yellow);
-  color: var(--polychat-bg-primary);
+  background: var(--polychat-accent-secondary);
 }

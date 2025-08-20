@@ -628,9 +628,7 @@ body.theme-dark {
   backdrop-filter: blur(20px);
   border-top: var(--border-medium);
   border-image: var(--gradient-cyber) 1;
-  padding: var(--spacing-lg);
-  position: sticky;
-  bottom: 0;
+  padding: var(--spacing-xs) var(--spacing-lg);
 }
 
 /* Animations pour les messages de chargement */
@@ -712,7 +710,7 @@ body.theme-dark {
 .polychat-messages-container {
   flex: 1;
   overflow: hidden; /* Empêcher le scroll global */
-  padding: var(--spacing-md) var(--spacing-lg);
+  padding: 0 var(--spacing-lg);
   min-height: 0; /* Important pour le flexbox */
 }
 
@@ -984,6 +982,10 @@ body.theme-dark {
 
 /* Main content adjustment */
 .polychat-main-chat-area {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0; /* Important pour flexbox */
   transition: margin-left 0.3s ease;
   margin-left: 0;
 }

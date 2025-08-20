@@ -49,7 +49,7 @@ const InlineModelPicker: React.FC<InlineModelPickerProps> = ({ onSelect, current
         type="button"
         className="imp-trigger"
         aria-haspopup="listbox"
-        aria-expanded={String(open)}
+        aria-expanded={open}
         onClick={()=> setOpen(o=>!o)}
         title={currentModel ? `Changer de modèle (actuel: ${currentModel.name || currentModel.id})` : 'Choisir un modèle'}
       >

@@ -47,8 +47,6 @@ const HeaderModern: React.FC<HeaderProps> = ({ onSettingsClick, onModelClick, on
                   filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.3))',
                   zIndex: 1
                 }} />
-                {/* Indicateur d'activité */}
-                <div className="header-modern-activity-indicator" />
                 {/* Icône historique qui apparaît au hover */}
                 <span className="header-modern-logo-history-hover">
                   <History size={28} />
@@ -71,7 +69,6 @@ const HeaderModern: React.FC<HeaderProps> = ({ onSettingsClick, onModelClick, on
                 filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.3))',
                 zIndex: 1
               }} />
-              <div className="header-modern-activity-indicator" />
             </div>
           )}
           {/* Titre avec hiérarchie moderne */}
