@@ -4,10 +4,10 @@
   align-items: center;
   gap: 6px;
   padding: 8px 12px;
-  background: var(--pixel-bg-secondary);
-  border: 1px solid var(--pixel-border);
+  background: var(--polychat-bg-secondary);
+  border: 1px solid var(--polychat-border);
   border-radius: 6px;
-  color: var(--pixel-text-secondary);
+  color: var(--polychat-text-secondary);
   font-size: 13px;
   font-weight: 500;
   cursor: pointer;
@@ -17,9 +17,9 @@
 }
 
 .template-button:hover {
-  background: var(--pixel-bg-hover);
-  border-color: var(--pixel-accent);
-  color: var(--pixel-text-primary);
+  background: var(--polychat-bg-hover);
+  border-color: var(--polychat-accent);
+  color: var(--polychat-text-primary);
   transform: translateY(-1px);
 }
 
@@ -31,7 +31,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--pixel-accent);
+  color: var(--polychat-accent);
 }
 
 .template-button-label {
@@ -42,7 +42,7 @@
   position: absolute;
   top: -4px;
   right: -4px;
-  background: var(--pixel-accent);
+  background: var(--polychat-accent);
   color: white;
   border-radius: 50%;
   width: 16px;

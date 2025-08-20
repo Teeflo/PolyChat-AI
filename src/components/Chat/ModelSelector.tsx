@@ -25,9 +25,9 @@ const ModelSelector: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="pixel-model-selector">
-        <div className="pixel-loading-models">
-          <div className="pixel-loading-spinner" />
+      <div className="polychat-model-selector">
+        <div className="polychat-loading-models">
+          <div className="polychat-loading-spinner" />
           <span>CHARGEMENT DES MODÈLES...</span>
         </div>
       </div>
@@ -36,8 +36,8 @@ const ModelSelector: React.FC = () => {
 
   if (error) {
     return (
-      <div className="pixel-model-selector">
-        <div className="pixel-error-models">
+      <div className="polychat-model-selector">
+        <div className="polychat-error-models">
           <span>⚠️ {error}</span>
         </div>
       </div>
@@ -45,23 +45,23 @@ const ModelSelector: React.FC = () => {
   }
 
   return (
-    <div className="pixel-model-selector">
+    <div className="polychat-model-selector">
       <div 
-        className="pixel-model-selector-header"
+        className="polychat-model-selector-header"
         onClick={() => setIsOpen(!isOpen)}
       >
-        <span className="pixel-model-selector-title">
+        <span className="polychat-model-selector-title">
           MODÈLES SÉLECTIONNÉS ({selectedModels.length})
         </span>
         {isOpen ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
       </div>
 
       {isOpen && (
-        <div className="pixel-model-dropdown">
+        <div className="polychat-model-dropdown">
           {selectedModels.length > 0 && (
-            <div className="pixel-model-actions">
+            <div className="polychat-model-actions">
               <button 
-                className="pixel-clear-button"
+                className="polychat-clear-button"
                 onClick={handleClearSelection}
               >
                 EFFACER TOUT
@@ -69,19 +69,19 @@ const ModelSelector: React.FC = () => {
             </div>
           )}
 
-          <div className="pixel-model-list">
+          <div className="polychat-model-list">
             {models.map((model) => (
               <div
                 key={model.id}
-                className={`pixel-model-item ${selectedModels.includes(model.id) ? 'selected' : ''}`}
+                className={`polychat-model-item ${selectedModels.includes(model.id) ? 'selected' : ''}`}
                 onClick={() => handleModelToggle(model.id)}
               >
-                <div className="pixel-model-checkbox">
+                <div className="polychat-model-checkbox">
                   {selectedModels.includes(model.id) ? '✓' : ''}
                 </div>
-                <div className="pixel-model-info">
-                  <div className="pixel-model-name">{model.name}</div>
-                  <div className="pixel-model-description">{model.description}</div>
+                <div className="polychat-model-info">
+                  <div className="polychat-model-name">{model.name}</div>
+                  <div className="polychat-model-description">{model.description}</div>
                 </div>
               </div>
             ))}

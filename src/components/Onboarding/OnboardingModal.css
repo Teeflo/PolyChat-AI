@@ -1,16 +1,16 @@
-/* Simple modern modal styling matching pixel-modern theme */
+/* Simple modern modal styling matching polychat-modern theme */
 .onboard-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); display: flex; align-items: center; justify-content: center; z-index: 1000; }
-.onboard-modal { width: min(600px, 92vw); background: var(--gradient-glass); border: var(--border-thin); border-radius: 22px; box-shadow: var(--shadow-xl); padding: var(--spacing-xl); color: var(--pixel-text-primary); }
+.onboard-modal { width: min(600px, 92vw); background: var(--gradient-glass); border: var(--border-thin); border-radius: 22px; box-shadow: var(--shadow-xl); padding: var(--spacing-xl); color: var(--polychat-text-primary); }
 .onboard-header { text-align: center; margin-bottom: var(--spacing-lg); }
-.onboard-icon { width: 56px; height: 56px; margin: 0 auto var(--spacing-md); display: grid; place-items: center; background: var(--gradient-cyber); color: var(--pixel-text-inverse); border-radius: 18px; }
+.onboard-icon { width: 56px; height: 56px; margin: 0 auto var(--spacing-md); display: grid; place-items: center; background: var(--gradient-cyber); color: var(--polychat-text-inverse); border-radius: 18px; }
 .onboard-title { font-family: 'Space Grotesk', sans-serif; font-size: 20px; margin: 0 0 var(--spacing-sm); }
-.onboard-desc { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--pixel-text-secondary); margin: 0; }
+.onboard-desc { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--polychat-text-secondary); margin: 0; }
 .onboard-content { min-height: 80px; }
 .onboard-footer { display: flex; align-items: center; justify-content: space-between; gap: var(--spacing-md); }
-.onboard-steps { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--pixel-text-secondary); }
+.onboard-steps { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--polychat-text-secondary); }
 .onboard-actions { display: flex; gap: var(--spacing-sm); }
 .onboard-btn { padding: 10px 14px; border-radius: 18px; border: var(--border-thin); cursor: pointer; font-weight: 600; }
-.onboard-btn.primary { background: var(--pixel-accent-primary); color: var(--pixel-text-inverse); border-color: var(--pixel-accent-primary); }
-.onboard-btn.secondary { background: var(--pixel-bg-secondary); color: var(--pixel-text-primary); border-color: var(--pixel-accent-muted); }
-.onboard-tip { margin-top: var(--spacing-sm); font-size: 11px; color: var(--pixel-text-secondary); }
+.onboard-btn.primary { background: var(--polychat-accent-primary); color: var(--polychat-text-inverse); border-color: var(--polychat-accent-primary); }
+.onboard-btn.secondary { background: var(--polychat-bg-secondary); color: var(--polychat-text-primary); border-color: var(--polychat-accent-muted); }
+.onboard-tip { margin-top: var(--spacing-sm); font-size: 11px; color: var(--polychat-text-secondary); }
 .model-empty { font-size:12px; opacity:.65; font-family:'JetBrains Mono', monospace; padding:8px 4px; }

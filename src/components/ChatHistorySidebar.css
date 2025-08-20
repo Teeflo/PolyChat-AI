@@ -51,7 +51,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--pixel-accent-primary);
+  color: var(--polychat-accent-primary);
 }
 
 .chat-history-title {
@@ -128,7 +128,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--pixel-accent-primary);
+  color: var(--polychat-accent-primary);
 }
 
 /* Sessions List */

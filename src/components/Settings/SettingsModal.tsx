@@ -77,7 +77,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose }) => {
                 </h3>
               </div>
               <p className={`settings-section-description ${isDark ? 'dark' : 'light'}`}>
-                Cette option a été supprimée. L'application utilise désormais le skin "modern-pixel" uniquement.
+                Cette option a été supprimée. L'application utilise désormais le skin "modern-polychat" uniquement.
               </p>
             </div>
             

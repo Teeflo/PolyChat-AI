@@ -14,8 +14,8 @@
 .header-logo {
   width: 48px;
   height: 48px;
-  background: var(--pixel-accent-1);
-  border: 3px solid var(--pixel-bg-primary);
+  background: var(--polychat-accent-1);
+  border: 3px solid var(--polychat-bg-primary);
   position: relative;
   display: flex;
   align-items: center;
@@ -36,17 +36,17 @@
 }
 
 .header-logo-icon {
-  color: var(--pixel-bg-primary);
-  filter: drop-shadow(1px 1px 0px var(--pixel-white));
+  color: var(--polychat-bg-primary);
+  filter: drop-shadow(1px 1px 0px var(--polychat-white));
   z-index: 1; /* Behind the image */
 }
 
 .header-title {
   font-family: 'Press Start 2P, monospace';
   font-size: 16px;
-  color: var(--pixel-white);
+  color: var(--polychat-white);
   margin: 0;
-  text-shadow: 2px 2px 0px var(--pixel-bg-primary), 4px 4px 0px var(--pixel-accent-1);
+  text-shadow: 2px 2px 0px var(--polychat-bg-primary), 4px 4px 0px var(--polychat-accent-1);
   letter-spacing: 2px;
   line-height: 1.2;
 }
@@ -62,10 +62,10 @@
   align-items: center;
   gap: 8px;
   padding: 8px 12px;
-  background: var(--pixel-bg-primary);
-  border: 2px solid var(--pixel-green);
+  background: var(--polychat-bg-primary);
+  border: 2px solid var(--polychat-green);
   font-size: 8px;
-  color: var(--pixel-green);
+  color: var(--polychat-green);
   font-family: 'Press Start 2P, monospace';
 }
 
@@ -80,7 +80,7 @@
 
 .header-progress-bar {
   height: 4px;
-  background: var(--pixel-bg-primary);
+  background: var(--polychat-bg-primary);
   position: relative;
   overflow: hidden;
 }
@@ -94,7 +94,7 @@
   background: linear-gradient(
     90deg,
     transparent 0%,
-    var(--pixel-accent-1) 50%,
+    var(--polychat-accent-1) 50%,
     transparent 100%
   );
   animation: pixelSlideIn 3s infinite linear;

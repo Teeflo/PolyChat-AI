@@ -1,7 +1,7 @@
-/* Styles globaux harmonisés avec modern-pixel.css */
+/* Styles globaux harmonisés avec modern-polychat.css */
 * {
   box-sizing: border-box;
-  image-rendering: pixelated;
+  image-rendering: polychated;
   image-rendering: -moz-crisp-edges;
   image-rendering: -webkit-optimize-contrast;
   image-rendering: crisp-edges;
@@ -68,7 +68,7 @@ body {
 }
 
 /* Barre discrète pour le switcher de modèles */
-.pixel-model-switcher-bar {
+.polychat-model-switcher-bar {
   display: flex;
   align-items: center;
   gap: 12px;
@@ -79,7 +79,7 @@ body {
   border-bottom: 1px solid rgba(139,92,246,0.08);
 }
 
-.pixel-model-switcher-bar:before {
+.polychat-model-switcher-bar:before {
   content: '';
   position: absolute;
   left: 16px;
@@ -90,7 +90,7 @@ body {
   pointer-events: none;
 }
 
-.pixel-model-switcher-bar:after {
+.polychat-model-switcher-bar:after {
   content: '';
   position: absolute;
   top: 0;

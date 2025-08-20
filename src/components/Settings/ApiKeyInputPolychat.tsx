@@ -13,28 +13,28 @@ const ApiKeyInput: React.FC = () => {
   };
 
   return (
-    <div className="pixel-input-group">
-      <label className="pixel-label">
-        <div className="pixel-label-content">
+    <div className="polychat-input-group">
+      <label className="polychat-label">
+        <div className="polychat-label-content">
           <Key size={12} />
           <span>OPENROUTER API KEY</span>
-          <Lock size={8} className="pixel-security-icon" />
+          <Lock size={8} className="polychat-security-icon" />
         </div>
       </label>
 
-      <form onSubmit={handleSubmit} className="pixel-form">
-        <div className="pixel-input-container-with-button">
+      <form onSubmit={handleSubmit} className="polychat-form">
+        <div className="polychat-input-container-with-button">
           <input
             type={showApiKey ? 'text' : 'password'}
             value={tempApiKey}
             onChange={(e) => setTempApiKey(e.target.value)}
             placeholder="sk-or-v1-..."
-            className="pixel-input pixel-api-input"
+            className="polychat-input polychat-api-input"
           />
           <button
             type="button"
             onClick={() => setShowApiKey(!showApiKey)}
-            className="pixel-btn pixel-btn-secondary pixel-toggle-btn"
+            className="polychat-btn polychat-btn-secondary polychat-toggle-btn"
             title={showApiKey ? 'HIDE' : 'SHOW'}
           >
             {showApiKey ? <EyeOff size={12} /> : <Eye size={12} />}
@@ -43,14 +43,14 @@ const ApiKeyInput: React.FC = () => {
 
         <button
           type="submit"
-          className="pixel-btn pixel-btn-success pixel-submit-btn"
+          className="polychat-btn polychat-btn-success polychat-submit-btn"
           disabled={!tempApiKey.trim() || tempApiKey === apiKey}
         >
-          <span className="pixel-btn-text">SAVE KEY</span>
+          <span className="polychat-btn-text">SAVE KEY</span>
         </button>
       </form>
 
-      <div className="pixel-help-text">
+      <div className="polychat-help-text">
         <span>SECURE KEY STORAGE - LOCAL ONLY</span>
       </div>
     </div>

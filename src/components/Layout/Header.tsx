@@ -9,12 +9,12 @@ interface HeaderProps {
 
 const Header: React.FC<HeaderProps> = ({ onSettingsClick }) => {
   return (
-    <header className="pixel-header">
+    <header className="polychat-header">
       <div className="header-container">
         {/* Logo et titre */}
         <div className="header-brand">
           {/* Logo pixel rétro */}
-          <div className="pixel-logo pixel-glow header-logo">
+          <div className="polychat-logo polychat-glow header-logo">
             {/* Image du logo (WebP > SVG). Si non supporté, l'icône CPU sert de fallback */}
             <picture className="header-logo-picture">
               <source srcSet="/logo.webp" type="image/webp" />
@@ -41,7 +41,7 @@ const Header: React.FC<HeaderProps> = ({ onSettingsClick }) => {
         <div className="header-controls">
           {/* Indicateur de statut */}
           <div className="header-status">
-            <div className="pixel-status-online" />
+            <div className="polychat-status-online" />
             ONLINE
           </div>
           
@@ -51,7 +51,7 @@ const Header: React.FC<HeaderProps> = ({ onSettingsClick }) => {
           {/* Bouton paramètres pixel */}
           <button
             onClick={onSettingsClick}
-            className="pixel-btn pixel-btn-secondary header-settings-btn"
+            className="polychat-btn polychat-btn-secondary header-settings-btn"
             title="SETTINGS"
           >
             <Settings size={16} />

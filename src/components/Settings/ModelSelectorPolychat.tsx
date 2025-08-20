@@ -36,21 +36,21 @@ const ModelSelector: React.FC = () => {
   };
 
   return (
-    <div className="pixel-input-group">
-      <label className="pixel-label">
-        <div className="pixel-label-content">
+    <div className="polychat-input-group">
+      <label className="polychat-label">
+        <div className="polychat-label-content">
           <Brain size={12} />
           <span>AI MODEL SELECTION</span>
-          <Cpu size={8} className="pixel-cpu-icon" />
+          <Cpu size={8} className="polychat-cpu-icon" />
         </div>
       </label>
 
-      <div className="pixel-model-controls">
+      <div className="polychat-model-controls">
         <select
           value={selectedModel}
           onChange={(e) => setSelectedModel(e.target.value)}
           disabled={loading || models.length === 0}
-          className="pixel-select pixel-model-select"
+          className="polychat-select polychat-model-select"
           title="Select AI Model"
         >
           {loading ? (
@@ -71,11 +71,11 @@ const ModelSelector: React.FC = () => {
         <button
           onClick={loadModels}
           disabled={loading}
-          className={`pixel-btn pixel-btn-secondary pixel-refresh-btn ${loading ? 'loading' : ''}`}
+          className={`polychat-btn polychat-btn-secondary polychat-refresh-btn ${loading ? 'loading' : ''}`}
           title="REFRESH MODELS"
         >
           {loading ? (
-            <Loader2 size={12} className="pixel-pulse" />
+            <Loader2 size={12} className="polychat-pulse" />
           ) : (
             <RefreshCw size={12} />
           )}
@@ -83,13 +83,13 @@ const ModelSelector: React.FC = () => {
       </div>
 
       {error && (
-        <div className="pixel-error-message-small">
+        <div className="polychat-error-message-small">
           <span>{error}</span>
         </div>
       )}
 
       {!loading && models.length > 0 && (
-        <div className="pixel-model-info">
+        <div className="polychat-model-info">
           <span>MODELS LOADED: {models.length}</span>
           <span>STATUS: READY</span>
         </div>

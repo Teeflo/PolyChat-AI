@@ -1,4 +1,4 @@
-/* PolyChat AI - Design Moderne avec Identité Pixel Art */
+/* PolyChat AI - Design Moderne avec Identité Polychat Art */
 
 /* Import des nouvelles polices - Mix moderne et rétro */
 @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=Press+Start+2P&display=swap');
@@ -6,34 +6,34 @@
 /* Variables CSS modernisées */
 :root {
   /* Palette de couleurs modernisée - Tons naturels et doux */
-  --pixel-bg-primary: #1a1d23;
-  --pixel-bg-secondary: #242830;
-  --pixel-bg-tertiary: #2d3142;
-  --pixel-bg-glass: rgba(36, 40, 48, 0.85);
-  --pixel-bg-glass-light: rgba(45, 49, 66, 0.7);
+  --polychat-bg-primary: #1a1d23;
+  --polychat-bg-secondary: #242830;
+  --polychat-bg-tertiary: #2d3142;
+  --polychat-bg-glass: rgba(36, 40, 48, 0.85);
+  --polychat-bg-glass-light: rgba(45, 49, 66, 0.7);
   
   /* Nouveaux accents modernes - Tons plus doux */
-  --pixel-accent-primary: #64748b; /* Gris-bleu principal */
-  --pixel-accent-secondary: #475569; /* Gris-bleu secondaire */
-  --pixel-accent-tertiary: #94a3b8; /* Gris-bleu clair */
-  --pixel-accent-muted: #374151; /* Gris sourd pour les éléments discrets */
+  --polychat-accent-primary: #64748b; /* Gris-bleu principal */
+  --polychat-accent-secondary: #475569; /* Gris-bleu secondaire */
+  --polychat-accent-tertiary: #94a3b8; /* Gris-bleu clair */
+  --polychat-accent-muted: #374151; /* Gris sourd pour les éléments discrets */
   
   /* Couleurs d'état modernisées - Moins saturées */
-  --pixel-success: #10b981;
-  --pixel-warning: #f59e0b;
-  --pixel-error: #ef4444;
-  --pixel-info: #3b82f6;
+  --polychat-success: #10b981;
+  --polychat-warning: #f59e0b;
+  --polychat-error: #ef4444;
+  --polychat-info: #3b82f6;
   
   /* Textes avec meilleur contraste */
-  --pixel-text-primary: #f8f9fa;
-  --pixel-text-secondary: #e9ecef;
-  --pixel-text-muted: #adb5bd;
-  --pixel-text-inverse: #1a1d23;
+  --polychat-text-primary: #f8f9fa;
+  --polychat-text-secondary: #e9ecef;
+  --polychat-text-muted: #adb5bd;
+  --polychat-text-inverse: #1a1d23;
   
   /* Dégradés modernes - Plus subtils */
-  --gradient-cyber: linear-gradient(135deg, var(--pixel-accent-primary) 0%, var(--pixel-accent-secondary) 50%, var(--pixel-accent-tertiary) 100%);
-  --gradient-dark: linear-gradient(135deg, var(--pixel-bg-secondary) 0%, var(--pixel-bg-tertiary) 100%);
-  --gradient-glass: linear-gradient(135deg, var(--pixel-bg-glass) 0%, var(--pixel-bg-glass-light) 100%);
+  --gradient-cyber: linear-gradient(135deg, var(--polychat-accent-primary) 0%, var(--polychat-accent-secondary) 50%, var(--polychat-accent-tertiary) 100%);
+  --gradient-dark: linear-gradient(135deg, var(--polychat-bg-secondary) 0%, var(--polychat-bg-tertiary) 100%);
+  --gradient-glass: linear-gradient(135deg, var(--polychat-bg-glass) 0%, var(--polychat-bg-glass-light) 100%);
   
   /* Ombres modernisées - Sans effets néon */
   --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.2);
@@ -48,9 +48,9 @@
   --subtle-glow-hover: 0 0 0 2px rgba(100, 116, 139, 0.3);
   
   /* Bordures modernes */
-  --border-thin: 1px solid var(--pixel-accent-muted);
-  --border-medium: 2px solid var(--pixel-accent-secondary);
-  --border-thick: 3px solid var(--pixel-accent-primary);
+  --border-thin: 1px solid var(--polychat-accent-muted);
+  --border-medium: 2px solid var(--polychat-accent-secondary);
+  --border-thick: 3px solid var(--polychat-accent-primary);
   --border-cyber: 2px solid transparent;
   
   /* Rayons de bordure */
@@ -100,8 +100,8 @@ body {
   font-size: 14px;
   font-weight: 400;
   line-height: 1.6;
-  background: var(--pixel-bg-primary);
-  color: var(--pixel-text-primary);
+  background: var(--polychat-bg-primary);
+  color: var(--polychat-text-primary);
   overflow-x: hidden;
   scroll-behavior: smooth;
 }
@@ -128,12 +128,12 @@ body {
 .markdown-body ul,
 .markdown-body ol { margin: 0.3em 0 0.6em 1.2em; }
 .markdown-body li { margin: 0.2em 0; }
-.markdown-body a { color: var(--pixel-accent-tertiary); text-decoration: underline; }
+.markdown-body a { color: var(--polychat-accent-tertiary); text-decoration: underline; }
 .markdown-body blockquote {
   margin: 0.8em 0;
   padding: 0.6em 0.8em;
-  border-left: 3px solid var(--pixel-accent-muted);
-  background: var(--pixel-bg-glass-light);
+  border-left: 3px solid var(--polychat-accent-muted);
+  background: var(--polychat-bg-glass-light);
   border-radius: var(--radius-sm);
 }
 .markdown-body table {
@@ -144,17 +144,17 @@ body {
 }
 .markdown-body th,
 .markdown-body td {
-  border: 1px solid var(--pixel-accent-muted);
+  border: 1px solid var(--polychat-accent-muted);
   padding: 6px 8px;
 }
 .markdown-body th {
-  background: var(--pixel-bg-secondary);
+  background: var(--polychat-bg-secondary);
   text-align: left;
 }
 .markdown-body pre {
-  background: var(--pixel-bg-secondary);
+  background: var(--polychat-bg-secondary);
   border: var(--border-thin);
-  border-color: var(--pixel-accent-muted);
+  border-color: var(--polychat-accent-muted);
   border-radius: var(--radius-md);
   padding: 10px 12px;
   overflow: auto;
@@ -162,9 +162,9 @@ body {
 }
 .theme-light .markdown-body pre { background: #f8f9fa; }
 .markdown-body :not(pre) > code {
-  background: var(--pixel-bg-secondary);
+  background: var(--polychat-bg-secondary);
   border: var(--border-thin);
-  border-color: var(--pixel-accent-muted);
+  border-color: var(--polychat-accent-muted);
   border-radius: 6px;
   padding: 2px 6px;
 }
@@ -179,14 +179,14 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--pixel-bg-secondary);
+  background: var(--polychat-bg-secondary);
   border-radius: var(--radius-sm);
 }
 
 ::-webkit-scrollbar-thumb {
   background: var(--gradient-cyber);
   border-radius: var(--radius-sm);
-  border: 1px solid var(--pixel-bg-secondary);
+  border: 1px solid var(--polychat-bg-secondary);
 }
 
 ::-webkit-scrollbar-thumb:hover {
@@ -271,9 +271,9 @@ body {
 }
 
 /* Container principal modernisé */
-.pixel-app-container {
+.polychat-app-container {
   min-height: 100vh;
-  background: var(--pixel-bg-primary);
+  background: var(--polychat-bg-primary);
   position: relative;
   overflow: hidden;
 }
@@ -287,26 +287,26 @@ body {
 .theme-light {
   /* Thème clair complet */
   color-scheme: light;
-  --pixel-bg-primary: #ffffff;
-  --pixel-bg-secondary: #f8f9fa;
-  --pixel-bg-tertiary: #e9ecef;
-  --pixel-bg-glass: rgba(248, 249, 250, 0.85);
-  --pixel-bg-glass-light: rgba(233, 236, 239, 0.7);
+  --polychat-bg-primary: #ffffff;
+  --polychat-bg-secondary: #f8f9fa;
+  --polychat-bg-tertiary: #e9ecef;
+  --polychat-bg-glass: rgba(248, 249, 250, 0.85);
+  --polychat-bg-glass-light: rgba(233, 236, 239, 0.7);
   
-  --pixel-text-primary: #212529;
-  --pixel-text-secondary: #495057;
-  --pixel-text-muted: #6c757d;
-  --pixel-text-inverse: #ffffff;
+  --polychat-text-primary: #212529;
+  --polychat-text-secondary: #495057;
+  --polychat-text-muted: #6c757d;
+  --polychat-text-inverse: #ffffff;
   
-  --pixel-accent-primary: #0d6efd;
-  --pixel-accent-secondary: #0a58ca;
-  --pixel-accent-tertiary: #3d8bfd;
-  --pixel-accent-muted: #6c757d;
+  --polychat-accent-primary: #0d6efd;
+  --polychat-accent-secondary: #0a58ca;
+  --polychat-accent-tertiary: #3d8bfd;
+  --polychat-accent-muted: #6c757d;
   
   /* Nouveaux dégradés pour le thème clair */
-  --gradient-cyber: linear-gradient(135deg, var(--pixel-accent-primary) 0%, var(--pixel-accent-secondary) 50%, var(--pixel-accent-tertiary) 100%);
-  --gradient-dark: linear-gradient(135deg, var(--pixel-bg-secondary) 0%, var(--pixel-bg-tertiary) 100%);
-  --gradient-glass: linear-gradient(135deg, var(--pixel-bg-glass) 0%, var(--pixel-bg-glass-light) 100%);
+  --gradient-cyber: linear-gradient(135deg, var(--polychat-accent-primary) 0%, var(--polychat-accent-secondary) 50%, var(--polychat-accent-tertiary) 100%);
+  --gradient-dark: linear-gradient(135deg, var(--polychat-bg-secondary) 0%, var(--polychat-bg-tertiary) 100%);
+  --gradient-glass: linear-gradient(135deg, var(--polychat-bg-glass) 0%, var(--polychat-bg-glass-light) 100%);
   
   /* Ombres adaptées au thème clair - Plus subtiles */
   --shadow-cyber: 0 2px 8px rgba(13, 110, 253, 0.15);
@@ -317,17 +317,17 @@ body {
 
 /* Styles spécifiques pour le body en thème clair */
 body.theme-light {
-  background: var(--pixel-bg-primary);
-  color: var(--pixel-text-primary);
+  background: var(--polychat-bg-primary);
+  color: var(--polychat-text-primary);
 }
 
 body.theme-dark {
-  background: var(--pixel-bg-primary);
-  color: var(--pixel-text-primary);
+  background: var(--polychat-bg-primary);
+  color: var(--polychat-text-primary);
 }
 
 /* Arrière-plan avec effet de grille moderne */
-.pixel-grid-background {
+.polychat-grid-background {
   position: fixed;
   top: 0;
   left: 0;
@@ -343,7 +343,7 @@ body.theme-dark {
 }
 
 /* Particules flottantes modernisées */
-.pixel-particles-container {
+.polychat-particles-container {
   position: fixed;
   top: 0;
   left: 0;
@@ -353,24 +353,24 @@ body.theme-dark {
   z-index: -1;
 }
 
-.pixel-particle {
+.polychat-particle {
   position: absolute;
   width: 4px;
   height: 4px;
-  background: var(--pixel-accent-primary);
+  background: var(--polychat-accent-primary);
   border-radius: 50%;
   opacity: 0.6;
   animation: floatingParticles 8s ease-in-out infinite;
 }
 
-.pixel-particle-0 { top: 10%; left: 10%; animation-delay: 0s; }
-.pixel-particle-1 { top: 20%; left: 80%; animation-delay: 1s; }
-.pixel-particle-2 { top: 60%; left: 20%; animation-delay: 2s; }
-.pixel-particle-3 { top: 80%; left: 70%; animation-delay: 3s; }
-.pixel-particle-4 { top: 40%; left: 90%; animation-delay: 4s; }
+.polychat-particle-0 { top: 10%; left: 10%; animation-delay: 0s; }
+.polychat-particle-1 { top: 20%; left: 80%; animation-delay: 1s; }
+.polychat-particle-2 { top: 60%; left: 20%; animation-delay: 2s; }
+.polychat-particle-3 { top: 80%; left: 70%; animation-delay: 3s; }
+.polychat-particle-4 { top: 40%; left: 90%; animation-delay: 4s; }
 
 /* Header modernisé */
-.pixel-header {
+.polychat-header {
   background: var(--gradient-glass);
   -webkit-backdrop-filter: blur(20px);
   backdrop-filter: blur(20px);
@@ -382,7 +382,7 @@ body.theme-dark {
   animation: modernFadeIn 0.6s ease;
 }
 
-.pixel-header::after {
+.polychat-header::after {
   content: '';
   position: absolute;
   bottom: -2px;
@@ -394,7 +394,7 @@ body.theme-dark {
 }
 
 /* Logo modernisé */
-.pixel-logo {
+.polychat-logo {
   width: 52px;
   height: 52px;
   background: var(--gradient-cyber);
@@ -407,32 +407,32 @@ body.theme-dark {
   box-shadow: var(--shadow-md);
 }
 
-.pixel-logo:hover {
+.polychat-logo:hover {
   transform: scale(1.05) rotate(5deg);
   box-shadow: var(--shadow-cyber);
 }
 
-.pixel-glow {
+.polychat-glow {
   animation: subtleHighlight 2s ease-in-out infinite;
 }
 
 /* Typographie modernisée */
-.pixel-title {
+.polychat-title {
   font-family: 'Space Grotesk', sans-serif;
   font-size: 24px;
   font-weight: 700;
-  color: var(--pixel-text-primary);
+  color: var(--polychat-text-primary);
   margin: 0;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
   letter-spacing: -0.5px;
   line-height: 1.2;
 }
 
-.pixel-subtitle {
+.polychat-subtitle {
   font-family: 'JetBrains Mono', monospace;
   font-size: 11px;
   font-weight: 500;
-  color: var(--pixel-accent-primary);
+  color: var(--polychat-accent-primary);
   margin: 0;
   text-transform: uppercase;
   letter-spacing: 2px;
@@ -440,12 +440,12 @@ body.theme-dark {
 }
 
 /* Boutons modernisés */
-.pixel-btn-modern {
+.polychat-btn-modern {
   font-family: 'JetBrains Mono', monospace;
   font-size: 13px;
   font-weight: 500;
   background: var(--gradient-cyber);
-  color: var(--pixel-text-inverse);
+  color: var(--polychat-text-inverse);
   border: none;
   border-radius: var(--radius-md);
   padding: var(--spacing-sm) var(--spacing-lg);
@@ -458,7 +458,7 @@ body.theme-dark {
   overflow: hidden;
 }
 
-.pixel-btn-modern::before {
+.polychat-btn-modern::before {
   content: '';
   position: absolute;
   top: 0;
@@ -469,44 +469,44 @@ body.theme-dark {
   transition: var(--transition-normal);
 }
 
-.pixel-btn-modern:hover {
+.polychat-btn-modern:hover {
   transform: translateY(-2px);
   box-shadow: var(--shadow-cyber);
 }
 
-.pixel-btn-modern:hover::before {
+.polychat-btn-modern:hover::before {
   left: 100%;
 }
 
-.pixel-btn-modern:active {
+.polychat-btn-modern:active {
   transform: translateY(0);
   box-shadow: var(--shadow-md);
 }
 
-.pixel-btn-secondary {
+.polychat-btn-secondary {
   background: var(--gradient-dark);
-  color: var(--pixel-text-primary);
+  color: var(--polychat-text-primary);
   border: var(--border-thin);
 }
 
-.pixel-btn-ghost {
+.polychat-btn-ghost {
   background: transparent;
-  color: var(--pixel-accent-primary);
+  color: var(--polychat-accent-primary);
   border: var(--border-medium);
-  border-color: var(--pixel-accent-primary);
+  border-color: var(--polychat-accent-primary);
 }
 
-.pixel-btn-ghost:hover {
-  background: var(--pixel-accent-primary);
-  color: var(--pixel-text-inverse);
+.polychat-btn-ghost:hover {
+  background: var(--polychat-accent-primary);
+  color: var(--polychat-text-inverse);
 }
 
 /* Inputs modernisés */
-.pixel-input-modern {
+.polychat-input-modern {
   font-family: 'JetBrains Mono', monospace;
   font-size: 14px;
-  background: var(--pixel-bg-glass);
-  color: var(--pixel-text-primary);
+  background: var(--polychat-bg-glass);
+  color: var(--polychat-text-primary);
   border: var(--border-thin);
   border-radius: var(--radius-md);
   padding: var(--spacing-md) var(--spacing-lg);
@@ -517,23 +517,23 @@ body.theme-dark {
   box-shadow: var(--shadow-sm);
 }
 
-.pixel-input-modern:focus {
-  border-color: var(--pixel-accent-primary);
+.polychat-input-modern:focus {
+  border-color: var(--polychat-accent-primary);
   box-shadow: var(--shadow-cyber);
-  background: var(--pixel-bg-glass-light);
+  background: var(--polychat-bg-glass-light);
 }
 
-.pixel-input-modern::placeholder {
-  color: var(--pixel-text-muted);
+.polychat-input-modern::placeholder {
+  color: var(--polychat-text-muted);
   opacity: 0.7;
 }
 
 /* Select modernisé */
-.pixel-select-modern {
+.polychat-select-modern {
   font-family: 'JetBrains Mono', monospace;
   font-size: 14px;
-  background: var(--pixel-bg-glass);
-  color: var(--pixel-text-primary);
+  background: var(--polychat-bg-glass);
+  color: var(--polychat-text-primary);
   border: var(--border-thin);
   border-radius: var(--radius-md);
   padding: var(--spacing-md) var(--spacing-lg);
@@ -550,13 +550,13 @@ body.theme-dark {
   padding-right: 40px;
 }
 
-.pixel-select-modern:focus {
-  border-color: var(--pixel-accent-primary);
+.polychat-select-modern:focus {
+  border-color: var(--polychat-accent-primary);
   box-shadow: var(--shadow-cyber);
 }
 
 /* Cartes modernisées */
-.pixel-card-modern {
+.polychat-card-modern {
   background: var(--gradient-glass);
   -webkit-backdrop-filter: blur(20px);
   backdrop-filter: blur(20px);
@@ -568,7 +568,7 @@ body.theme-dark {
   position: relative;
 }
 
-.pixel-card-modern::before {
+.polychat-card-modern::before {
   content: '';
   position: absolute;
   top: 0;
@@ -580,18 +580,18 @@ body.theme-dark {
   transition: var(--transition-normal);
 }
 
-.pixel-card-modern:hover {
+.polychat-card-modern:hover {
   transform: translateY(-4px);
   box-shadow: var(--shadow-lg);
-  border-color: var(--pixel-accent-primary);
+  border-color: var(--polychat-accent-primary);
 }
 
-.pixel-card-modern:hover::before {
+.polychat-card-modern:hover::before {
   opacity: 1;
 }
 
 /* Messages de chat modernisés */
-.pixel-message-modern {
+.polychat-message-modern {
   padding: var(--spacing-md) var(--spacing-lg);
   margin: var(--spacing-md) 0;
   border-radius: var(--radius-lg);
@@ -603,25 +603,25 @@ body.theme-dark {
   box-shadow: var(--shadow-sm);
 }
 
-.pixel-message-user-modern {
+.polychat-message-user-modern {
   background: var(--gradient-cyber);
-  color: var(--pixel-text-inverse);
+  color: var(--polychat-text-inverse);
   margin-left: var(--spacing-2xl);
   border-bottom-right-radius: var(--radius-sm);
 }
 
-.pixel-message-assistant-modern {
+.polychat-message-assistant-modern {
   background: var(--gradient-glass);
   -webkit-backdrop-filter: blur(20px);
   backdrop-filter: blur(20px);
-  color: var(--pixel-text-primary);
+  color: var(--polychat-text-primary);
   border: var(--border-thin);
   margin-right: var(--spacing-2xl);
   border-bottom-left-radius: var(--radius-sm);
 }
 
 /* Zone de saisie modernisée */
-.pixel-input-area {
+.polychat-input-area {
   background: var(--gradient-glass);
   -webkit-backdrop-filter: blur(20px);
   backdrop-filter: blur(20px);
@@ -690,32 +690,32 @@ body.theme-dark {
 }
 
 /* Container principal modernisé */
-.pixel-app-container {
+.polychat-app-container {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   position: relative;
 }
 
-.pixel-header-container {
+.polychat-header-container {
   flex-shrink: 0;
 }
 
-.pixel-model-selector-container {
+.polychat-model-selector-container {
   flex-shrink: 0;
   padding: var(--spacing-md) var(--spacing-lg);
-  background: var(--pixel-bg-glass);
+  background: var(--polychat-bg-glass);
   border-bottom: var(--border-thin);
 }
 
-.pixel-messages-container {
+.polychat-messages-container {
   flex: 1;
   overflow: hidden; /* Empêcher le scroll global */
   padding: var(--spacing-md) var(--spacing-lg);
   min-height: 0; /* Important pour le flexbox */
 }
 
-.pixel-input-area {
+.polychat-input-area {
   flex-shrink: 0;
 }
 
@@ -726,12 +726,12 @@ body.theme-dark {
 }
 
 .error-state {
-  border-color: var(--pixel-error);
+  border-color: var(--polychat-error);
   box-shadow: 0 0 0 1px rgba(239, 68, 68, 0.3);
 }
 
 .success-state {
-  border-color: var(--pixel-success);
+  border-color: var(--polychat-success);
   box-shadow: 0 0 0 1px rgba(16, 185, 129, 0.3);
 }
 
@@ -772,7 +772,7 @@ body.theme-dark {
   font-family: 'Space Grotesk', sans-serif;
   font-size: var(--font-size-lg);
   font-weight: 600;
-  color: var(--pixel-text-primary);
+  color: var(--polychat-text-primary);
   margin: 0;
   display: flex;
   align-items: center;
@@ -782,7 +782,7 @@ body.theme-dark {
 .chat-history-toggle {
   background: transparent;
   border: none;
-  color: var(--pixel-accent-primary);
+  color: var(--polychat-accent-primary);
   cursor: pointer;
   padding: var(--spacing-sm);
   border-radius: var(--radius-sm);
@@ -793,7 +793,7 @@ body.theme-dark {
 }
 
 .chat-history-toggle:hover {
-  background: var(--pixel-bg-glass-light);
+  background: var(--polychat-bg-glass-light);
   transform: scale(1.1);
 }
 
@@ -807,7 +807,7 @@ body.theme-dark {
 .chat-history-item {
   padding: var(--spacing-md);
   margin-bottom: var(--spacing-sm);
-  background: var(--pixel-bg-glass);
+  background: var(--polychat-bg-glass);
   border: var(--border-thin);
   border-radius: var(--radius-md);
   cursor: pointer;
@@ -816,16 +816,16 @@ body.theme-dark {
 }
 
 .chat-history-item:hover {
-  background: var(--pixel-bg-glass-light);
-  border-color: var(--pixel-accent-primary);
+  background: var(--polychat-bg-glass-light);
+  border-color: var(--polychat-accent-primary);
   transform: translateX(2px);
   box-shadow: var(--shadow-cyber);
 }
 
 .chat-history-item.active {
   background: var(--gradient-cyber);
-  color: var(--pixel-text-inverse);
-  border-color: var(--pixel-accent-primary);
+  color: var(--polychat-text-inverse);
+  border-color: var(--polychat-accent-primary);
   box-shadow: var(--shadow-cyber-strong);
 }
 
@@ -843,7 +843,7 @@ body.theme-dark {
 .chat-history-item-preview {
   font-family: 'JetBrains Mono', monospace;
   font-size: var(--font-size-xs);
-  color: var(--pixel-text-muted);
+  color: var(--polychat-text-muted);
   margin: 0 0 var(--spacing-sm) 0;
   white-space: nowrap;
   overflow: hidden;
@@ -852,12 +852,12 @@ body.theme-dark {
 }
 
 .chat-history-item.active .chat-history-item-preview {
-  color: var(--pixel-text-inverse);
+  color: var(--polychat-text-inverse);
   opacity: 0.8;
 }
 
 .chat-history-item.active .chat-history-item-title {
-  color: var(--pixel-text-inverse);
+  color: var(--polychat-text-inverse);
 }
 
 .chat-history-footer {
@@ -870,7 +870,7 @@ body.theme-dark {
   width: 100%;
   padding: var(--spacing-md);
   background: var(--gradient-cyber);
-  color: var(--pixel-text-inverse);
+  color: var(--polychat-text-inverse);
   border: none;
   border-radius: var(--radius-md);
   font-family: 'JetBrains Mono', monospace;
@@ -915,19 +915,19 @@ body.theme-dark {
     margin-left: 0;
   }
   
-  .pixel-title {
+  .polychat-title {
     font-size: 20px;
   }
   
-  .pixel-message-user-modern {
+  .polychat-message-user-modern {
     margin-left: var(--spacing-md);
   }
   
-  .pixel-message-assistant-modern {
+  .polychat-message-assistant-modern {
     margin-right: var(--spacing-md);
   }
   
-  .pixel-btn-modern {
+  .polychat-btn-modern {
     padding: var(--spacing-sm) var(--spacing-md);
     font-size: 12px;
   }
@@ -938,26 +938,26 @@ body.theme-dark {
     width: 100%;
   }
   
-  .pixel-header {
+  .polychat-header {
     padding: var(--spacing-md);
   }
   
-  .pixel-logo {
+  .polychat-logo {
     width: 44px;
     height: 44px;
   }
   
-  .pixel-title {
+  .polychat-title {
     font-size: 18px;
   }
   
-  .pixel-subtitle {
+  .polychat-subtitle {
     font-size: 10px;
   }
 }
 
 /* Sidebar Toggle Button */
-.pixel-sidebar-toggle {
+.polychat-sidebar-toggle {
   position: fixed;
   top: 20px;
   left: 20px;
@@ -970,36 +970,36 @@ body.theme-dark {
   padding: var(--spacing-sm);
   cursor: pointer;
   transition: var(--transition-normal);
-  color: var(--pixel-accent-primary);
+  color: var(--polychat-accent-primary);
   box-shadow: var(--shadow-md);
 }
 
-.pixel-sidebar-toggle:hover {
-  background: var(--pixel-bg-glass-light);
-  border-color: var(--pixel-accent-primary);
+.polychat-sidebar-toggle:hover {
+  background: var(--polychat-bg-glass-light);
+  border-color: var(--polychat-accent-primary);
   transform: scale(1.05);
   box-shadow: var(--shadow-cyber);
 }
 
 /* Main content adjustment */
-.pixel-main-chat-area {
+.polychat-main-chat-area {
   transition: margin-left 0.3s ease;
   margin-left: 0;
 }
 
-.pixel-main-chat-area.sidebar-open {
+.polychat-main-chat-area.sidebar-open {
   margin-left: 320px;
 }
 
 /* Masquer le bouton hamburger quand la sidebar est ouverte (fallback CSS) */
-.sidebar-open ~ .pixel-sidebar-toggle,
-.chat-history-sidebar:not(.collapsed) ~ .pixel-sidebar-toggle {
+.sidebar-open ~ .polychat-sidebar-toggle,
+.chat-history-sidebar:not(.collapsed) ~ .polychat-sidebar-toggle {
   display: none;
 }
 
 /* Mobile overlay for sidebar */
 @media (max-width: 768px) {
-  .pixel-main-chat-area.sidebar-open {
+  .polychat-main-chat-area.sidebar-open {
     margin-left: 0;
   }
 }

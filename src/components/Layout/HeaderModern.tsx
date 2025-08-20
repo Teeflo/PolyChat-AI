@@ -20,7 +20,7 @@ const HeaderModern: React.FC<HeaderProps> = ({ onSettingsClick, onModelClick, on
   };
 
   return (
-    <header className="pixel-header">
+    <header className="polychat-header">
       <div className="header-modern-container">
         {/* Brand section + bouton historique à gauche */}
         <div className="header-modern-brand">
@@ -28,7 +28,7 @@ const HeaderModern: React.FC<HeaderProps> = ({ onSettingsClick, onModelClick, on
           {onHistoryClick ? (
             <button
               onClick={onHistoryClick}
-              className="header-modern-logo-btn pixel-glow"
+              className="header-modern-logo-btn polychat-glow"
               aria-label="Ouvrir l'historique"
               title="Historique des conversations"
             >
@@ -43,7 +43,7 @@ const HeaderModern: React.FC<HeaderProps> = ({ onSettingsClick, onModelClick, on
                   />
                 </picture>
                 <Cpu size={28} style={{ 
-                  color: 'var(--pixel-text-inverse)',
+                  color: 'var(--polychat-text-inverse)',
                   filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.3))',
                   zIndex: 1
                 }} />
@@ -56,7 +56,7 @@ const HeaderModern: React.FC<HeaderProps> = ({ onSettingsClick, onModelClick, on
               </span>
             </button>
           ) : (
-            <div className="header-modern-logo pixel-glow">
+            <div className="header-modern-logo polychat-glow">
               <picture className="header-modern-logo-picture">
                 <source srcSet="/logo.webp" type="image/webp" />
                 <img
@@ -67,7 +67,7 @@ const HeaderModern: React.FC<HeaderProps> = ({ onSettingsClick, onModelClick, on
                 />
               </picture>
               <Cpu size={28} style={{ 
-                color: 'var(--pixel-text-inverse)',
+                color: 'var(--polychat-text-inverse)',
                 filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.3))',
                 zIndex: 1
               }} />

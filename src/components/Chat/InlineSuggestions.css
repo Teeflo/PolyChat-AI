@@ -81,7 +81,7 @@
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   font-size: 12px;
   font-weight: 500;
-  color: var(--pixel-text-primary, #f8fafc);
+  color: var(--polychat-text-primary, #f8fafc);
   white-space: nowrap;
   flex-shrink: 0;
 }

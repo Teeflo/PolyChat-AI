@@ -20,7 +20,7 @@ const ThemeToggle: React.FC = () => {
   return (
     <button
       onClick={toggle}
-      className="pixel-btn"
+      className="polychat-btn"
       style={{
         padding: '12px',
         display: 'flex',
@@ -28,8 +28,8 @@ const ThemeToggle: React.FC = () => {
         justifyContent: 'center',
         minWidth: '48px',
         minHeight: '48px',
-        background: isDark ? 'var(--pixel-accent-2)' : 'var(--pixel-yellow)',
-        color: 'var(--pixel-bg-primary)'
+        background: isDark ? 'var(--polychat-accent-2)' : 'var(--polychat-yellow)',
+        color: 'var(--polychat-bg-primary)'
       }}
       title={isDark ? 'LIGHT MODE' : 'DARK MODE'}
     >

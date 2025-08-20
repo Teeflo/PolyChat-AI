@@ -63,9 +63,9 @@ const AppContent: React.FC = () => {
     document.documentElement.setAttribute('data-theme', theme);
     document.body.className = `theme-${theme}`;
     // Ajouter aussi la classe au conteneur principal
-    const appContainer = document.querySelector('.pixel-app-container');
+    const appContainer = document.querySelector('.polychat-app-container');
     if (appContainer) {
-      appContainer.className = `pixel-container pixel-app-container theme-${theme}`;
+      appContainer.className = `polychat-container polychat-app-container theme-${theme}`;
     }
   }, [theme]);
 
@@ -93,9 +93,9 @@ const AppContent: React.FC = () => {
   }, [hasOnboarded, apiKey, showConfigurationPopup, setShowConfigurationPopup]);
 
   return (
-    <div className={`pixel-container pixel-app-container theme-${theme}`}>
+    <div className={`polychat-container polychat-app-container theme-${theme}`}>
       {/* Effet de grille rétro en arrière-plan */}
-      <div className="pixel-grid-background" />
+      <div className="polychat-grid-background" />
       
       {/* Chat History Sidebar */}
       <ChatHistorySidebar
@@ -104,7 +104,7 @@ const AppContent: React.FC = () => {
       />
       
       {/* Header Modernisé */}
-      <div className="pixel-header-container">
+      <div className="polychat-header-container">
         <HeaderModern 
           onSettingsClick={toggleSettings}
           onHistoryClick={() => setIsSidebarOpen(!isSidebarOpen)}
@@ -130,19 +130,19 @@ const AppContent: React.FC = () => {
       </div>
       
       {/* Main Chat Area */}
-      <div className={`pixel-main-chat-area ${isSidebarOpen ? 'sidebar-open' : ''}`}>
+      <div className={`polychat-main-chat-area ${isSidebarOpen ? 'sidebar-open' : ''}`}>
         {/* Model Selector Modernisé */}
-  <div className="pixel-model-selector-container pixel-model-switcher-bar">
+  <div className="polychat-model-selector-container polychat-model-switcher-bar">
           <ModelSwitcher />
         </div>
 
   {/* Chat Messages Modernisé */}
-        <div className="pixel-messages-container">
+        <div className="polychat-messages-container">
           <MultiChatWindowModern sessions={activeSessions} />
         </div>
         
         {/* Chat Input Modernisé */}
-        <div className="pixel-input-area">
+        <div className="polychat-input-area">
           <ChatInputModern />
         </div>
       </div>
@@ -171,11 +171,11 @@ const AppContent: React.FC = () => {
   {showDashboard && (<UsageDashboard onClose={() => setShowDashboard(false)} />)}
       
       {/* Effet de particules flottantes */}
-      <div className="pixel-particles-container">
+      <div className="polychat-particles-container">
         {[...Array(20)].map((_, i) => (
           <div
             key={i}
-            className={`pixel-particle pixel-particle-${i % 5}`}
+            className={`polychat-particle polychat-particle-${i % 5}`}
           />
         ))}
       </div>

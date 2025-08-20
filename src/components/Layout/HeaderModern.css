@@ -33,7 +33,7 @@
   position: relative;
   width: 52px;
   height: 52px;
-  border: 2px solid var(--pixel-accent-primary, #38bdf8);
+  border: 2px solid var(--polychat-accent-primary, #38bdf8);
   background: none;
   padding: 0;
   cursor: pointer;
@@ -49,7 +49,7 @@
 
 
 
-.header-modern-logo-btn.pixel-glow {
+.header-modern-logo-btn.polychat-glow {
   box-shadow: 0 4px 8px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.1);
 }
 
@@ -75,7 +75,7 @@
   pointer-events: none;
   transition: opacity 0.25s cubic-bezier(0.4,0,0.2,1);
   z-index: 3;
-  color: var(--pixel-accent-primary);
+  color: var(--polychat-accent-primary);
   background: rgba(0,0,0,0.08);
   border-radius: 18px;
 }
@@ -110,7 +110,7 @@
   border-radius: 22px;
   background: rgba(100, 116, 139, 0.1);
   border: 1px solid rgba(100, 116, 139, 0.2);
-  color: var(--pixel-accent-primary);
+  color: var(--polychat-accent-primary);
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
@@ -193,9 +193,9 @@
   right: -2px;
   width: 12px;
   height: 12px;
-  background: var(--pixel-success);
+  background: var(--polychat-success);
   border-radius: 50%;
-  border: 2px solid var(--pixel-bg-primary);
+  border: 2px solid var(--polychat-bg-primary);
   animation: modernPulse 2s ease-in-out infinite;
 }
 
@@ -203,7 +203,7 @@
   font-family: 'Space Grotesk', sans-serif;
   font-size: 24px;
   font-weight: 700;
-  color: var(--pixel-text-primary);
+  color: var(--polychat-text-primary);
   margin: 0;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
   letter-spacing: -0.5px;
@@ -214,7 +214,7 @@
   font-family: 'JetBrains Mono', monospace;
   font-size: 11px;
   font-weight: 500;
-  color: var(--pixel-accent-primary);
+  color: var(--polychat-accent-primary);
   margin: 0;
   text-transform: uppercase;
   letter-spacing: 2px;
@@ -228,7 +228,7 @@
   display: flex;
   align-items: center;
   gap: 16px;
-  background: var(--pixel-bg-glass);
+  background: var(--polychat-bg-glass);
   -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
   padding: 8px 16px;
@@ -250,7 +250,7 @@
   border: 1px solid rgba(100, 116, 139, 0.2);
   border-radius: 18px;
   padding: 6px 12px;
-  color: var(--pixel-accent-primary);
+  color: var(--polychat-accent-primary);
   font-family: 'JetBrains Mono', monospace;
   font-size: 11px;
   font-weight: 600;
@@ -272,13 +272,13 @@
   align-items: center;
   gap: 8px;
   font-size: 12px;
-  color: var(--pixel-text-secondary);
+  color: var(--polychat-text-secondary);
 }
 
 .header-modern-connection-dot {
   width: 6px;
   height: 6px;
-  background: var(--pixel-success);
+  background: var(--polychat-success);
   border-radius: 50%;
   animation: modernPulse 2s ease-in-out infinite;
 }
@@ -286,7 +286,7 @@
 .header-modern-separator {
   width: 1px;
   height: 16px;
-  background: var(--pixel-accent-muted);
+  background: var(--polychat-accent-muted);
   opacity: 0.3;
 }
 
@@ -295,7 +295,7 @@
   align-items: center;
   gap: 6px;
   font-size: 12px;
-  color: var(--pixel-text-secondary);
+  color: var(--polychat-text-secondary);
 }
 
 .header-modern-actions {
@@ -317,8 +317,8 @@
   padding: 0;
   border-radius: 18px;
   background: transparent;
-  border: 1px solid var(--pixel-accent-muted);
-  color: var(--pixel-accent-primary);
+  border: 1px solid var(--polychat-accent-muted);
+  color: var(--polychat-accent-primary);
   cursor: pointer;
   transition: var(--transition-normal);
   position: relative;
@@ -338,8 +338,8 @@
 }
 
 .header-modern-settings-btn:hover {
-  border-color: var(--pixel-accent-primary);
-  color: var(--pixel-text-inverse);
+  border-color: var(--polychat-accent-primary);
+  color: var(--polychat-text-inverse);
   transform: translateY(-2px);
   box-shadow: var(--shadow-cyber);
 }

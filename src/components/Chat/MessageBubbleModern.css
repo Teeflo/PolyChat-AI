@@ -32,15 +32,15 @@
 
 .message-bubble-modern.user .message-bubble-modern-avatar {
   background: var(--gradient-cyber);
-  color: var(--pixel-text-inverse);
+  color: var(--polychat-text-inverse);
   box-shadow: var(--shadow-cyber);
 }
 
 .message-bubble-modern.assistant .message-bubble-modern-avatar {
-  background: var(--pixel-bg-secondary);
-  color: var(--pixel-accent-primary);
+  background: var(--polychat-bg-secondary);
+  color: var(--polychat-accent-primary);
   border: var(--border-thin);
-  border-color: var(--pixel-accent-primary);
+  border-color: var(--polychat-accent-primary);
 }
 
 .message-bubble-modern-avatar:hover {
@@ -52,13 +52,13 @@
   position: absolute;
   bottom: -6px;
   right: -6px;
-  background: var(--pixel-accent-secondary);
-  color: var(--pixel-text-inverse);
+  background: var(--polychat-accent-secondary);
+  color: var(--polychat-text-inverse);
   font-size: 8px;
   font-weight: 600;
   padding: 2px 4px;
   border-radius: 6px;
-  border: 1px solid var(--pixel-bg-primary);
+  border: 1px solid var(--polychat-bg-primary);
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
@@ -94,22 +94,22 @@
 }
 
 .message-bubble-modern.user .message-bubble-modern-role {
-  color: var(--pixel-accent-primary);
+  color: var(--polychat-accent-primary);
 }
 
 .message-bubble-modern.assistant .message-bubble-modern-role {
-  color: var(--pixel-accent-secondary);
+  color: var(--polychat-accent-secondary);
 }
 
 .message-bubble-modern-timestamp {
   font-family: 'JetBrains Mono', monospace;
   font-size: 10px;
-  color: var(--pixel-text-muted);
+  color: var(--polychat-text-muted);
   opacity: 0.7;
 }
 
 .message-bubble-modern-body {
-  background: var(--pixel-bg-glass-light);
+  background: var(--polychat-bg-glass-light);
   border: var(--border-thin);
   border-radius: 18px;
   padding: var(--spacing-md) var(--spacing-lg);
@@ -122,13 +122,13 @@
 
 .message-bubble-modern.user .message-bubble-modern-body {
   background: var(--gradient-cyber);
-  border-color: var(--pixel-accent-primary);
-  color: var(--pixel-text-inverse);
+  border-color: var(--polychat-accent-primary);
+  color: var(--polychat-text-inverse);
   border-bottom-right-radius: 6px;
 }
 
 .message-bubble-modern.assistant .message-bubble-modern-body {
-  border-color: var(--pixel-accent-muted);
+  border-color: var(--polychat-accent-muted);
   border-bottom-left-radius: 6px;
 }
 
@@ -175,28 +175,28 @@
 }
 .message-bubble-modern-text th,
 .message-bubble-modern-text td {
-  border: 1px solid var(--pixel-accent-muted);
+  border: 1px solid var(--polychat-accent-muted);
   padding: 6px 8px;
 }
 .message-bubble-modern-text th {
-  background: var(--pixel-bg-secondary);
+  background: var(--polychat-bg-secondary);
   text-align: left;
 }
 
-.message-bubble-modern-text a { color: var(--pixel-accent-tertiary); text-decoration: underline; }
+.message-bubble-modern-text a { color: var(--polychat-accent-tertiary); text-decoration: underline; }
 .message-bubble-modern-text blockquote {
   margin: 0.6em 0;
   padding: 0.6em 0.8em;
-  border-left: 3px solid var(--pixel-accent-muted);
-  background: var(--pixel-bg-glass-light);
+  border-left: 3px solid var(--polychat-accent-muted);
+  background: var(--polychat-bg-glass-light);
   border-radius: 14px;
 }
 
 /* Code blocks */
 .message-bubble-modern-text pre {
-  background: var(--pixel-bg-secondary);
+  background: var(--polychat-bg-secondary);
   border: var(--border-thin);
-  border-color: var(--pixel-accent-muted);
+  border-color: var(--polychat-accent-muted);
   border-radius: 18px;
   padding: 10px 12px;
   overflow: auto;
@@ -210,9 +210,9 @@
   font-size: 13px;
 }
 .message-bubble-modern-text :not(pre) > code {
-  background: var(--pixel-bg-secondary);
+  background: var(--polychat-bg-secondary);
   border: var(--border-thin);
-  border-color: var(--pixel-accent-muted);
+  border-color: var(--polychat-accent-muted);
   border-radius: 6px;
   padding: 2px 6px;
 }
@@ -233,25 +233,25 @@
   font-size: 11px;
   border-radius: 6px;
   border: var(--border-thin);
-  border-color: var(--pixel-accent-muted);
-  background: var(--pixel-bg-glass);
-  color: var(--pixel-text-primary);
+  border-color: var(--polychat-accent-muted);
+  background: var(--polychat-bg-glass);
+  color: var(--polychat-text-primary);
   cursor: pointer;
   opacity: 0.85;
 }
-.code-copy-btn:hover { opacity: 1; border-color: var(--pixel-accent-primary); }
-.code-copy-btn.success { color: var(--pixel-success); border-color: var(--pixel-success); }
+.code-copy-btn:hover { opacity: 1; border-color: var(--polychat-accent-primary); }
+.code-copy-btn.success { color: var(--polychat-success); border-color: var(--polychat-success); }
 
 .message-bubble-modern-loading {
   display: flex;
   align-items: center;
   gap: var(--spacing-md);
-  color: var(--pixel-text-secondary);
+  color: var(--polychat-text-secondary);
   padding: var(--spacing-sm);
-  background: var(--pixel-bg-glass-light);
+  background: var(--polychat-bg-glass-light);
   border-radius: 18px;
   border: var(--border-thin);
-  border-color: var(--pixel-accent-primary);
+  border-color: var(--polychat-accent-primary);
   position: relative;
   overflow: hidden;
 }
@@ -285,10 +285,10 @@
 .message-bubble-modern-typing-dots span {
   width: 8px;
   height: 8px;
-  background: var(--pixel-accent-primary);
+  background: var(--polychat-accent-primary);
   border-radius: 50%;
   animation: typingDots 1.4s ease-in-out infinite both;
-  box-shadow: 0 0 0 1px var(--pixel-accent-primary);
+  box-shadow: 0 0 0 1px var(--polychat-accent-primary);
 }
 
 .message-bubble-modern-typing-dots span:nth-child(1) {
@@ -308,9 +308,9 @@
 }
 
 /* Streaming & partial code */
-.streaming-cursor { display:inline-block; width:8px; margin-left:2px; animation:blink 1s steps(2,start) infinite; color:var(--pixel-accent-primary); font-weight:bold; }
+.streaming-cursor { display:inline-block; width:8px; margin-left:2px; animation:blink 1s steps(2,start) infinite; color:var(--polychat-accent-primary); font-weight:bold; }
 @keyframes blink { 0%,50%{opacity:1;} 50.01%,100%{opacity:0;} }
-.partial-code-block-modern { background:rgba(255,255,255,0.04); border:1px dashed var(--pixel-accent-muted); border-radius:10px; padding:10px 12px; font-family:monospace; font-size:13px; position:relative; margin:6px 0; }
+.partial-code-block-modern { background:rgba(255,255,255,0.04); border:1px dashed var(--polychat-accent-muted); border-radius:10px; padding:10px 12px; font-family:monospace; font-size:13px; position:relative; margin:6px 0; }
 .partial-code-block-modern pre { margin:0; white-space:pre-wrap; word-break:break-word; }
 .partial-code-hint-modern { position:absolute; top:4px; right:8px; font-size:10px; opacity:.55; text-transform:uppercase; }
 
@@ -324,40 +324,40 @@
   justify-content: center;
   width: 28px;
   height: 28px;
-  background: var(--pixel-bg-secondary);
+  background: var(--polychat-bg-secondary);
   border: var(--border-thin);
-  border-color: var(--pixel-accent-muted);
+  border-color: var(--polychat-accent-muted);
   border-radius: 14px;
-  color: var(--pixel-text-muted);
+  color: var(--polychat-text-muted);
   cursor: pointer;
   transition: var(--transition-normal);
 }
 
 .message-bubble-modern-action-btn:hover {
-  background: var(--pixel-accent-primary);
-  color: var(--pixel-text-inverse);
-  border-color: var(--pixel-accent-primary);
+  background: var(--polychat-accent-primary);
+  color: var(--polychat-text-inverse);
+  border-color: var(--polychat-accent-primary);
   transform: scale(1.1);
   box-shadow: var(--shadow-sm);
 }
 
 /* Style spécial pour le bouton supprimer */
 .message-bubble-modern-delete-btn {
-  border-color: var(--pixel-error) !important;
-  color: var(--pixel-error) !important;
+  border-color: var(--polychat-error) !important;
+  color: var(--polychat-error) !important;
 }
 
 .message-bubble-modern-delete-btn:hover {
-  background: var(--pixel-error) !important;
-  color: var(--pixel-text-inverse) !important;
-  border-color: var(--pixel-error) !important;
+  background: var(--polychat-error) !important;
+  color: var(--polychat-text-inverse) !important;
+  border-color: var(--polychat-error) !important;
 }
 
 .message-bubble-modern-error {
   margin-top: var(--spacing-sm);
   padding: var(--spacing-sm) var(--spacing-md);
   background: rgba(255, 107, 107, 0.1);
-  border: 1px solid var(--pixel-error);
+  border: 1px solid var(--polychat-error);
   border-radius: 18px;
   display: flex;
   justify-content: space-between;
@@ -368,12 +368,12 @@
 .message-bubble-modern-error span {
   font-family: 'JetBrains Mono', monospace;
   font-size: 12px;
-  color: var(--pixel-error);
+  color: var(--polychat-error);
 }
 
 .message-bubble-modern-retry-btn {
-  background: var(--pixel-error);
-  color: var(--pixel-text-primary);
+  background: var(--polychat-error);
+  color: var(--polychat-text-primary);
   border: none;
   border-radius: 14px;
   padding: var(--spacing-xs) var(--spacing-sm);

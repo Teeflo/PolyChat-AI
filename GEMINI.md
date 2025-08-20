@@ -1,6 +1,6 @@
 ## Project Overview
 
-This is a web-based AI chat application named PolyChat-AI. It is built with React, TypeScript, and Vite, and styled with Tailwind CSS. The application features a modern, pixelated user interface and utilizes the OpenRouter API to provide access to various AI models. The state is managed with Zustand and custom hooks.
+This is a web-based AI chat application named PolyChat-AI. It is built with React, TypeScript, and Vite, and styled with Tailwind CSS. The application features a modern, polychated user interface and utilizes the OpenRouter API to provide access to various AI models. The state is managed with Zustand and custom hooks.
 
 The application is structured with a clear separation of concerns, with components, hooks, services, and context organized into their own directories.
 

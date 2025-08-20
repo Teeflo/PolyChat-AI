@@ -23,23 +23,23 @@ const ModelSelectorInChat: React.FC = () => {
   };
 
   return (
-    <div className="pixel-model-selector-chat">
+    <div className="polychat-model-selector-chat">
       {/* Modèles actifs */}
-      <div className="pixel-active-models">
-        <div className="pixel-models-header">
-          <span className="pixel-models-title">ACTIVE MODELS ({selectedModels.length}/3)</span>
+      <div className="polychat-active-models">
+        <div className="polychat-models-header">
+          <span className="polychat-models-title">ACTIVE MODELS ({selectedModels.length}/3)</span>
         </div>
         
-        <div className="pixel-models-list">
+        <div className="polychat-models-list">
           {activeSessions.map((session) => (
-            <div key={session.id} className="pixel-model-chip">
-              <span className="pixel-model-name">
+            <div key={session.id} className="polychat-model-chip">
+              <span className="polychat-model-name">
                 {session.modelName.split('/').pop() || session.modelName}
               </span>
               {selectedModels.length > 1 && (
                 <button
                   onClick={() => handleRemoveModel(session.modelId)}
-                  className="pixel-model-remove"
+                  className="polychat-model-remove"
                   title="Remove model"
                 >
                   <X size={12} />
@@ -50,10 +50,10 @@ const ModelSelectorInChat: React.FC = () => {
           
           {/* Bouton pour ajouter un modèle */}
           {canAddMore && (
-            <div className="pixel-add-model-container">
+            <div className="polychat-add-model-container">
               <button
                 onClick={() => setIsExpanded(!isExpanded)}
-                className="pixel-add-model-btn"
+                className="polychat-add-model-btn"
                 title="Add model"
               >
                 <Plus size={14} />
@@ -63,24 +63,24 @@ const ModelSelectorInChat: React.FC = () => {
               
               {/* Dropdown des modèles disponibles */}
               {isExpanded && (
-                <div className="pixel-models-dropdown">
-                  <div className="pixel-dropdown-header">
+                <div className="polychat-models-dropdown">
+                  <div className="polychat-dropdown-header">
                     <span>SELECT MODEL TO ADD</span>
                   </div>
-                  <div className="pixel-dropdown-content">
+                  <div className="polychat-dropdown-content">
                     {availableModels.length > 0 ? (
                       availableModels.slice(0, 10).map((model) => (
                         <button
                           key={model.id}
                           onClick={() => handleAddModel(model.id)}
-                          className="pixel-dropdown-item"
+                          className="polychat-dropdown-item"
                         >
-                          <span className="pixel-model-id">{model.id}</span>
-                          <span className="pixel-model-full-name">{model.name}</span>
+                          <span className="polychat-model-id">{model.id}</span>
+                          <span className="polychat-model-full-name">{model.name}</span>
                         </button>
                       ))
                     ) : (
-                      <div className="pixel-dropdown-empty">
+                      <div className="polychat-dropdown-empty">
                         No more models available
                       </div>
                     )}

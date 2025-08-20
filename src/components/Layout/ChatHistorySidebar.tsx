@@ -85,7 +85,7 @@ export const ChatHistorySidebar: React.FC<ChatHistorySidebarProps> = ({
         {/* Liste des conversations */}
         <div className="chat-history-list">
           {allSessions.length === 0 ? (
-            <div className="text-center py-8 text-pixel-text-muted">
+            <div className="text-center py-8 text-polychat-text-muted">
               <MessageSquare size={48} className="mx-auto mb-4 opacity-50" />
               <p>Aucune conversation</p>
             </div>
@@ -107,17 +107,17 @@ export const ChatHistorySidebar: React.FC<ChatHistorySidebarProps> = ({
                       {getSessionPreview(session)}
                     </p>
                     <div className="flex items-center gap-2 mt-2">
-                      <span className="text-xs bg-pixel-accent-muted px-2 py-1 rounded text-white">
+                      <span className="text-xs bg-polychat-accent-muted px-2 py-1 rounded text-white">
                         {session.modelName}
                       </span>
-                      <span className="text-xs text-pixel-text-muted">
+                      <span className="text-xs text-polychat-text-muted">
                         {session.messages.length} messages
                       </span>
                     </div>
                   </div>
                   {allSessions.length > 1 && (
                     <button
-                      className="ml-2 p-1 text-pixel-text-muted hover:text-pixel-error transition-colors"
+                      className="ml-2 p-1 text-polychat-text-muted hover:text-polychat-error transition-colors"
                       onClick={(e) => handleDeleteSession(e, session.id)}
                       aria-label="Supprimer la conversation"
                       title="Supprimer la conversation"

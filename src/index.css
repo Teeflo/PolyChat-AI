@@ -4,7 +4,7 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Variables CSS harmonisées - Reprend celles de modern-pixel.css */
+/* Variables CSS harmonisées - Reprend celles de modern-polychat.css */
 :root {
   /* Palette harmonisée */
   --hacker-green: #64748b;
@@ -16,13 +16,13 @@
 /* Reset global harmonisé */
 * {
   box-sizing: border-box;
-  image-rendering: pixelated;
+  image-rendering: polychated;
   image-rendering: -moz-crisp-edges;
   image-rendering: -webkit-optimize-contrast;
   image-rendering: crisp-edges;
 }
 
-/* Body harmonisé avec modern-pixel.css */
+/* Body harmonisé avec modern-polychat.css */
 body {
   margin: 0;
   padding: 0;
@@ -49,7 +49,7 @@ input[type="text"], input[type="password"], textarea, .cursor-text {
   cursor: text;
 }
 
-/* Scrollbar harmonisée avec modern-pixel.css */
+/* Scrollbar harmonisée avec modern-polychat.css */
 ::-webkit-scrollbar {
   width: 8px;
   background: transparent;
@@ -85,7 +85,7 @@ input[type="text"], input[type="password"], textarea, .cursor-text {
   width: 100%;
   height: 100%;
   object-fit: contain;
-  image-rendering: pixelated;
+  image-rendering: polychated;
 }
 
 .header-logo-picture {

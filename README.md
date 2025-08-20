@@ -34,7 +34,7 @@
 ### 🎯 Objectifs
 
 - **🤖 Accès Multi-Modèles** : Connexion à l'API **OpenRouter** pour accéder à une multitude de modèles de langage (GPT-4, Claude, Gemini, et bien d'autres)
-- **🎨 Interface Thématique** : Plusieurs thèmes visuels incluant un design moderne et un style pixel-art rétro
+- **🎨 Interface Thématique** : Plusieurs thèmes visuels incluant un design moderne et un style polychat-art rétro
 - **⚡ Performance Optimale** : Architecture React moderne avec Vite pour des temps de chargement ultra-rapides
 - **🔒 Sécurité** : Gestion sécurisée des clés API avec stockage local chiffré
 - **📱 Responsive** : Interface adaptée à tous les appareils (desktop, tablette, mobile)
@@ -54,7 +54,7 @@
 ### 🎨 Interface & Personnalisation
 - **🎭 Thèmes Multiples** : 
   - Design moderne avec mode sombre/clair
-  - Style pixel-art rétro avec animations
+  - Style polychat-art rétro avec animations
   - Interface hacker avec curseur personnalisé
 - **🎛️ Personnalisation Avancée** :
   - Instructions système personnalisables
@@ -156,7 +156,7 @@
 #### Thèmes Disponibles
 - **🌙 Mode Sombre** : Interface élégante avec fond sombre
 - **☀️ Mode Clair** : Interface claire et moderne
-- **🎮 Pixel Art** : Style rétro avec animations pixel
+- **🎮 Pixel Art** : Style rétro avec animations polychat
 - **👨‍💻 Hacker** : Interface avec curseur personnalisé
 
 #### Paramètres Avancés
@@ -415,7 +415,7 @@ Ce projet est distribué sous la licence **MIT**. Voir le fichier `LICENSE` pour
 ### 🎯 Objectifs
 
 - **🤖 Accès Multi-Modèles** : Connexion à l'API **OpenRouter** pour accéder à une multitude de modèles de langage (GPT-4, Claude, Gemini, et bien d'autres)
-- **🎨 Interface Thématique** : Plusieurs thèmes visuels incluant un design moderne et un style pixel-art rétro
+- **🎨 Interface Thématique** : Plusieurs thèmes visuels incluant un design moderne et un style polychat-art rétro
 - **⚡ Performance Optimale** : Architecture React moderne avec Vite pour des temps de chargement ultra-rapides
 - **🔒 Sécurité** : Gestion sécurisée des clés API avec stockage local chiffré
 - **📱 Responsive** : Interface adaptée à tous les appareils (desktop, tablette, mobile)
@@ -435,7 +435,7 @@ Ce projet est distribué sous la licence **MIT**. Voir le fichier `LICENSE` pour
 ### 🎨 Interface & Personnalisation
 - **🎭 Thèmes Multiples** : 
   - Design moderne avec mode sombre/clair
-  - Style pixel-art rétro avec animations
+  - Style polychat-art rétro avec animations
   - Interface hacker avec curseur personnalisé
 - **🎛️ Personnalisation Avancée** :
   - Instructions système personnalisables
@@ -537,7 +537,7 @@ Ce projet est distribué sous la licence **MIT**. Voir le fichier `LICENSE` pour
 #### Thèmes Disponibles
 - **🌙 Mode Sombre** : Interface élégante avec fond sombre
 - **☀️ Mode Clair** : Interface claire et moderne
-- **🎮 Pixel Art** : Style rétro avec animations pixel
+- **🎮 Pixel Art** : Style rétro avec animations polychat
 - **👨‍💻 Hacker** : Interface avec curseur personnalisé
 
 #### Paramètres Avancés
@@ -631,7 +631,7 @@ PolyChat-AI/
 │   │   ├── openRouter.ts     # Service OpenRouter
 │   │   └── modelsApi.ts      # API des modèles
 │   ├── 📁 styles/            # Styles et thèmes
-│   │   ├── modern-pixel.css  # Thème pixel moderne
+│   │   ├── modern-polychat.css  # Thème polychat moderne
 │   │   └── hacker-cursor.css # Curseur hacker
 │   ├── 📁 types/             # Types TypeScript
 │   │   └── index.ts          # Définitions de types
