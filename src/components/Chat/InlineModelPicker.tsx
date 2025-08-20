@@ -49,7 +49,7 @@ const InlineModelPicker: React.FC<InlineModelPickerProps> = ({ onSelect, current
         type="button"
         className="imp-trigger"
         aria-haspopup="listbox"
-        aria-expanded={open}
+        aria-expanded={open ? 'true' : 'false'}
         onClick={()=> setOpen(o=>!o)}
         title={currentModel ? `Changer de modèle (actuel: ${currentModel.name || currentModel.id})` : 'Choisir un modèle'}
       >
@@ -109,8 +109,8 @@ const InlineModelPicker: React.FC<InlineModelPickerProps> = ({ onSelect, current
                     let shortPrice = '–';
                     let priceClass = 'imp-price-paid';
                     try {
-                      const prompt = parseFloat((m as any).pricing?.prompt || '0') || 0;
-                      const completion = parseFloat((m as any).pricing?.completion || '0') || 0;
+                      const prompt = parseFloat(m.pricing?.prompt || '0') || 0;
+                      const completion = parseFloat(m.pricing?.completion || '0') || 0;
                       if (prompt === 0 && completion === 0) {
                         shortPrice = 'FREE';
                         priceClass = 'imp-price-free';
@@ -121,7 +121,7 @@ const InlineModelPicker: React.FC<InlineModelPickerProps> = ({ onSelect, current
                         const fc = c ? c.toFixed(c < 0.1 ? 3 : 2) : '0';
                         shortPrice = (p && c && fp !== fc) ? `${fp}/${fc}$` : `${(p||c).toFixed((p||c) < 0.1 ? 3 : 2)}$`;
                       }
-                    } catch {}
+                    } catch { /* ignore */ }
                     return (
                       <>
                         <span className="imp-name">{m.id.split('/').pop()}</span>

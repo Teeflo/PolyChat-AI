@@ -29,12 +29,6 @@ const steps = [
 
 const OnboardingModal: React.FC = () => {
   const { hasOnboarded, setHasOnboarded, setNotificationsEnabled, notificationsEnabled } = useSettings();
-  const [index, setIndex] = useState(0);
-
-  if (hasOnboarded) return null;
-
-  const close = () => setHasOnboarded(true);
-
   const requestNotifPermission = async () => {
     if (!('Notification' in window)) return;
     try {
@@ -44,6 +38,12 @@ const OnboardingModal: React.FC = () => {
       setNotificationsEnabled(false);
     }
   };
+
+  const [index, setIndex] = useState(0);
+
+  if (hasOnboarded) return null;
+
+  const close = () => setHasOnboarded(true);
 
   return (
     <div className="onboard-overlay" role="dialog" aria-modal="true">

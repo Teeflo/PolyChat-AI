@@ -1,6 +1,7 @@
 import React from 'react';
 import { Moon, Sun } from 'lucide-react';
 import { useSettings } from '../../hooks/useSettings';
+import './ThemeToggle.css';
 
 const ThemeToggle: React.FC = () => {
   const { theme, toggleTheme } = useSettings();
@@ -20,17 +21,7 @@ const ThemeToggle: React.FC = () => {
   return (
     <button
       onClick={toggle}
-      className="polychat-btn"
-      style={{
-        padding: '12px',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        minWidth: '48px',
-        minHeight: '48px',
-        background: isDark ? 'var(--polychat-accent-2)' : 'var(--polychat-yellow)',
-        color: 'var(--polychat-bg-primary)'
-      }}
+      className={`polychat-btn theme-toggle-btn ${isDark ? 'dark-theme' : 'light-theme'}`}
       title={isDark ? 'LIGHT MODE' : 'DARK MODE'}
     >
       {isDark ? <Sun size={16} /> : <Moon size={16} />}

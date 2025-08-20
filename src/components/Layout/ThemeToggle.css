@@ -1,0 +1,18 @@
+.theme-toggle-btn {
+  padding: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 48px;
+  min-height: 48px;
+}
+
+.theme-toggle-btn.dark-theme {
+  background: var(--polychat-accent-2);
+  color: var(--polychat-bg-primary);
+}
+
+.theme-toggle-btn.light-theme {
+  background: var(--polychat-yellow);
+  color: var(--polychat-bg-primary);
+}
