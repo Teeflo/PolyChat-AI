@@ -68,7 +68,10 @@
   color: #adb5bd;
   cursor: pointer;
   transition: all 0.2s ease;
-  position: relative;
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    z-index: 1002;
 }
 
 .settings-modal-modern-close:hover {

@@ -14,7 +14,7 @@ const UsageDashboard: React.FC<Props> = ({ onClose }) => {
       <div className="settings-modal-modern" onClick={(e) => e.stopPropagation()}>
         <div className="settings-header-modern">
           <h2>Tableau de bord d'usage</h2>
-          <button className="settings-close-modern" onClick={onClose} aria-label="Fermer le tableau de bord"><X size={16} /></button>
+          <button className="settings-modal-modern-close" onClick={onClose} aria-label="Fermer le tableau de bord"><X size={16} /></button>
         </div>
         <div className="settings-content-modern">
           <div className="settings-section-modern">
