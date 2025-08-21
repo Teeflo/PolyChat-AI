@@ -110,7 +110,7 @@
   max-width: 40vw; /* limit width relative to viewport to avoid overflow */
 }
 
-.chat-header-modern-details > * {
+.chat-header-modern-details > *:not(.inline-model-picker) {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;

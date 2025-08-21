@@ -43,19 +43,7 @@ const AppContent: React.FC = () => {
     return ()=>window.removeEventListener('keydown', handler);
   },[])
   
-  // Test de l'API au chargement
-  useEffect(() => {
-    const testAPI = async () => {
-      console.log('🚀 Test de l\'API OpenRouter au démarrage...');
-      try {
-        const models = await fetchAvailableModels();
-        console.log('✅ API fonctionne, modèles récupérés:', models.length);
-      } catch (error) {
-        console.error('❌ Erreur test API:', error);
-      }
-    };
-    testAPI();
-  }, []);
+  // Suppression du test API au démarrage pour éviter les doublons et logs
 
   // Appliquer le thème à la racine
   useEffect(() => {

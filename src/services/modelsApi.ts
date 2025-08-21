@@ -54,12 +54,7 @@ export async function fetchAllAvailableModels(): Promise<OpenRouterModel[]> {
     const timeoutId = setTimeout(() => controller.abort(), 20000);
     
     const response = await fetch(`https://openrouter.ai/api/v1/models?${params.toString()}`, {
-      signal: controller.signal,
-      headers: {
-        'Accept': 'application/json',
-        'User-Agent': 'PolyChat-AI/1.0',
-        'HTTP-Referer': window.location.origin,
-      }
+      signal: controller.signal
     });
     
     clearTimeout(timeoutId);
@@ -128,13 +123,7 @@ export async function fetchAvailableModels(filters?: Partial<ModelFilters>): Pro
     const timeoutId = setTimeout(() => controller.abort(), 30000);
     
     const response = await fetch(`https://openrouter.ai/api/v1/models?${params.toString()}`, {
-      signal: controller.signal,
-      headers: {
-        'Accept': 'application/json',
-        'User-Agent': 'PolyChat-AI/1.0',
-        'HTTP-Referer': window.location.origin,
-        'Cache-Control': 'max-age=300', // Cache pendant 5 minutes
-      }
+      signal: controller.signal
     });
     
     clearTimeout(timeoutId);
