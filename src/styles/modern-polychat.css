@@ -885,8 +885,9 @@ body.theme-dark {
 
 .chat-history-item:hover {
   border-color: var(--polychat-accent-primary);
-  box-shadow: var(--shadow-sm);
-  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+  animation: subtleHighlight 1.5s ease-in-out infinite;
 }
 
 .chat-history-item.active {
@@ -894,6 +895,7 @@ body.theme-dark {
   color: var(--polychat-text-inverse);
   border-color: var(--polychat-accent-primary);
   box-shadow: var(--shadow-cyber-strong);
+  animation: modernPulse 1.5s ease-in-out infinite;
 }
 
 .chat-history-item-title {
