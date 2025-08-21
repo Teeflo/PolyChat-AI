@@ -168,6 +168,21 @@
 .model-selected-icon{color:var(--polychat-text-inverse);background:var(--polychat-accent-primary);border-radius:50%;padding:2px;box-shadow:0 0 0 2px rgba(139,92,246,.4)}
 @media (max-width:680px){.model-option-item{flex-direction:column;align-items:flex-start}.model-option-meta{align-self:flex-end}}
 
+/* Light theme overrides for search field and list */
+.theme-light .model-enhanced-search{
+  background: linear-gradient(135deg, rgba(255,255,255,.9) 0%, rgba(248,250,252,.95) 100%);
+  border: 1px solid #e2e5ea;
+}
+.theme-light .model-enhanced-search:focus-within{
+  box-shadow: 0 0 0 3px rgba(0,0,0,.06);
+}
+.theme-light .model-enhanced-search input{
+  color: var(--polychat-text-primary);
+}
+.theme-light .model-enhanced-search input::placeholder{
+  color: rgba(0,0,0,.35);
+}
+
 /* Grid layout version */
 /* Simplified, high-readability layout */
 .model-option-header{display:grid;grid-template-columns:1fr 60px 110px 34px;font-size:10px;text-transform:uppercase;padding:6px 12px;margin:4px 2px 4px;border-radius:8px;background:rgba(255,255,255,.04);font-family:'JetBrains Mono',monospace;color:var(--polychat-text-secondary);border:1px solid rgba(255,255,255,.06);letter-spacing:.8px}
@@ -470,7 +485,7 @@
 }
 
 .settings-theme-preview-header-modern.light-header {
-  background: linear-gradient(135deg, #0d6efd, #3d8bfd);
+  background: linear-gradient(135deg, var(--polychat-accent-primary), var(--polychat-accent-secondary));
 }
 
 .settings-theme-preview-content-modern {
@@ -503,7 +518,7 @@
 }
 
 .settings-theme-preview-modern.light .settings-theme-preview-header-modern {
-  background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+  background: linear-gradient(135deg, var(--polychat-accent-primary) 0%, var(--polychat-accent-secondary) 100%);
 }
 
 .settings-theme-preview-content-modern {

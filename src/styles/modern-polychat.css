@@ -345,9 +345,9 @@ body {
 .theme-light {
   /* Thème clair complet */
   color-scheme: light;
-  --polychat-bg-primary: #ffffff;
-  --polychat-bg-secondary: #f8f9fa;
-  --polychat-bg-tertiary: #e9ecef;
+  --polychat-bg-primary: #f7f7fb; /* plus doux que #fff */
+  --polychat-bg-secondary: #f3f5f8; /* surfaces */
+  --polychat-bg-tertiary: #e9edf3; /* séparateurs/panels */
   --polychat-bg-glass: rgba(248, 249, 250, 0.85);
   --polychat-bg-glass-light: rgba(233, 236, 239, 0.7);
   
@@ -355,11 +355,6 @@ body {
   --polychat-text-secondary: #495057;
   --polychat-text-muted: #6c757d;
   --polychat-text-inverse: #ffffff;
-  
-  --polychat-accent-primary: #0d6efd;
-  --polychat-accent-secondary: #0a58ca;
-  --polychat-accent-tertiary: #3d8bfd;
-  --polychat-accent-muted: #6c757d;
   
   /* Nouveaux dégradés pour le thème clair */
   --gradient-cyber: linear-gradient(135deg, var(--polychat-accent-primary) 0%, var(--polychat-accent-secondary) 50%, var(--polychat-accent-tertiary) 100%);
@@ -371,6 +366,11 @@ body {
   --shadow-cyber-strong: 0 4px 12px rgba(0, 0, 0, 0.1);
   --subtle-glow: 0 0 0 1px rgba(0, 0, 0, 0.02);
   --subtle-glow-hover: 0 0 0 2px rgba(0, 0, 0, 0.05);
+
+  /* Bordures neutres en mode clair (évite trop de contraste d'accent) */
+  --border-thin: 1px solid #e2e5ea;
+  --border-medium: 2px solid #d5dae3;
+  /* Conserver le border-thick sur l'accent pour les éléments mis en avant */
 }
 
 /* Styles spécifiques pour le body en thème clair */
@@ -393,11 +393,24 @@ body.theme-dark {
   height: 100%;
   opacity: 0.03;
   background-image: 
-    linear-gradient(rgba(139, 92, 246, 0.1) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(139, 92, 246, 0.1) 1px, transparent 1px);
+    linear-gradient(rgba(0,0,0,0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,0,0,0.06) 1px, transparent 1px);
   background-size: 50px 50px;
   animation: modernPulse 4s ease-in-out infinite;
   z-index: -2;
+}
+
+/* Grille plus subtile en mode clair */
+.theme-light .polychat-grid-background {
+  opacity: 0.02;
+}
+
+@supports (background: color-mix(in srgb, white, black)) {
+  .polychat-grid-background {
+    background-image: 
+      linear-gradient(color-mix(in srgb, var(--polychat-accent-primary) 18%, transparent) 1px, transparent 1px),
+      linear-gradient(90deg, color-mix(in srgb, var(--polychat-accent-primary) 18%, transparent) 1px, transparent 1px);
+  }
 }
 
 /* Particules flottantes modernisées */
@@ -1307,10 +1320,7 @@ body {
   --polychat-text-muted: #6c757d;
   --polychat-text-inverse: #ffffff;
   
-  --polychat-accent-primary: #0d6efd;
-  --polychat-accent-secondary: #0a58ca;
-  --polychat-accent-tertiary: #3d8bfd;
-  --polychat-accent-muted: #6c757d;
+  /* Ne pas écraser l'accent; laisser [data-accent] contrôler */
   
   /* Nouveaux dégradés pour le thème clair */
   --gradient-cyber: linear-gradient(135deg, var(--polychat-accent-primary) 0%, var(--polychat-accent-secondary) 50%, var(--polychat-accent-tertiary) 100%);
