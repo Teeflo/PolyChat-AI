@@ -15,12 +15,14 @@ const SettingsModalModern: React.FC<SettingsModalModernProps> = ({ isOpen, onClo
     apiKey, 
     selectedModel, 
     theme, 
+    accent,
     systemPrompt,
     tone,
     notificationsEnabled,
     setApiKey, 
     setSelectedModel, 
     setTheme,
+    setAccent,
     setSystemPrompt,
     setTone,
     setNotificationsEnabled
@@ -37,6 +39,10 @@ const SettingsModalModern: React.FC<SettingsModalModernProps> = ({ isOpen, onClo
     setTheme(newTheme);
     document.documentElement.setAttribute('data-theme', newTheme);
     document.body.className = `theme-${newTheme}`;
+  };
+  const handleAccentChange = (newAccent: NonNullable<ReturnType<typeof useSettings>['accent']>) => {
+    setAccent(newAccent);
+    document.documentElement.setAttribute('data-accent', newAccent);
   };
 
   const getModelDisplayName = (modelId: string) => modelId.split('/').pop() || modelId;
@@ -299,6 +305,22 @@ const SettingsModalModern: React.FC<SettingsModalModernProps> = ({ isOpen, onClo
                 </button>
               </div>
               <div className="settings-help-modern"><Info size={12} /><span>Thème actuel: <strong>{theme === 'dark' ? 'Sombre (Cyber)' : 'Clair'}</strong></span></div>
+            </div>
+            <div className="settings-field-modern">
+              <label className="settings-label-modern">Couleur d'accent</label>
+              <div className="settings-accent-grid">
+                {(['violet','blue','green','rose','orange','teal','red','cyan'] as const).map(a => (
+                  <button
+                    key={a}
+                    type="button"
+                    className={`accent-swatch ${accent===a ? 'active' : ''} accent-${a}`}
+                    aria-label={`Accent ${a}`}
+                    title={`Accent ${a}`}
+                    onClick={() => handleAccentChange(a)}
+                  />
+                ))}
+              </div>
+              <div className="settings-help-modern"><Info size={12} /><span>Accent actuel: <strong>{accent}</strong></span></div>
             </div>
           </div>
 

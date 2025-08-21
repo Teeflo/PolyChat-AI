@@ -6,6 +6,7 @@ const DEFAULT_SETTINGS: Settings = {
   apiKey: '',
   selectedModel: '', // Aucun modèle par défaut - l'utilisateur choisit
   theme: 'dark', // Thème sombre par défaut pour le design moderne
+  accent: 'violet',
   systemPrompt: '', // Instruction système vide par défaut
   tone: 'neutre',
   notificationsEnabled: true,
@@ -19,6 +20,7 @@ interface SettingsStore extends Settings {
   setApiKey: (apiKey: string) => void;
   setSelectedModel: (model: string) => void;
   setTheme: (theme: 'light' | 'dark') => void;
+  setAccent: (accent: NonNullable<Settings['accent']>) => void;
   setSystemPrompt: (systemPrompt: string) => void;
   setTone: (tone: NonNullable<Settings['tone']>) => void;
   setNotificationsEnabled: (enabled: boolean) => void;
@@ -39,6 +41,7 @@ export const useSettings = create<SettingsStore>()(
       setApiKey: (apiKey) => set({ apiKey }),
       setSelectedModel: (selectedModel) => set({ selectedModel }),
       setTheme: (theme) => set({ theme }),
+      setAccent: (accent) => set({ accent }),
       setSystemPrompt: (systemPrompt) => set({ systemPrompt }),
   setTone: (tone) => set({ tone }),
   setNotificationsEnabled: (notificationsEnabled) => set({ notificationsEnabled }),

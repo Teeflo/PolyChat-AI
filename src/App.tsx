@@ -27,7 +27,8 @@ const AppContent: React.FC = () => {
     apiKey,
     showConfigurationPopup,
     configurationPopupType,
-    setShowConfigurationPopup
+    setShowConfigurationPopup,
+    accent
   } = useSettings()
   const { activeSessions } = useChat()
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
@@ -45,17 +46,20 @@ const AppContent: React.FC = () => {
   
   // Suppression du test API au démarrage pour éviter les doublons et logs
 
-  // Appliquer le thème à la racine
+  // Appliquer le thème et l'accent à la racine
   useEffect(() => {
     console.log('🎨 Application du thème:', theme);
     document.documentElement.setAttribute('data-theme', theme);
+    if (accent) {
+      document.documentElement.setAttribute('data-accent', accent);
+    }
     document.body.className = `theme-${theme}`;
     // Ajouter aussi la classe au conteneur principal
     const appContainer = document.querySelector('.polychat-app-container');
     if (appContainer) {
       appContainer.className = `polychat-container polychat-app-container theme-${theme}`;
     }
-  }, [theme]);
+  }, [theme, accent]);
 
   // Optionnel: demander la permission de notification si l'utilisateur active l'option
   useEffect(()=>{

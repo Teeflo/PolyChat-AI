@@ -18,6 +18,7 @@ export interface Settings {
   apiKey: string;
   selectedModel: string;
   theme: 'light' | 'dark';
+  accent?: 'violet' | 'blue' | 'green' | 'rose' | 'orange' | 'teal' | 'red' | 'cyan';
   systemPrompt: string; // Nouveau champ pour l'instruction système
   tone?: 'neutre' | 'formel' | 'amical' | 'professionnel' | 'enthousiaste';
   notificationsEnabled?: boolean;

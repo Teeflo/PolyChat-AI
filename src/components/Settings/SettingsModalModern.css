@@ -372,6 +372,33 @@
   margin-top: var(--spacing-sm);
 }
 
+/* Accent selector */
+.settings-accent-grid {
+  display: grid;
+  grid-template-columns: repeat(8, 24px);
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.accent-swatch {
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
+  border: 2px solid rgba(255,255,255,0.15);
+  outline: none;
+  cursor: pointer;
+  padding: 0;
+}
+.accent-swatch.active { box-shadow: 0 0 0 2px var(--polychat-accent-tertiary); }
+.accent-violet { background: linear-gradient(135deg,#8b5cf6,#a78bfa); }
+.accent-blue { background: linear-gradient(135deg,#3b82f6,#60a5fa); }
+.accent-green { background: linear-gradient(135deg,#10b981,#34d399); }
+.accent-rose { background: linear-gradient(135deg,#e11d48,#fb7185); }
+.accent-orange { background: linear-gradient(135deg,#f97316,#fb923c); }
+.accent-teal { background: linear-gradient(135deg,#14b8a6,#2dd4bf); }
+.accent-red { background: linear-gradient(135deg,#ef4444,#f87171); }
+.accent-cyan { background: linear-gradient(135deg,#06b6d4,#22d3ee); }
+
 .settings-theme-option-modern {
   display: flex;
   flex-direction: column;

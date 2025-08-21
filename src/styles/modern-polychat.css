@@ -12,11 +12,11 @@
   --polychat-bg-glass: rgba(36, 40, 48, 0.85);
   --polychat-bg-glass-light: rgba(45, 49, 66, 0.7);
   
-  /* Nouveaux accents modernes - Tons violets */
-  --polychat-accent-primary: #8b5cf6; /* Violet principal */
-  --polychat-accent-secondary: #a78bfa; /* Violet secondaire */
-  --polychat-accent-tertiary: #ddd6fe; /* Violet clair */
-  --polychat-accent-muted: #4c1d95; /* Violet sourd pour les éléments discrets */
+  /* Nouveaux accents modernes (par défaut: violet) */
+  --polychat-accent-primary: #8b5cf6;
+  --polychat-accent-secondary: #a78bfa;
+  --polychat-accent-tertiary: #ddd6fe;
+  --polychat-accent-muted: #4c1d95;
   
   /* Couleurs d'état modernisées - Moins saturées */
   --polychat-success: #10b981;
@@ -82,6 +82,63 @@
   --transition-normal: 0.25s ease;
   --transition-slow: 0.35s ease;
   --transition-bounce: 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+/* Accent variants via data-accent on :root or html */
+[data-accent="violet"] {
+  --polychat-accent-primary: #8b5cf6;
+  --polychat-accent-secondary: #a78bfa;
+  --polychat-accent-tertiary: #ddd6fe;
+  --polychat-accent-muted: #4c1d95;
+}
+
+[data-accent="blue"] {
+  --polychat-accent-primary: #3b82f6;
+  --polychat-accent-secondary: #60a5fa;
+  --polychat-accent-tertiary: #93c5fd;
+  --polychat-accent-muted: #1e3a8a;
+}
+
+[data-accent="green"] {
+  --polychat-accent-primary: #10b981;
+  --polychat-accent-secondary: #34d399;
+  --polychat-accent-tertiary: #6ee7b7;
+  --polychat-accent-muted: #065f46;
+}
+
+[data-accent="rose"] {
+  --polychat-accent-primary: #e11d48;
+  --polychat-accent-secondary: #fb7185;
+  --polychat-accent-tertiary: #fecdd3;
+  --polychat-accent-muted: #881337;
+}
+
+[data-accent="orange"] {
+  --polychat-accent-primary: #f97316;
+  --polychat-accent-secondary: #fb923c;
+  --polychat-accent-tertiary: #fed7aa;
+  --polychat-accent-muted: #7c2d12;
+}
+
+[data-accent="teal"] {
+  --polychat-accent-primary: #14b8a6;
+  --polychat-accent-secondary: #2dd4bf;
+  --polychat-accent-tertiary: #99f6e4;
+  --polychat-accent-muted: #115e59;
+}
+
+[data-accent="red"] {
+  --polychat-accent-primary: #ef4444;
+  --polychat-accent-secondary: #f87171;
+  --polychat-accent-tertiary: #fecaca;
+  --polychat-accent-muted: #7f1d1d;
+}
+
+[data-accent="cyan"] {
+  --polychat-accent-primary: #06b6d4;
+  --polychat-accent-secondary: #22d3ee;
+  --polychat-accent-tertiary: #a5f3fc;
+  --polychat-accent-muted: #164e63;
 }
 
 /* Reset et base modernisés */
