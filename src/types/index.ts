@@ -22,6 +22,7 @@ export interface Settings {
   systemPrompt: string; // Nouveau champ pour l'instruction système
   tone?: 'neutre' | 'formel' | 'amical' | 'professionnel' | 'enthousiaste';
   notificationsEnabled?: boolean;
+  ragEnabled?: boolean;
   hasOnboarded?: boolean;
 }
 
