@@ -32,6 +32,7 @@ export interface ChatSession {
   messages: Message[];
   isLoading: boolean;
   error: string | null;
+  isTemporary?: boolean;
 }
 
 // New types for conversation templates and quick actions

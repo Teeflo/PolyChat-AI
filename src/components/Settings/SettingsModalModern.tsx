@@ -19,13 +19,15 @@ const SettingsModalModern: React.FC<SettingsModalModernProps> = ({ isOpen, onClo
     systemPrompt,
     tone,
     notificationsEnabled,
+    ragEnabled, // Ajout du RAG
     setApiKey, 
     setSelectedModel, 
     setTheme,
     setAccent,
     setSystemPrompt,
     setTone,
-    setNotificationsEnabled
+    setNotificationsEnabled,
+    setRagEnabled // Ajout du RAG
   } = useSettings();
   const { models } = useModels();
   const [modelSearch, setModelSearch] = useState('');
@@ -280,6 +282,24 @@ const SettingsModalModern: React.FC<SettingsModalModernProps> = ({ isOpen, onClo
                 <span>{notificationsEnabled? 'Activées':'Désactivées'}</span>
               </div>
               <div className="settings-help-modern"><Info size={12} /><span>Alerte quand une réponse est prête.</span></div>
+            </div>
+          </div>
+
+          {/* Section Fonctionnalités IA */}
+          <div className="settings-section-modern">
+            <div className="settings-section-modern-header">
+              <Zap size={18} />
+              <h3>Fonctionnalités IA</h3>
+              <div className="settings-section-modern-badge experimental">Expérimental</div>
+            </div>
+            <div className="settings-field-modern">
+              <label className="settings-label-modern">Amélioration du contexte (RAG)</label>
+              <div className="settings-toggle-modern">
+                <label htmlFor="rag-toggle" className="sr-only">Activer le RAG</label>
+                <input id="rag-toggle" title="Activer le RAG" type="checkbox" checked={!!ragEnabled} onChange={(e) => setRagEnabled(e.target.checked)} />
+                <span>{ragEnabled ? 'Activé' : 'Désactivé'}</span>
+              </div>
+              <div className="settings-help-modern"><Info size={12} /><span>Enrichit le contexte avec les messages les plus pertinents de l'historique.</span></div>
             </div>
           </div>
 

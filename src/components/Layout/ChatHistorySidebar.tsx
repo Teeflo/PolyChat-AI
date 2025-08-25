@@ -2,6 +2,7 @@ import React from 'react';
 import { useChat } from '../../hooks/useChat';
 import { X, Plus, MessageSquare, Trash2 } from 'lucide-react';
 import type { ChatSession } from '../../types';
+import '../ChatHistorySidebar.css'; // Import the CSS file
 
 interface ChatHistorySidebarProps {
   isOpen: boolean;
@@ -20,7 +21,6 @@ export const ChatHistorySidebar: React.FC<ChatHistorySidebarProps> = ({
     deleteSession 
   } = useChat();
 
-  // Fonction pour extraire le titre d'une session (30 premiers caractères du premier message utilisateur)
   const getSessionTitle = (session: ChatSession): string => {
     const userMessage = session.messages.find(msg => msg.role === 'user');
     if (userMessage && userMessage.content.trim()) {
@@ -30,7 +30,6 @@ export const ChatHistorySidebar: React.FC<ChatHistorySidebarProps> = ({
     return `${session.modelName} - Nouvelle conversation`;
   };
 
-  // Fonction pour extraire un aperçu de la conversation
   const getSessionPreview = (session: ChatSession): string => {
     const lastMessage = session.messages[session.messages.length - 1];
     if (lastMessage && lastMessage.content.trim()) {
@@ -42,22 +41,21 @@ export const ChatHistorySidebar: React.FC<ChatHistorySidebarProps> = ({
 
   const handleNewChat = () => {
     createNewSession();
-    onClose(); // Fermer la sidebar sur mobile après création
+    onClose();
   };
 
   const handleSessionClick = (sessionId: string) => {
     setActiveSession(sessionId);
-    onClose(); // Fermer la sidebar sur mobile après sélection
+    onClose();
   };
 
   const handleDeleteSession = (e: React.MouseEvent, sessionId: string) => {
-    e.stopPropagation(); // Empêcher le clic de sélectionner la session
+    e.stopPropagation();
     deleteSession(sessionId);
   };
 
   return (
     <>
-      {/* Overlay pour mobile */}
       {isOpen && (
         <div 
           className="fixed inset-0 bg-black bg-opacity-50 z-150 md:hidden"
@@ -65,9 +63,7 @@ export const ChatHistorySidebar: React.FC<ChatHistorySidebarProps> = ({
         />
       )}
       
-      {/* Sidebar */}
       <div className={`chat-history-sidebar ${!isOpen ? 'collapsed' : ''}`} role="complementary" aria-label="Historique des conversations">
-        {/* Header */}
         <div className="chat-history-header">
           <h2 className="chat-history-title">
             <MessageSquare size={20} className="inline mr-2" />
@@ -82,10 +78,16 @@ export const ChatHistorySidebar: React.FC<ChatHistorySidebarProps> = ({
           </button>
         </div>
 
-        {/* Liste des conversations */}
         <div className="chat-history-list">
+          <button
+            className="new-chat-btn-top"
+            onClick={handleNewChat}
+          >
+            <Plus size={16} className="inline mr-2" />
+            Nouvelle Conversation
+          </button>
           {allSessions.length === 0 ? (
-            <div className="text-center py-8 text-polychat-text-muted">
+            <div className="empty-history-message">
               <MessageSquare size={48} className="mx-auto mb-4 opacity-50" />
               <p>Aucune conversation</p>
             </div>
@@ -131,7 +133,6 @@ export const ChatHistorySidebar: React.FC<ChatHistorySidebarProps> = ({
           )}
         </div>
 
-        {/* Footer avec bouton nouvelle conversation */}
         <div className="chat-history-footer">
           <button
             className="new-chat-btn"
