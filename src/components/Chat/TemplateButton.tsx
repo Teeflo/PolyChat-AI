@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { BookOpen, Sparkles } from 'lucide-react';
+import { Sparkles, BookOpen, Zap } from 'lucide-react';
 import TemplateSelector from './TemplateSelector';
 import type { ConversationTemplate, QuickAction } from '../../types/index';
 import './TemplateButton.css';
@@ -38,14 +38,18 @@ const TemplateButton: React.FC<TemplateButtonProps> = ({
         aria-label="Open templates and quick actions"
       >
         <div className="template-button-icon">
-          <BookOpen size={16} />
+          {selectedText && selectedText.trim().length > 0 ? (
+            <Zap size={18} />
+          ) : (
+            <BookOpen size={18} />
+          )}
         </div>
         <div className="template-button-label">
-          Templates
+          {selectedText && selectedText.trim().length > 0 ? 'Actions' : 'Templates'}
         </div>
         {selectedText && selectedText.trim().length > 0 && (
           <div className="template-button-badge">
-            <Sparkles size={12} />
+            <Sparkles size={10} />
           </div>
         )}
       </button>

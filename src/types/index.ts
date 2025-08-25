@@ -47,6 +47,7 @@ export interface ConversationTemplate {
   modelSpecific?: string[]; // Models this template works best with
   icon?: string;
   color?: string;
+  examples?: string[]; // Exemples d'utilisation du template
 }
 
 export type TemplateCategory = 
