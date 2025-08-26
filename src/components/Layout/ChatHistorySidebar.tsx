@@ -79,13 +79,6 @@ export const ChatHistorySidebar: React.FC<ChatHistorySidebarProps> = ({
         </div>
 
         <div className="chat-history-list">
-          <button
-            className="new-chat-btn-top"
-            onClick={handleNewChat}
-          >
-            <Plus size={16} className="inline mr-2" />
-            Nouvelle Conversation
-          </button>
           {allSessions.length === 0 ? (
             <div className="empty-history-message">
               <MessageSquare size={48} className="mx-auto mb-4 opacity-50" />
@@ -112,21 +105,19 @@ export const ChatHistorySidebar: React.FC<ChatHistorySidebarProps> = ({
                       <span className="text-xs bg-polychat-accent-muted px-2 py-1 rounded text-white">
                         {session.modelName}
                       </span>
-                      <span className="text-xs text-polychat-text-muted">
-                        {session.messages.length} messages
-                      </span>
+                    </div>
+                    <div className="chat-history-item-preview mt-1">
+                      {session.messages.length} messages
                     </div>
                   </div>
-                  {allSessions.length > 1 && (
-                    <button
-                      className="ml-2 p-1 text-polychat-text-muted hover:text-polychat-error transition-colors"
-                      onClick={(e) => handleDeleteSession(e, session.id)}
-                      aria-label="Supprimer la conversation"
-                      title="Supprimer la conversation"
-                    >
-                      <Trash2 size={14} />
-                    </button>
-                  )}
+                  <button
+                    className="chat-history-delete-btn"
+                    onClick={(e) => handleDeleteSession(e, session.id)}
+                    aria-label="Supprimer la conversation"
+                    title="Supprimer la conversation"
+                  >
+                    <Trash2 />
+                  </button>
                 </div>
               </div>
             ))

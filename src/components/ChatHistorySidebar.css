@@ -64,26 +64,7 @@
   padding: 0.5rem;
 }
 
-.new-chat-btn-top {
-  width: calc(100% - 1rem); /* Adjust for padding */
-  margin: 0.5rem;
-  padding: 0.75rem;
-  background-color: var(--color-accent);
-  color: var(--color-accent-text);
-  border: none;
-  border-radius: 0.5rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: background-color 0.2s;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-}
 
-.new-chat-btn-top:hover {
-  background-color: var(--color-accent-hover);
-}
 
 .chat-history-item {
   padding: 0.75rem;
@@ -157,4 +138,29 @@
 .empty-history-message svg {
   margin: 0 auto 1rem;
   opacity: 0.6;
+}
+
+.chat-history-delete-btn {
+  background-color: transparent;
+  border: 1px solid transparent;
+  border-radius: 0.375rem;
+  padding: 0.25rem;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-text-secondary);
+}
+
+.chat-history-delete-btn:hover {
+  background-color: var(--color-background-lighter);
+  border-color: var(--color-border);
+  color: var(--color-error);
+  transform: scale(1.1);
+}
+
+.chat-history-delete-btn svg {
+  width: 16px;
+  height: 16px;
 }
