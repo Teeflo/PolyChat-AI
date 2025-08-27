@@ -441,3 +441,4 @@ Voici une liste des fonctionnalités prévues pour les prochaines versions de Po
   panneau de l'historique des conversations pour une meilleure
   lisibilité et gestion.
 - [ ] **Corriger le bug de changement de modèle** : Empêcher le changement de modèle automatique lors d'une génération d'image erronée.
+- [ ] **Améliorer le README** : Revoir le contenu et corriger le superflu.
