@@ -1,7 +1,7 @@
 import React from 'react';
 import { useChat } from '../hooks/useChat';
 import { X, Plus, MessageSquare, Trash2 } from 'lucide-react';
-import type { ChatSession } from '../types';
+import type { ChatSession, MessageContent } from '../types';
 import './ChatHistorySidebar.css';
 
 interface ChatHistorySidebarProps {
@@ -21,12 +21,27 @@ export const ChatHistorySidebar: React.FC<ChatHistorySidebarProps> = ({
     deleteSession 
   } = useChat();
 
+  // Fonction helper pour extraire le texte du contenu (string ou MessageContent[])
+  const getTextContent = (content: string | MessageContent[]): string => {
+    if (typeof content === 'string') {
+      return content;
+    }
+    // Pour MessageContent[], extraire le texte des éléments text
+    return content
+      .filter(item => item.type === 'text')
+      .map(item => item.text || '')
+      .join(' ');
+  };
+
   // Fonction pour extraire le titre d'une session (30 premiers caractères du premier message utilisateur)
   const getSessionTitle = (session: ChatSession): string => {
     const userMessage = session.messages.find(msg => msg.role === 'user');
-    if (userMessage && userMessage.content.trim()) {
-      const title = userMessage.content.trim();
-      return title.length > 30 ? title.substring(0, 30) + '...' : title;
+    if (userMessage) {
+      const contentText = getTextContent(userMessage.content);
+      if (contentText.trim()) {
+        const title = contentText.trim();
+        return title.length > 30 ? title.substring(0, 30) + '...' : title;
+      }
     }
     return `${session.modelName} - Nouvelle conversation`;
   };
@@ -34,9 +49,12 @@ export const ChatHistorySidebar: React.FC<ChatHistorySidebarProps> = ({
   // Fonction pour extraire un aperçu de la conversation
   const getSessionPreview = (session: ChatSession): string => {
     const lastMessage = session.messages[session.messages.length - 1];
-    if (lastMessage && lastMessage.content.trim()) {
-      const preview = lastMessage.content.trim();
-      return preview.length > 50 ? preview.substring(0, 50) + '...' : preview;
+    if (lastMessage) {
+      const contentText = getTextContent(lastMessage.content);
+      if (contentText.trim()) {
+        const preview = contentText.trim();
+        return preview.length > 50 ? preview.substring(0, 50) + '...' : preview;
+      }
     }
     return 'Aucun message';
   };

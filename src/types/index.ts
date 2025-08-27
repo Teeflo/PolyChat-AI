@@ -1,10 +1,31 @@
 export interface Message {
   id: string;
   role: 'user' | 'assistant' | 'system';
-  content: string;
+  content: string | MessageContent[];
   timestamp: Date;
   modelId?: string; // Ajout pour identifier quel modèle a généré la réponse
   streaming?: boolean; // Indique si le message est en cours de streaming
+  imageData?: GeneratedImage; // Pour les messages contenant des images générées
+}
+
+export interface MessageContent {
+  type: 'text' | 'image_url';
+  text?: string;
+  image_url?: {
+    url: string;
+    detail?: 'low' | 'high' | 'auto';
+  };
+}
+
+export interface GeneratedImage {
+  url: string;
+  width: number;
+  height: number;
+  format: string;
+  size: number; // in bytes
+  prompt: string;
+  model: string;
+  timestamp: Date;
 }
 
 export interface Model {

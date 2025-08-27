@@ -1,7 +1,19 @@
-import type { Message, ChatSession } from '../types/index';
+import type { Message, ChatSession, MessageContent } from '../types/index';
 
 const MESSAGES_STORAGE_KEY = 'polychat-messages';
 const HISTORY_STORAGE_KEY = 'polychat_history';
+
+// Helper function to get text content from message
+const getMessageText = (content: string | MessageContent[]): string => {
+  if (typeof content === 'string') {
+    return content;
+  }
+  // For MessageContent[], extract text from text type content
+  return content
+    .filter(item => item.type === 'text')
+    .map(item => item.text || '')
+    .join(' ');
+};
 
 export const saveMessages = (messages: Message[]) => {
   try {
@@ -35,7 +47,16 @@ export const loadMessages = (): Message[] => {
 
 export const saveChatHistory = (sessions: ChatSession[]) => {
   try {
-    localStorage.setItem(HISTORY_STORAGE_KEY, JSON.stringify(sessions));
+    // Filter out empty conversations to avoid data pollution
+    const filteredSessions = sessions.filter(session => {
+      // Keep sessions that have at least one non-empty message
+      return session.messages.some(message => {
+        const textContent = getMessageText(message.content);
+        return textContent && textContent.trim().length > 0;
+      });
+    });
+
+    localStorage.setItem(HISTORY_STORAGE_KEY, JSON.stringify(filteredSessions));
   } catch (error) {
     console.error('Failed to save chat history to localStorage:', error);
   }

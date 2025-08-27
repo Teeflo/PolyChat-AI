@@ -225,6 +225,7 @@ const ChatInputModern: React.FC = () => {
     }
   }, [pendingTemplate, prepareTemplate]);
 
+
   const handleSend = async () => {
     if (message.trim() && !isAnyLoading) {
       await sendMessageToAll(message);
@@ -273,6 +274,7 @@ const ChatInputModern: React.FC = () => {
     // Pas besoin de logique spéciale, les suggestions sont toujours visibles
   };
 
+
   return (
     <div className="chat-input-modern-container chat-input-enhanced">
       {/* Indicateur de template actif */}
@@ -285,34 +287,32 @@ const ChatInputModern: React.FC = () => {
       
       <div className="chat-input-modern-wrapper">
         {/* Suggestions toujours affichées et intégrées dans la barre de chat */}
-        {contextualSuggestions.length > 0 && (
-          <div className="chat-input-suggestions-bar">
-            {contextualSuggestions.map((template, index) => (
-              <button
-                key={template.id}
-                onClick={() => handleSuggestionClick(template)}
-                className={`chat-input-suggestion-btn suggestion-${index % 3}`}
-                title={template.description}
-              >
-                {template.icon && <span className="suggestion-icon">{template.icon}</span>}
-                <span className="suggestion-text">{template.name}</span>
-                {index === 0 && <Flame size={12} className="suggestion-badge trending" />}
-                {index === 1 && <Zap size={12} className="suggestion-badge popular" />}
-                {index === 2 && <Star size={12} className="suggestion-badge recommended" />}
-              </button>
-            ))}
-            {hasMoreSuggestions && (
-              <button
-                onClick={() => setShowAllSuggestions(!showAllSuggestions)}
-                className="chat-input-suggestion-btn show-more"
-              >
-                <Sparkles size={14} />
-                <span>{showAllSuggestions ? 'Moins' : 'Plus'}</span>
-              </button>
-            )}
-          </div>
-        )}
-        
+        <div className="chat-input-suggestions-bar">
+          {contextualSuggestions.map((template, index) => (
+            <button
+              key={template.id}
+              onClick={() => handleSuggestionClick(template)}
+              className={`chat-input-suggestion-btn suggestion-${index % 3}`}
+              title={template.description}
+            >
+              {template.icon && <span className="suggestion-icon">{template.icon}</span>}
+              <span className="suggestion-text">{template.name}</span>
+              {index === 0 && <Flame size={12} className="suggestion-badge trending" />}
+              {index === 1 && <Zap size={12} className="suggestion-badge popular" />}
+              {index === 2 && <Star size={12} className="suggestion-badge recommended" />}
+            </button>
+          ))}
+          {hasMoreSuggestions && (
+            <button
+              onClick={() => setShowAllSuggestions(!showAllSuggestions)}
+              className="chat-input-suggestion-btn show-more"
+            >
+              <Sparkles size={14} />
+              <span>{showAllSuggestions ? 'Moins' : 'Plus'}</span>
+            </button>
+          )}
+        </div>
+
         {/* Zone de saisie principale avec bouton d'envoi intégré */}
         <div className="chat-input-modern-input-area">
           <textarea
@@ -368,6 +368,7 @@ const ChatInputModern: React.FC = () => {
           <kbd>Entrée</kbd> pour envoyer • <kbd>Shift + Entrée</kbd> pour nouvelle ligne
         </span>
       </div>
+
     </div>
   );
 };

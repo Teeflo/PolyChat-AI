@@ -23,7 +23,7 @@ export const ChatHistorySidebar: React.FC<ChatHistorySidebarProps> = ({
 
   const getSessionTitle = (session: ChatSession): string => {
     const userMessage = session.messages.find(msg => msg.role === 'user');
-    if (userMessage && userMessage.content.trim()) {
+    if (userMessage && typeof userMessage.content === 'string' && userMessage.content.trim()) {
       const title = userMessage.content.trim();
       return title.length > 30 ? title.substring(0, 30) + '...' : title;
     }
@@ -32,7 +32,7 @@ export const ChatHistorySidebar: React.FC<ChatHistorySidebarProps> = ({
 
   const getSessionPreview = (session: ChatSession): string => {
     const lastMessage = session.messages[session.messages.length - 1];
-    if (lastMessage && lastMessage.content.trim()) {
+    if (lastMessage && typeof lastMessage.content === 'string' && lastMessage.content.trim()) {
       const preview = lastMessage.content.trim();
       return preview.length > 50 ? preview.substring(0, 50) + '...' : preview;
     }

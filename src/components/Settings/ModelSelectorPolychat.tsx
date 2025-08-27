@@ -13,17 +13,13 @@ const ModelSelector: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    loadModels();
-  }, [loadModels]);
-
   const loadModels = async () => {
     try {
       setLoading(true);
       setError(null);
       const fetchedModels = await fetchAvailableModels();
       setModels(fetchedModels);
-      
+
       if (fetchedModels.length > 0 && !fetchedModels.find(m => m.id === selectedModel)) {
         setSelectedModel(fetchedModels[0].id);
       }
@@ -34,6 +30,10 @@ const ModelSelector: React.FC = () => {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    loadModels();
+  }, []);
 
   return (
     <div className="polychat-input-group">

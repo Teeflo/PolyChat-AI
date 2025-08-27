@@ -3,6 +3,7 @@ import MessageBubble from './MessageBubble';
 import ThinkingAnimation from './ThinkingAnimation';
 import { useChat } from '../../hooks/useChat';
 import { useSettings } from '../../hooks/useSettings';
+import type { ChatSession, Message } from '../../types/index';
 import './ChatWindow.css';
 
 interface ChatWindowProps {
@@ -55,9 +56,10 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ sessions }) => {
         {messages
           .filter((message: Message) => {
             if (message.role !== 'assistant') return true;
-            const content = (message.content ?? '').trim();
+            const content = typeof message.content === 'string' ? message.content : '';
+            const trimmedContent = content.trim();
             // Exclure tout message assistant vide, ne contenant que des espaces, en streaming, '…', ou qui commence/termine par '…'
-            if (!content || message.streaming || content === '…' || content.startsWith('…') || content.endsWith('…')) return false;
+            if (!trimmedContent || message.streaming || trimmedContent === '…' || trimmedContent.startsWith('…') || trimmedContent.endsWith('…')) return false;
             return true;
           })
           .map((message: Message) => (

@@ -1,11 +1,37 @@
 import { create } from 'zustand';
-import type { Message, ChatSession, ConversationTemplate, QuickAction } from '../types/index';
+import type { Message, ChatSession, ConversationTemplate, QuickAction, MessageContent } from '../types/index';
 import { saveChatHistory, loadChatHistory } from '../services/localStorage';
-import { streamAIResponse } from '../services/openRouter';
+import { streamAIResponse, isImageGenerationModel, getImageGenerationError, generateImageReliable } from '../services/openRouter';
 import { getRelevantContext } from '../services/ragService'; // Ajout du RAG Service
 import { useSettings } from './useSettings';
 import { useUsageStats } from './useUsageStats';
 import { notify } from '../utils/notify';
+
+// Helper function to get text content from message
+const getMessageText = (content: string | MessageContent[]): string => {
+  if (typeof content === 'string') {
+    return content;
+  }
+  // For MessageContent[], extract text from text type content
+  return content
+    .filter(item => item.type === 'text')
+    .map(item => item.text || '')
+    .join(' ');
+};
+
+// Helper function to detect if message is requesting image generation
+const detectImageGenerationRequest = (content: string): boolean => {
+  const imageKeywords = [
+    'génér', 'génére', 'générer', 'génères', 'génère', 'générez',
+    'créer', 'crée', 'crées', 'créez', 'créé', 'créée', 'créés', 'créées',
+    'dessin', 'dessine', 'dessines', 'dessinez',
+    'image', 'photo', 'illustration', 'artwork', 'picture',
+    'affiche', 'montre', 'représente', 'représenter'
+  ];
+
+  const lowerContent = content.toLowerCase();
+  return imageKeywords.some(keyword => lowerContent.includes(keyword));
+};
 
 interface ChatStore {
   activeSessions: ChatSession[];
@@ -203,6 +229,33 @@ export const useChat = create<ChatStore>((set, get) => ({
       return;
     }
 
+    // Vérifier si le message demande la génération d'une image
+    const isImageRequest = detectImageGenerationRequest(content);
+    if (isImageRequest) {
+      // Vérifier que tous les modèles actifs peuvent générer des images
+      const incompatibleModels = runnableSessions.filter(session =>
+        !isImageGenerationModel(session.modelId)
+      );
+
+      if (incompatibleModels.length > 0) {
+        const errorMessage = getImageGenerationError(incompatibleModels[0].modelId);
+
+        const updatedSessions = activeSessions.map(session => {
+          if (incompatibleModels.some(s => s.id === session.id)) {
+            return {
+              ...session,
+              error: errorMessage,
+              isLoading: false
+            };
+          }
+          return session;
+        });
+
+        set({ activeSessions: updatedSessions, isAnyLoading: false });
+        return;
+      }
+    }
+
     const userMessage = createMessage('user', content);
 
     // Promote temporary sessions to permanent ones on first message
@@ -279,37 +332,131 @@ export const useChat = create<ChatStore>((set, get) => ({
       }));
 
       try {
-        await streamAIResponse(contextMessages, apiKey, session.modelId, (delta) => {
-          const now = performance.now();
-          set(state => ({
-            activeSessions: state.activeSessions.map(s => s.id === session.id ? {
-              ...s,
-              messages: s.messages.map(m => m.id === placeholderId ? { ...m, content: m.content === '…' ? delta : m.content + delta } : m)
-            } : s),
-            allSessions: state.allSessions.map(s => s.id === session.id ? {
-              ...s,
-              messages: s.messages.map(m => m.id === placeholderId ? { ...m, content: m.content === '…' ? delta : m.content + delta } : m)
-            } : s),
-            streamingProgress: {
-              ...state.streamingProgress,
-              [session.id]: state.streamingProgress[session.id]
-                ? { ...state.streamingProgress[session.id], chars: (state.streamingProgress[session.id].chars + delta.length), lastUpdate: now }
-                : { chars: delta.length, start: now, lastUpdate: now }
-            }
-          }));
-        }, effectiveSystem, get().abortControllers[session.id]);
-        const end = performance.now();
-        try { useUsageStats.getState().recordAssistantResponse(session.modelId, Math.round(end - start)); } catch {}
-        
-        const current = get().activeSessions.find(s => s.id === session.id);
-        if (!current) return session;
+        const isImageRequest = detectImageGenerationRequest(getMessageText(userMessage.content));
 
-        return {
-          ...current,
-          messages: current.messages.map(m => m.id === placeholderId ? { ...m, streaming: false } : m),
-          isLoading: false,
-          error: null
-        };
+        if (isImageRequest && isImageGenerationModel(session.modelId)) {
+          // Utiliser generateImageReliable pour une génération d'image garantie
+          console.log('🎯 Image generation request detected, using reliable generation...');
+
+          try {
+            const responseContent = await generateImageReliable(
+              getMessageText(userMessage.content),
+              apiKey,
+              session.modelId,
+              {
+                maxRetries: 3,
+                size: '1024x1024',
+                quality: 'hd'
+              }
+            );
+
+            set(state => ({
+              activeSessions: state.activeSessions.map(s => s.id === session.id ? {
+                ...s,
+                messages: s.messages.map(m => m.id === placeholderId ? { ...m, content: responseContent, streaming: false } : m)
+              } : s),
+              allSessions: state.allSessions.map(s => s.id === session.id ? {
+                ...s,
+                messages: s.messages.map(m => m.id === placeholderId ? { ...m, content: responseContent, streaming: false } : m)
+              } : s)
+            }));
+
+            const end = performance.now();
+            try { useUsageStats.getState().recordAssistantResponse(session.modelId, Math.round(end - start)); } catch {}
+
+            const current = get().activeSessions.find(s => s.id === session.id);
+            if (!current) return session;
+
+            return {
+              ...current,
+              isLoading: false,
+              error: null
+            };
+
+          } catch (error) {
+            console.error('🚨 Image generation failed completely:', error);
+
+            // Créer une réponse d'erreur informative
+            const errorContent: MessageContent[] = [
+              {
+                type: 'text',
+                text: `❌ Erreur critique lors de la génération d'image
+
+Le système a essayé tous les modèles disponibles et mécanismes de secours, mais la génération d'image a échoué.
+
+**Détails de l'erreur:**
+${error instanceof Error ? error.message : 'Erreur inconnue'}
+
+**Actions recommandées:**
+• Vérifiez votre connexion internet
+• Vérifiez que votre clé API OpenRouter est valide
+• Essayez avec un prompt plus simple
+• Contactez le support technique si le problème persiste
+
+**Le système garantit normalement la génération d'images grâce à:**
+• Retry automatique avec backoff exponentiel
+• Fallback vers plusieurs modèles alternatifs
+• Validation de clé API avant chaque tentative
+• Mécanismes de secours intégrés
+
+Prompt original: "${getMessageText(userMessage.content)}"`
+              }
+            ];
+
+            set(state => ({
+              activeSessions: state.activeSessions.map(s => s.id === session.id ? {
+                ...s,
+                messages: s.messages.map(m => m.id === placeholderId ? { ...m, content: errorContent, streaming: false } : m)
+              } : s),
+              allSessions: state.allSessions.map(s => s.id === session.id ? {
+                ...s,
+                messages: s.messages.map(m => m.id === placeholderId ? { ...m, content: errorContent, streaming: false } : m)
+              } : s)
+            }));
+
+            const current = get().activeSessions.find(s => s.id === session.id);
+            return {
+              ...(current || session),
+              isLoading: false,
+              error: error instanceof Error ? error.message : 'Erreur de génération d\'image'
+            };
+          }
+
+        } else {
+          // Utiliser streamAIResponse pour les réponses textuelles normales
+          await streamAIResponse(contextMessages, apiKey, session.modelId, (delta) => {
+            const now = performance.now();
+            set(state => ({
+              activeSessions: state.activeSessions.map(s => s.id === session.id ? {
+                ...s,
+                messages: s.messages.map(m => m.id === placeholderId ? { ...m, content: m.content === '…' ? delta : m.content + delta } : m)
+              } : s),
+              allSessions: state.allSessions.map(s => s.id === session.id ? {
+                ...s,
+                messages: s.messages.map(m => m.id === placeholderId ? { ...m, content: m.content === '…' ? delta : m.content + delta } : m)
+              } : s),
+              streamingProgress: {
+                ...state.streamingProgress,
+                [session.id]: state.streamingProgress[session.id]
+                  ? { ...state.streamingProgress[session.id], chars: (state.streamingProgress[session.id].chars + delta.length), lastUpdate: now }
+                  : { chars: delta.length, start: now, lastUpdate: now }
+              }
+            }));
+          }, effectiveSystem, get().abortControllers[session.id]);
+
+          const end = performance.now();
+          try { useUsageStats.getState().recordAssistantResponse(session.modelId, Math.round(end - start)); } catch {}
+          
+          const current = get().activeSessions.find(s => s.id === session.id);
+          if (!current) return session;
+
+          return {
+            ...current,
+            messages: current.messages.map(m => m.id === placeholderId ? { ...m, streaming: false } : m),
+            isLoading: false,
+            error: null
+          };
+        }
       } catch (error) {
         const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred';
         
@@ -350,8 +497,24 @@ export const useChat = create<ChatStore>((set, get) => ({
       const { notificationsEnabled } = useSettings.getState();
       if (notificationsEnabled) {
         try {
+          // Vérifier si des images ont été générées
+          const hasImages = resolvedSessions.some(session => {
+            const lastMessage = session.messages[session.messages.length - 1];
+            if (!lastMessage || lastMessage.role !== 'assistant') return false;
+
+            const messageText = getMessageText(lastMessage.content);
+            return messageText.includes('![Image générée]') ||
+                   messageText.includes('https://') && /\.(png|jpg|jpeg|webp|gif)/i.test(messageText);
+          });
+
           const count = resolvedSessions.length;
-          notify('PolyChat AI', count > 1 ? `Réponses prêtes pour ${count} modèles` : 'Réponse prête');
+          const message = hasImages
+            ? '🎨 Image(s) générée(s) prête(s)!'
+            : count > 1
+              ? `Réponses prêtes pour ${count} modèles`
+              : 'Réponse prête';
+
+          notify('PolyChat AI', message);
         } catch {}
       }
     } catch (error) {
@@ -418,11 +581,21 @@ export const useChat = create<ChatStore>((set, get) => ({
       const conversationHistory = session.messages.slice(0, messageIndex);
       const lastUserMessage = conversationHistory.filter(m => m.role === 'user').pop();
 
+      if (!lastUserMessage) {
+        // Cannot regenerate without a preceding user message
+        set(state => ({
+          activeSessions: state.activeSessions.map(s => s.id === sessionId ? { ...s, isLoading: false, error: "Impossible de régénérer sans message utilisateur précédent." } : s),
+          isAnyLoading: false
+        }));
+        return;
+      }
+
       // RAG Integration
       let contextMessages = conversationHistory;
-      if (ragEnabled && lastUserMessage) {
+      if (ragEnabled) {
           try {
-              contextMessages = await getRelevantContext(lastUserMessage.content, conversationHistory);
+              const lastUserMessageText = getMessageText(lastUserMessage.content);
+              contextMessages = await getRelevantContext(lastUserMessageText, conversationHistory);
           } catch (e) {
               console.error("RAG Error:", e);
           }
@@ -437,10 +610,9 @@ export const useChat = create<ChatStore>((set, get) => ({
       const start = performance.now();
       const placeholderMessage = { ...createMessage('assistant', '…', session.modelId), streaming: true };
       regenPlaceholderId = placeholderMessage.id;
-      const msgsWithoutOld = [...conversationHistory, placeholderMessage, ...session.messages.slice(messageIndex + 1)];
+      const msgsWithoutOld = [...conversationHistory.filter(m => m.id !== messageId), placeholderMessage];
       const ac = new AbortController();
 
-      // Regrouper les mises à jour de l'état
       set(state => ({
         activeSessions: state.activeSessions.map(s => 
           s.id === sessionId 
@@ -455,25 +627,77 @@ export const useChat = create<ChatStore>((set, get) => ({
         abortControllers: { ...state.abortControllers, [session.id]: ac }
       }));
       
-      await streamAIResponse(contextMessages, apiKey, session.modelId, (delta)=>{
-        const now = performance.now();
-        set(state => ({
-          activeSessions: state.activeSessions.map(s => s.id===session.id ? {
-            ...s,
-            messages: s.messages.map(m => m.id===placeholderMessage.id ? { ...m, content: m.content === '…' ? delta : m.content + delta } : m)
-          } : s),
-          allSessions: state.allSessions.map(s => s.id===session.id ? {
-            ...s,
-            messages: s.messages.map(m => m.id===placeholderMessage.id ? { ...m, content: m.content === '…' ? delta : m.content + delta } : m)
-          } : s),
-          streamingProgress: {
-            ...state.streamingProgress,
-            [session.id]: state.streamingProgress[session.id]
-              ? { ...state.streamingProgress[session.id], chars: (state.streamingProgress[session.id].chars + delta.length), lastUpdate: now }
-              : { chars: delta.length, start: now, lastUpdate: now }
-          }
-        }));
-      }, effectiveSystem, ac);
+      const isImageRequest = detectImageGenerationRequest(getMessageText(lastUserMessage.content));
+
+      if (isImageRequest && isImageGenerationModel(session.modelId)) {
+        console.log('🎯 Regenerating image with reliable generation...');
+
+        try {
+          const responseContent = await generateImageReliable(
+            getMessageText(lastUserMessage.content),
+            apiKey,
+            session.modelId,
+            {
+              maxRetries: 3,
+              size: '1024x1024',
+              quality: 'hd'
+            }
+          );
+
+          set(state => ({
+            activeSessions: state.activeSessions.map(s => s.id === sessionId ? {
+              ...s,
+              messages: s.messages.map(m => m.id === regenPlaceholderId ? { ...m, content: responseContent, streaming: false } : m)
+            } : s),
+            allSessions: state.allSessions.map(s => s.id === sessionId ? {
+              ...s,
+              messages: s.messages.map(m => m.id === regenPlaceholderId ? { ...m, content: responseContent, streaming: false } : m)
+            } : s)
+          }));
+        } catch (error) {
+          console.error('🚨 Image regeneration failed:', error);
+
+          const errorContent: MessageContent[] = [
+            {
+              type: 'text',
+              text: `❌ Erreur lors de la régénération d'image: ${error instanceof Error ? error.message : 'Erreur inconnue'}
+
+Le système a essayé plusieurs modèles et méthodes, mais la régénération a échoué.`
+            }
+          ];
+
+          set(state => ({
+            activeSessions: state.activeSessions.map(s => s.id === sessionId ? {
+              ...s,
+              messages: s.messages.map(m => m.id === regenPlaceholderId ? { ...m, content: errorContent, streaming: false } : m)
+            } : s),
+            allSessions: state.allSessions.map(s => s.id === sessionId ? {
+              ...s,
+              messages: s.messages.map(m => m.id === regenPlaceholderId ? { ...m, content: errorContent, streaming: false } : m)
+            } : s)
+          }));
+        }
+      } else {
+        await streamAIResponse(contextMessages, apiKey, session.modelId, (delta)=>{
+          const now = performance.now();
+          set(state => ({
+            activeSessions: state.activeSessions.map(s => s.id===session.id ? {
+              ...s,
+              messages: s.messages.map(m => m.id===placeholderMessage.id ? { ...m, content: m.content === '…' ? delta : m.content + delta } : m)
+            } : s),
+            allSessions: state.allSessions.map(s => s.id===session.id ? {
+              ...s,
+              messages: s.messages.map(m => m.id===placeholderMessage.id ? { ...m, content: m.content === '…' ? delta : m.content + delta } : m)
+            } : s),
+            streamingProgress: {
+              ...state.streamingProgress,
+              [session.id]: state.streamingProgress[session.id]
+                ? { ...state.streamingProgress[session.id], chars: (state.streamingProgress[session.id].chars + delta.length), lastUpdate: now }
+                : { chars: delta.length, start: now, lastUpdate: now }
+            }
+          }));
+        }, effectiveSystem, ac);
+      }
       
       const end = performance.now();
       try { useUsageStats.getState().recordAssistantResponse(session.modelId, Math.round(end - start)); } catch {}
@@ -761,6 +985,12 @@ ${selectedText}`;
 
 // S'abonner aux changements pour sauvegarder automatiquement
 useChat.subscribe((state) => {
-  // Sauvegarder toutes les sessions dans localStorage
-  saveChatHistory(state.allSessions);
+  // Filtrer les sessions vides avant sauvegarde pour éviter la pollution des données
+  const nonEmptySessions = state.allSessions.filter(session => {
+    return session.messages.some(message => {
+      const textContent = getMessageText(message.content);
+      return textContent && textContent.trim().length > 0;
+    });
+  });
+  saveChatHistory(nonEmptySessions);
 });

@@ -42,7 +42,7 @@ const SettingsModalModern: React.FC<SettingsModalModernProps> = ({ isOpen, onClo
     document.documentElement.setAttribute('data-theme', newTheme);
     document.body.className = `theme-${newTheme}`;
   };
-  const handleAccentChange = (newAccent: NonNullable<ReturnType<typeof useSettings>['accent']>) => {
+  const handleAccentChange = (newAccent: 'violet' | 'blue' | 'green' | 'rose' | 'orange' | 'teal' | 'red' | 'cyan') => {
     setAccent(newAccent);
     document.documentElement.setAttribute('data-accent', newAccent);
   };

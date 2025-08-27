@@ -2,6 +2,7 @@
   border-top: 1px solid;
   padding: 8px 0 0 0; /* Remove bottom and side padding */
   background-color: #ffffff;
+  -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
   box-shadow: 0 -1px 3px 0 rgba(0, 0, 0, 0.1), 0 -1px 2px 0 rgba(0, 0, 0, 0.06);
 }
@@ -25,7 +26,7 @@
 .chat-input-wrapper {
   display: flex;
   align-items: flex-end;
-  gap: 12px;
+  gap: 8px;
   background-color: #f8fafc;
   border-radius: 24px;
   padding: 6px;
@@ -148,5 +149,92 @@
   }
   to {
     transform: rotate(360deg);
+  }
+}
+
+/* Image Generation Button */
+.chat-input-image-btn {
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  margin: 3px;
+  background: #8b5cf6;
+  color: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.chat-input-image-btn:hover {
+  transform: scale(1.1);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.chat-input-image-btn svg {
+  width: 18px;
+  height: 18px;
+  stroke-width: 2;
+}
+
+.chat-input-image-btn.dark {
+  background: #8b5cf6;
+}
+
+.chat-input-image-btn.light {
+  background: #8b5cf6;
+}
+
+/* Image Generator Modal */
+.image-generator-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+}
+
+.image-generator-modal {
+  width: 90vw;
+  max-width: 1200px;
+  height: 90vh;
+  max-height: 800px;
+  background: var(--polychat-bg-primary, #0f1a23);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.1);
+  border: 1px solid var(--polychat-border, #1e293b);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .image-generator-modal {
+    width: 95vw;
+    height: 95vh;
+  }
+
+  .chat-input-wrapper {
+    gap: 6px;
+  }
+
+  .chat-input-image-btn {
+    width: 32px;
+    height: 32px;
+  }
+
+  .chat-input-image-btn svg {
+    width: 14px;
+    height: 14px;
   }
 }

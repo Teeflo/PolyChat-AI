@@ -16,7 +16,8 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({ message }) => {
   const [copiedBlockId, setCopiedBlockId] = useState<string | null>(null);
 
   // Guard: ne rien rendre si le contenu est vide après trim (évite bulle vide)
-  if (message.role === 'assistant' && (!message.content || message.content.trim() === '')) {
+  const contentText = typeof message.content === 'string' ? message.content : '';
+  if (message.role === 'assistant' && (!contentText || contentText.trim() === '')) {
     return null;
   }
 
@@ -91,6 +92,16 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({ message }) => {
 
         <div className="message-bubble-content">
           {(() => {
+            // Only handle string content for text-based operations
+            if (typeof message.content !== 'string') {
+              return (
+                <>
+                  <div>Contenu multimédia non supporté</div>
+                  {message.streaming && <span className="streaming-cursor">▌</span>}
+                </>
+              );
+            }
+
             const content = message.content;
             const fenceCount = (content.match(/```/g) || []).length;
             const hasOpenFence = message.streaming && fenceCount % 2 === 1;
