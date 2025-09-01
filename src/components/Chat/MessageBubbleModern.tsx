@@ -7,6 +7,7 @@ import remarkGfm from 'remark-gfm';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { oneDark, oneLight } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import { useSettings } from '../../hooks/useSettings';
+import ImageDisplay from '../ui/ImageDisplay';
 
 interface MessageBubbleModernProps {
   message: Message;
@@ -31,8 +32,8 @@ const MessageBubbleModern: React.FC<MessageBubbleModernProps> = ({
   const isAssistant = message.role === 'assistant';
   const [copiedBlockId, setCopiedBlockId] = useState<string | null>(null);
 
-  // Guard: ne rien rendre si le contenu est vide après trim (évite bulle vide)
-  if (isAssistant && (!message.content || message.content.trim() === '')) {
+  // Guard: ne rien rendre si le contenu et les images sont vides
+  if (isAssistant && (!message.content || message.content.trim() === '') && (!message.images || message.images.length === 0)) {
     return null;
   }
 
@@ -41,6 +42,32 @@ const MessageBubbleModern: React.FC<MessageBubbleModernProps> = ({
   };
 
   const markdownComponents = useMemo(() => ({
+    // Image component using ImageDisplay
+    img: ({ src, alt, ...props }: React.ComponentProps<"img">) => {
+      if (!src) return null;
+
+      // Check if it's an image URL (not just any src)
+      const isImageUrl = /\.(png|jpg|jpeg|webp|gif|svg)$/i.test(src) ||
+                        src.startsWith('data:image/') ||
+                        src.includes('images.openrouter.ai') ||
+                        src.includes('generativelanguage.googleapis.com');
+
+      if (isImageUrl) {
+        return (
+          <div className="message-image-container">
+            <ImageDisplay
+              src={src}
+              alt={alt || 'Image générée par IA'}
+              className="message-embedded-image"
+            />
+          </div>
+        );
+      }
+
+      // Fallback to regular img tag for non-image URLs
+      return <img src={src} alt={alt} {...props} />;
+    },
+
     // Inline code
     code: ({ className, children, ...props }: React.ComponentProps<"code"> & { inline?: boolean; 'data-nodeid'?: string; }) => {
       const inline = props.inline;
@@ -124,8 +151,39 @@ const MessageBubbleModern: React.FC<MessageBubbleModernProps> = ({
         {/* Corps du message */}
         <div className="message-bubble-modern-body">
           <div className="message-bubble-modern-text markdown-body">
+            {/* Render images from message.images array */}
+            {message.images && message.images.map((img, index) => {
+              // Handle both raw base64 strings and data URLs
+              let src = '';
+              if (typeof img === 'string') {
+                if (!img.startsWith('data:image')) {
+                  src = `data:image/png;base64,${img}`;
+                } else {
+                  src = img;
+                }
+              } else if (img && typeof img === 'object' && 'image_url' in img) {
+                // Handle image objects from streaming responses
+                src = img.image_url?.url || '';
+              }
+
+              // Only render if we have a valid src
+              if (!src) return null;
+
+              return (
+                <div className="message-image-container" key={index}>
+                  <ImageDisplay
+                    src={src}
+                    alt={`Image générée ${index + 1}`}
+                    className="message-embedded-image"
+                  />
+                </div>
+              );
+            })}
+
             {(() => {
               const content = message.content;
+              if (!content) return null;
+
               const fenceCount = (content.match(/```/g) || []).length;
               const hasOpenFence = message.streaming && fenceCount % 2 === 1;
               if (hasOpenFence) {

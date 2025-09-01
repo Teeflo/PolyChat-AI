@@ -1,6 +1,5 @@
 import React, { useState, useMemo } from 'react';
 import { Sparkles, X } from 'lucide-react';
-import { useChat } from '../../hooks/useChat';
 import { PRE_BUILT_TEMPLATES } from '../../data/templates';
 import type { ConversationTemplate } from '../../types/index';
 import './InlineSuggestions.css';
@@ -16,7 +15,6 @@ const InlineSuggestions: React.FC<InlineSuggestionsProps> = ({
   onSuggestionClick,
   onHide
 }) => {
-  const { activeSessions } = useChat();
   const [showAll, setShowAll] = useState(false);
 
   // Générer des suggestions basées sur le contexte de saisie

@@ -3,6 +3,7 @@ import MessageBubble from './MessageBubble';
 import ThinkingAnimation from './ThinkingAnimation';
 import { useChat } from '../../hooks/useChat';
 import { useSettings } from '../../hooks/useSettings';
+import type { ChatSession, Message } from '../../types/index';
 import './ChatWindow.css';
 
 interface ChatWindowProps {

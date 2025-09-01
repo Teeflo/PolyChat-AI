@@ -33,6 +33,7 @@ const SettingsModalModern: React.FC<SettingsModalModernProps> = ({ isOpen, onClo
   if (!isOpen) return null;
 
   const handleSave = () => { onClose(); };
+
   const handleApiKeyChange = (e: React.ChangeEvent<HTMLInputElement>) => setApiKey(e.target.value);
   const handleSystemPromptChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => setSystemPrompt(e.target.value);
   const handleThemeChange = (newTheme: 'light' | 'dark') => {
@@ -40,7 +41,7 @@ const SettingsModalModern: React.FC<SettingsModalModernProps> = ({ isOpen, onClo
     document.documentElement.setAttribute('data-theme', newTheme);
     document.body.className = `theme-${newTheme}`;
   };
-  const handleAccentChange = (newAccent: NonNullable<ReturnType<typeof useSettings>['accent']>) => {
+  const handleAccentChange = (newAccent: 'violet' | 'blue' | 'green' | 'rose' | 'orange' | 'teal' | 'red' | 'cyan') => {
     setAccent(newAccent);
     document.documentElement.setAttribute('data-accent', newAccent);
   };
@@ -105,6 +106,7 @@ const SettingsModalModern: React.FC<SettingsModalModernProps> = ({ isOpen, onClo
               <label htmlFor="apiKey" className="settings-label-modern">Votre clé API</label>
               <input id="apiKey" type="password" value={apiKey} onChange={handleApiKeyChange} placeholder="sk-or-v1-..." className="settings-input-modern" />
               <div className="settings-help-modern"><Info size={12} /><span>Obtenez votre clé API sur <a href="https://openrouter.ai/keys" target="_blank" rel="noopener noreferrer" className="settings-link-modern">OpenRouter.ai</a></span></div>
+
             </div>
           </div>
 

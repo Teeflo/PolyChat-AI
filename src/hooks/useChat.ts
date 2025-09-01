@@ -249,12 +249,25 @@ export const useChat = create<ChatStore>((set, get) => ({
     if (runnableSessions.length === 0) return; // rien à envoyer
   const { apiKey, systemPrompt, tone } = useSettings.getState();
   const stats = useUsageStats.getState();
-    
+
+
     if (!apiKey) {
+      console.error('❌ No API key found in settings');
       // Mettre à jour toutes les sessions avec l'erreur
       const updatedSessions = activeSessions.map(session => ({
         ...session,
         error: 'API key is missing. Please set your API key in the settings.',
+        isLoading: false
+      }));
+      set({ activeSessions: updatedSessions, isAnyLoading: false });
+      return;
+    }
+
+    if (!apiKey.startsWith('sk-or-v1-')) {
+      console.error('❌ Invalid API key format:', apiKey.substring(0, 12) + '...');
+      const updatedSessions = activeSessions.map(session => ({
+        ...session,
+        error: 'Invalid API key format. Key must start with "sk-or-v1-".',
         isLoading: false
       }));
       set({ activeSessions: updatedSessions, isAnyLoading: false });
@@ -270,7 +283,7 @@ export const useChat = create<ChatStore>((set, get) => ({
       error: null
     }));
     
-    set({ 
+    set({
       activeSessions: updatedSessions,
       isAnyLoading: true
     });
@@ -280,10 +293,30 @@ export const useChat = create<ChatStore>((set, get) => ({
 
     // Envoyer les requêtes en parallèle pour tous les modèles
   const promises = updatedSessions.map(async (session) => {
+      // Detect if this is an image generation request
+      const isImageRequest = content.toLowerCase().match(/\b(génère|generate|crée|create|dessine|draw|image|photo|picture|montre|show|visualise|visualize|affiche|display)\b/i) ||
+                            content.toLowerCase().includes('image') ||
+                            content.toLowerCase().includes('photo') ||
+                            content.toLowerCase().includes('picture') ||
+                            content.toLowerCase().includes('couleur') ||
+                            content.toLowerCase().includes('color') ||
+                            session.modelId.includes('image') ||
+                            (session.modelId.includes('gemini') && (
+                              content.length < 200 || // Short/medium prompts with Gemini are likely image requests
+                              /\b(une|un|des|le|la|les|a|an|the)\s+\w+/i.test(content) // Simple noun phrases
+                            ));
+
       const tonePrefix = tone && tone !== 'neutre' ? `[Ton: ${tone}] ` : '';
-      const effectiveSystem = systemPrompt && systemPrompt.trim()
-        ? `${tonePrefix}${systemPrompt.trim()}`
-        : (tonePrefix ? `${tonePrefix}Tu es un assistant IA utile.` : undefined);
+
+      // For image generation models, use a minimal system prompt to avoid interference
+      let effectiveSystem;
+      if (isImageRequest && (session.modelId.includes('gemini') || session.modelId.includes('image'))) {
+        effectiveSystem = tonePrefix ? `${tonePrefix}Tu peux générer des images.` : undefined;
+      } else {
+        effectiveSystem = systemPrompt && systemPrompt.trim()
+          ? `${tonePrefix}${systemPrompt.trim()}`
+          : (tonePrefix ? `${tonePrefix}Tu es un assistant IA utile.` : undefined);
+      }
       const start = performance.now();
       // Create placeholder assistant message first for streaming UI
       let placeholderId = `stream-${Date.now()}-${session.modelId}`;
@@ -304,25 +337,35 @@ export const useChat = create<ChatStore>((set, get) => ({
         allSessions: state.allSessions.map(s => s.id === session.id ? { ...s, messages: [...s.messages, placeholderMessage] } : s)
       }));
       try {
-        await streamAIResponse(session.messages, apiKey, session.modelId, (delta) => {
+        await streamAIResponse(session.messages, apiKey, session.modelId, (chunk) => {
           const now = performance.now();
           set(state => ({
             activeSessions: state.activeSessions.map(s => s.id === session.id ? {
               ...s,
-              messages: s.messages.map(m => m.id === placeholderId ? { ...m, content: m.content === '…' ? delta : m.content + delta } : m)
+              messages: s.messages.map(m => m.id === placeholderId ? { 
+                ...m,
+                content: m.content === '…' ? (chunk.content || '') : m.content + (chunk.content || ''),
+                images: chunk.images ? [...(m.images || []), ...chunk.images] : m.images,
+                streaming: !!(chunk.content || chunk.images) // Set streaming to true if we have content or images
+              } : m)
             } : s),
             allSessions: state.allSessions.map(s => s.id === session.id ? {
               ...s,
-              messages: s.messages.map(m => m.id === placeholderId ? { ...m, content: m.content === '…' ? delta : m.content + delta } : m)
+              messages: s.messages.map(m => m.id === placeholderId ? {
+                ...m,
+                content: m.content === '…' ? (chunk.content || '') : m.content + (chunk.content || ''),
+                images: chunk.images ? [...(m.images || []), ...chunk.images] : m.images,
+                streaming: !!(chunk.content || chunk.images) // Set streaming to true if we have content or images
+              } : m)
             } : s),
             streamingProgress: {
               ...state.streamingProgress,
               [session.id]: state.streamingProgress[session.id]
-                ? { ...state.streamingProgress[session.id], chars: (state.streamingProgress[session.id].chars + delta.length), lastUpdate: now }
-                : { chars: delta.length, start: now, lastUpdate: now }
+                ? { ...state.streamingProgress[session.id], chars: (state.streamingProgress[session.id].chars + (chunk.content?.length || 0)), lastUpdate: now }
+                : { chars: (chunk.content?.length || 0), start: now, lastUpdate: now }
             }
           }));
-  }, effectiveSystem, get().abortControllers[session.id]);
+        }, effectiveSystem, get().abortControllers[session.id]);
         const end = performance.now();
         try { useUsageStats.getState().recordAssistantResponse(session.modelId, Math.round(end - start)); } catch {}
         // Fetch current streamed messages from store to keep progressive content
@@ -363,7 +406,7 @@ export const useChat = create<ChatStore>((set, get) => ({
         return updatedSession || session;
       });
       
-      set({ 
+      set({
         activeSessions: resolvedSessions,
         allSessions: updatedAllSessions,
         isAnyLoading: false
@@ -400,7 +443,7 @@ export const useChat = create<ChatStore>((set, get) => ({
         session.id === currentSessionId ? clearedSession : session
       );
       
-      set({ 
+      set({
         activeSessions: [clearedSession],
         allSessions: updatedAllSessions
       });
@@ -437,7 +480,7 @@ export const useChat = create<ChatStore>((set, get) => ({
     const updatedActiveSessions = activeSessions.map(updateSession);
     const updatedAllSessions = allSessions.map(updateSession);
     
-    set({ 
+    set({
       activeSessions: updatedActiveSessions,
       allSessions: updatedAllSessions,
       isAnyLoading: true
@@ -451,13 +494,36 @@ export const useChat = create<ChatStore>((set, get) => ({
       // Faire appel à l'API
       const { tone } = useSettings.getState();
       const tonePrefix = tone && tone !== 'neutre' ? `[Ton: ${tone}] ` : '';
-      const effectiveSystem = systemPrompt && systemPrompt.trim()
-        ? `${tonePrefix}${systemPrompt.trim()}`
-        : (tonePrefix ? `${tonePrefix}Tu es un assistant IA utile.` : undefined);
+
+      // Detect if this is an image generation request (for regeneration)
+      const lastUserMessage = conversationHistory.find(m => m.role === 'user');
+      const isImageRequest = lastUserMessage && (
+        lastUserMessage.content.toLowerCase().match(/\b(génère|generate|crée|create|dessine|draw|image|photo|picture|montre|show|visualise|visualize|affiche|display)\b/i) ||
+        lastUserMessage.content.toLowerCase().includes('image') ||
+        lastUserMessage.content.toLowerCase().includes('photo') ||
+        lastUserMessage.content.toLowerCase().includes('picture') ||
+        lastUserMessage.content.toLowerCase().includes('couleur') ||
+        lastUserMessage.content.toLowerCase().includes('color') ||
+        session.modelId.includes('image') ||
+        (session.modelId.includes('gemini') && (
+          lastUserMessage.content.length < 200 || // Short/medium prompts with Gemini are likely image requests
+          /\b(une|un|des|le|la|les|a|an|the)\s+\w+/i.test(lastUserMessage.content) // Simple noun phrases
+        ))
+      );
+
+      // For image generation models, use a minimal system prompt to avoid interference
+      let effectiveSystem;
+      if (isImageRequest && (session.modelId.includes('gemini') || session.modelId.includes('image'))) {
+        effectiveSystem = tonePrefix ? `${tonePrefix}Tu peux générer des images.` : undefined;
+      } else {
+        effectiveSystem = systemPrompt && systemPrompt.trim()
+          ? `${tonePrefix}${systemPrompt.trim()}`
+          : (tonePrefix ? `${tonePrefix}Tu es un assistant IA utile.` : undefined);
+      }
       const start = performance.now();
       // Streaming regenerate
-  const placeholderMessage = { ...createMessage('assistant', '…', session.modelId), streaming: true };
-  regenPlaceholderId = placeholderMessage.id;
+      const placeholderMessage = { ...createMessage('assistant', '…', session.modelId), streaming: true };
+      regenPlaceholderId = placeholderMessage.id;
       const msgsWithoutOld = [
         ...conversationHistory,
         placeholderMessage,
@@ -469,25 +535,35 @@ export const useChat = create<ChatStore>((set, get) => ({
       }));
   const ac = new AbortController();
   set(state => ({ abortControllers: { ...state.abortControllers, [session.id]: ac } }));
-      await streamAIResponse(conversationHistory, apiKey, session.modelId, (delta)=>{
+      await streamAIResponse(conversationHistory, apiKey, session.modelId, (chunk)=>{
         const now = performance.now();
         set(state => ({
           activeSessions: state.activeSessions.map(s => s.id===session.id ? {
             ...s,
-            messages: s.messages.map(m => m.id===placeholderMessage.id ? { ...m, content: m.content === '…' ? delta : m.content + delta } : m)
+            messages: s.messages.map(m => m.id===placeholderMessage.id ? {
+              ...m,
+              content: m.content === '…' ? (chunk.content || '') : m.content + (chunk.content || ''),
+              images: chunk.images ? [...(m.images || []), ...chunk.images] : m.images,
+              streaming: !!(chunk.content || chunk.images) // Set streaming to true if we have content or images
+            } : m)
           } : s),
           allSessions: state.allSessions.map(s => s.id===session.id ? {
             ...s,
-            messages: s.messages.map(m => m.id===placeholderMessage.id ? { ...m, content: m.content === '…' ? delta : m.content + delta } : m)
+            messages: s.messages.map(m => m.id===placeholderMessage.id ? {
+              ...m,
+              content: m.content === '…' ? (chunk.content || '') : m.content + (chunk.content || ''),
+              images: chunk.images ? [...(m.images || []), ...chunk.images] : m.images,
+              streaming: !!(chunk.content || chunk.images) // Set streaming to true if we have content or images
+            } : m)
           } : s),
           streamingProgress: {
             ...state.streamingProgress,
             [session.id]: state.streamingProgress[session.id]
-              ? { ...state.streamingProgress[session.id], chars: (state.streamingProgress[session.id].chars + delta.length), lastUpdate: now }
-              : { chars: delta.length, start: now, lastUpdate: now }
+              ? { ...state.streamingProgress[session.id], chars: (state.streamingProgress[session.id].chars + (chunk.content?.length || 0)), lastUpdate: now }
+              : { chars: (chunk.content?.length || 0), start: now, lastUpdate: now }
           }
         }));
-  }, effectiveSystem, ac);
+      }, effectiveSystem, ac);
       const end = performance.now();
       try { useUsageStats.getState().recordAssistantResponse(session.modelId, Math.round(end - start)); } catch {}
           const regenId = placeholderMessage.id;
@@ -501,7 +577,7 @@ export const useChat = create<ChatStore>((set, get) => ({
       const finalActiveSessions = activeSessions.map(finalUpdateSession);
       const finalAllSessions = allSessions.map(finalUpdateSession);
 
-      set({ 
+      set({
         activeSessions: finalActiveSessions,
         allSessions: finalAllSessions,
         isAnyLoading: false
@@ -525,7 +601,7 @@ export const useChat = create<ChatStore>((set, get) => ({
       const errorActiveSessions = activeSessions.map(errorUpdateSession);
       const errorAllSessions = allSessions.map(errorUpdateSession);
 
-      set({ 
+      set({
         activeSessions: errorActiveSessions,
         allSessions: errorAllSessions,
         isAnyLoading: false
@@ -554,7 +630,7 @@ export const useChat = create<ChatStore>((set, get) => ({
     const updatedActiveSessions = activeSessions.map(updateSession);
     const updatedAllSessions = allSessions.map(updateSession);
 
-    set({ 
+    set({
       activeSessions: updatedActiveSessions,
       allSessions: updatedAllSessions
     });
@@ -725,7 +801,7 @@ export const useChat = create<ChatStore>((set, get) => ({
       const updatedSession = updatedSessions.find(s => s.id === session.id);
       return updatedSession || session;
     });
-
+    
     set({
       activeSessions: updatedSessions,
       allSessions: updatedAllSessions

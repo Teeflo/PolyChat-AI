@@ -242,6 +242,27 @@
 .code-copy-btn:hover { opacity: 1; border-color: var(--polychat-accent-primary); }
 .code-copy-btn.success { color: var(--polychat-success); border-color: var(--polychat-success); }
 
+/* Image display in messages */
+.message-image-container {
+  margin: var(--spacing-md) 0;
+  text-align: center;
+  max-width: 100%;
+  overflow: hidden;
+}
+
+.message-embedded-image {
+  max-width: 100%;
+  height: auto;
+  border-radius: 12px;
+  box-shadow: var(--shadow-md);
+  transition: var(--transition-normal);
+}
+
+.message-embedded-image:hover {
+  transform: scale(1.02);
+  box-shadow: var(--shadow-lg);
+}
+
 .message-bubble-modern-loading {
   display: flex;
   align-items: center;

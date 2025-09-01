@@ -1,3 +1,10 @@
+export interface ImageObject {
+  type: string;
+  image_url: {
+    url: string;
+  };
+}
+
 export interface Message {
   id: string;
   role: 'user' | 'assistant' | 'system';
@@ -5,6 +12,7 @@ export interface Message {
   timestamp: Date;
   modelId?: string; // Ajout pour identifier quel modèle a généré la réponse
   streaming?: boolean; // Indique si le message est en cours de streaming
+  images?: (string | ImageObject)[];
 }
 
 export interface Model {
@@ -47,6 +55,7 @@ export interface ConversationTemplate {
   modelSpecific?: string[]; // Models this template works best with
   icon?: string;
   color?: string;
+  examples?: string[]; // Exemples d'utilisation du template
 }
 
 export type TemplateCategory = 
@@ -105,4 +114,15 @@ export interface UsageStats {
   avgResponseTimeMs: number;
   perModel: Record<string, ModelStats>;
   lastUpdated: string; // ISO date string
+}
+
+// Image generation types
+export interface GeneratedImage {
+  id: string;
+  url: string;
+  prompt: string;
+  model: string;
+  created: Date;
+  width?: number;
+  height?: number;
 }
