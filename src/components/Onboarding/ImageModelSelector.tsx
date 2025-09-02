@@ -11,7 +11,11 @@ interface ImageModelSelectorProps {
 const ImageModelSelector: React.FC<ImageModelSelectorProps> = ({ onNext }) => {
   const { setSelectedModel } = useSettings();
   const [selectedModelId, setSelectedModelId] = useState('');
+<<<<<<< HEAD
   const [models, setModels] = useState<Array<{id: string, name: string, desc?: string, emoji?: string}>>([]);
+=======
+  const [models, setModels] = useState<Array<{id: string, name: string, desc: string, emoji: string}>>([]);
+>>>>>>> 140dfbeed3bd6b4935c5514f73ffd04c873877c8
   const [loading, setLoading] = useState(true);
 
   // Charger les modèles d'image au montage du composant
@@ -20,6 +24,7 @@ const ImageModelSelector: React.FC<ImageModelSelectorProps> = ({ onNext }) => {
       try {
         setLoading(true);
         const imageModels = await getImageModels();
+<<<<<<< HEAD
         // Add default values for missing properties
         const formattedModels = imageModels.map(model => ({
           id: model.id,
@@ -28,6 +33,9 @@ const ImageModelSelector: React.FC<ImageModelSelectorProps> = ({ onNext }) => {
           emoji: '🎨'
         }));
         setModels(formattedModels);
+=======
+        setModels(imageModels);
+>>>>>>> 140dfbeed3bd6b4935c5514f73ffd04c873877c8
       } catch (error) {
         console.error('Error loading image models:', error);
         // Fallback vers les vrais modèles d'image connus

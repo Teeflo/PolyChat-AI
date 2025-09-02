@@ -1,8 +1,8 @@
 import React from 'react';
-import { useChat } from '../../hooks/useChat';
+import { useChat } from '../hooks/useChat';
 import { X, Plus, MessageSquare, Trash2 } from 'lucide-react';
-import type { ChatSession } from '../../types';
-import '../ChatHistorySidebar.css'; // Import the CSS file
+import type { ChatSession, MessageContent } from '../types';
+import './ChatHistorySidebar.css';
 
 interface ChatHistorySidebarProps {
   isOpen: boolean;
@@ -21,41 +21,62 @@ export const ChatHistorySidebar: React.FC<ChatHistorySidebarProps> = ({
     deleteSession 
   } = useChat();
 
+  // Fonction helper pour extraire le texte du contenu (string ou MessageContent[])
+  const getTextContent = (content: string | MessageContent[]): string => {
+    if (typeof content === 'string') {
+      return content;
+    }
+    // Pour MessageContent[], extraire le texte des éléments text
+    return content
+      .filter(item => item.type === 'text')
+      .map(item => item.text || '')
+      .join(' ');
+  };
+
+  // Fonction pour extraire le titre d'une session (30 premiers caractères du premier message utilisateur)
   const getSessionTitle = (session: ChatSession): string => {
     const userMessage = session.messages.find(msg => msg.role === 'user');
-    if (userMessage && typeof userMessage.content === 'string' && userMessage.content.trim()) {
-      const title = userMessage.content.trim();
-      return title.length > 30 ? title.substring(0, 30) + '...' : title;
+    if (userMessage) {
+      const contentText = getTextContent(userMessage.content);
+      if (contentText.trim()) {
+        const title = contentText.trim();
+        return title.length > 30 ? title.substring(0, 30) + '...' : title;
+      }
     }
     return `${session.modelName} - Nouvelle conversation`;
   };
 
+  // Fonction pour extraire un aperçu de la conversation
   const getSessionPreview = (session: ChatSession): string => {
     const lastMessage = session.messages[session.messages.length - 1];
-    if (lastMessage && typeof lastMessage.content === 'string' && lastMessage.content.trim()) {
-      const preview = lastMessage.content.trim();
-      return preview.length > 50 ? preview.substring(0, 50) + '...' : preview;
+    if (lastMessage) {
+      const contentText = getTextContent(lastMessage.content);
+      if (contentText.trim()) {
+        const preview = contentText.trim();
+        return preview.length > 50 ? preview.substring(0, 50) + '...' : preview;
+      }
     }
     return 'Aucun message';
   };
 
   const handleNewChat = () => {
     createNewSession();
-    onClose();
+    onClose(); // Fermer la sidebar sur mobile après création
   };
 
   const handleSessionClick = (sessionId: string) => {
     setActiveSession(sessionId);
-    onClose();
+    onClose(); // Fermer la sidebar sur mobile après sélection
   };
 
   const handleDeleteSession = (e: React.MouseEvent, sessionId: string) => {
-    e.stopPropagation();
+    e.stopPropagation(); // Empêcher le clic de sélectionner la session
     deleteSession(sessionId);
   };
 
   return (
     <>
+      {/* Overlay pour mobile */}
       {isOpen && (
         <div 
           className="fixed inset-0 bg-black bg-opacity-50 z-150 md:hidden"
@@ -63,7 +84,9 @@ export const ChatHistorySidebar: React.FC<ChatHistorySidebarProps> = ({
         />
       )}
       
+      {/* Sidebar */}
       <div className={`chat-history-sidebar ${!isOpen ? 'collapsed' : ''}`} role="complementary" aria-label="Historique des conversations">
+        {/* Header */}
         <div className="chat-history-header">
           <h2 className="chat-history-title">
             <MessageSquare size={20} className="inline mr-2" />
@@ -78,9 +101,10 @@ export const ChatHistorySidebar: React.FC<ChatHistorySidebarProps> = ({
           </button>
         </div>
 
+        {/* Liste des conversations */}
         <div className="chat-history-list">
           {allSessions.length === 0 ? (
-            <div className="empty-history-message">
+            <div className="text-center py-8 text-polychat-text-muted">
               <MessageSquare size={48} className="mx-auto mb-4 opacity-50" />
               <p>Aucune conversation</p>
             </div>
@@ -124,6 +148,7 @@ export const ChatHistorySidebar: React.FC<ChatHistorySidebarProps> = ({
           )}
         </div>
 
+        {/* Footer avec bouton nouvelle conversation */}
         <div className="chat-history-footer">
           <button
             className="new-chat-btn"

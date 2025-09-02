@@ -2,6 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App.tsx'
 import './index.css'
+import './utils/imageDebug' // Outils de débogage pour les images
 
 // Curseur simple sans effets JavaScript
 setTimeout(() => {

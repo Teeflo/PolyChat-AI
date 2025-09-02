@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from 'react';
 import { User, Bot, Copy, RefreshCw, Trash2 } from 'lucide-react';
-import type { Message } from '../../types/index';
+import type { Message, MessageContent } from '../../types/index';
 import './MessageBubbleModern.css';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
@@ -18,8 +18,8 @@ interface MessageBubbleModernProps {
   onDelete?: () => void;
 }
 
-const MessageBubbleModern: React.FC<MessageBubbleModernProps> = ({ 
-  message, 
+const MessageBubbleModern: React.FC<MessageBubbleModernProps> = ({
+  message,
   isLoading = false,
   error,
   onRetry,
@@ -32,16 +32,50 @@ const MessageBubbleModern: React.FC<MessageBubbleModernProps> = ({
   const isAssistant = message.role === 'assistant';
   const [copiedBlockId, setCopiedBlockId] = useState<string | null>(null);
 
+<<<<<<< HEAD
   // Guard: ne rien rendre si le contenu et les images sont vides
   if (isAssistant && (!message.content || message.content.trim() === '') && (!message.images || message.images.length === 0)) {
+=======
+  const getMessageText = (content: string | MessageContent[]): string => {
+    if (typeof content === 'string') {
+      return content;
+    }
+    return content
+      .filter(item => item.type === 'text')
+      .map(item => item.text || '')
+      .join(' ');
+  };
+
+  const hasVisibleContent = (content: string | MessageContent[]): boolean => {
+    if (typeof content === 'string') {
+      return content.trim() !== '';
+    }
+    if (Array.isArray(content)) {
+      return content.some(part => {
+        if (part.type === 'text' && part.text) {
+          return part.text.trim() !== '';
+        }
+        if (part.type === 'image_url' && part.image_url?.url) {
+          return true;
+        }
+        return false;
+      });
+    }
+    return false;
+  };
+
+  if (isAssistant && !hasVisibleContent(message.content) && !message.streaming) {
+>>>>>>> 140dfbeed3bd6b4935c5514f73ffd04c873877c8
     return null;
   }
 
   const handleCopy = () => {
-    navigator.clipboard.writeText(message.content);
+    const textToCopy = getMessageText(message.content);
+    navigator.clipboard.writeText(textToCopy);
   };
 
   const markdownComponents = useMemo(() => ({
+<<<<<<< HEAD
     // Image component using ImageDisplay
     img: ({ src, alt, ...props }: React.ComponentProps<"img">) => {
       if (!src) return null;
@@ -69,6 +103,13 @@ const MessageBubbleModern: React.FC<MessageBubbleModernProps> = ({
     },
 
     // Inline code
+=======
+    img: ({ src, alt }: React.ComponentProps<"img">) => {
+      if (!src) return null;
+      console.log('🎨 Rendering img via ReactMarkdown with src:', src.startsWith('data:') ? src.substring(0, 100) + '...' : src);
+      return <ImageDisplay src={src} alt={alt || 'Image générée'} className="message-embedded-image" />;
+    },
+>>>>>>> 140dfbeed3bd6b4935c5514f73ffd04c873877c8
     code: ({ className, children, ...props }: React.ComponentProps<"code"> & { inline?: boolean; 'data-nodeid'?: string; }) => {
       const inline = props.inline;
       const match = /language-(\w+)/.exec(className || '');
@@ -81,9 +122,7 @@ const MessageBubbleModern: React.FC<MessageBubbleModernProps> = ({
             await navigator.clipboard.writeText(codeStr);
             setCopiedBlockId(blockId);
             setTimeout(() => setCopiedBlockId((prev) => (prev === blockId ? null : prev)), 1200);
-          } catch {
-            // Silently fail if clipboard is not available
-          }
+          } catch {}
         };
         return (
           <div className="code-block-wrapper">
@@ -122,13 +161,8 @@ const MessageBubbleModern: React.FC<MessageBubbleModernProps> = ({
 
   return (
     <div className={`message-bubble-modern ${isUser ? 'user' : 'assistant'}`}>
-      {/* Avatar */}
       <div className="message-bubble-modern-avatar">
-        {isUser ? (
-          <User size={18} />
-        ) : (
-          <Bot size={18} />
-        )}
+        {isUser ? <User size={18} /> : <Bot size={18} />}
         {message.modelId && (
           <div className="message-bubble-modern-model-badge">
             {message.modelId.split('/').pop()?.split('-')[0] || 'AI'}
@@ -136,9 +170,7 @@ const MessageBubbleModern: React.FC<MessageBubbleModernProps> = ({
         )}
       </div>
 
-      {/* Contenu du message */}
       <div className="message-bubble-modern-content">
-        {/* Header avec metadata */}
         <div className="message-bubble-modern-header">
           <span className="message-bubble-modern-role">
             {isUser ? 'Vous' : (message.modelId ? message.modelId.split('/').pop() : 'Assistant')}
@@ -148,7 +180,6 @@ const MessageBubbleModern: React.FC<MessageBubbleModernProps> = ({
           </span>
         </div>
 
-        {/* Corps du message */}
         <div className="message-bubble-modern-body">
           <div className="message-bubble-modern-text markdown-body">
             {/* Render images from message.images array */}
@@ -181,6 +212,7 @@ const MessageBubbleModern: React.FC<MessageBubbleModernProps> = ({
             })}
 
             {(() => {
+<<<<<<< HEAD
               const content = message.content;
               if (!content) return null;
 
@@ -190,37 +222,51 @@ const MessageBubbleModern: React.FC<MessageBubbleModernProps> = ({
                 const lastIndex = content.lastIndexOf('```');
                 const head = content.slice(0, lastIndex);
                 const partial = content.slice(lastIndex + 3);
+=======
+              if (Array.isArray(message.content)) {
+>>>>>>> 140dfbeed3bd6b4935c5514f73ffd04c873877c8
                 return (
                   <>
-                    {head && (
-                      <ReactMarkdown remarkPlugins={[remarkGfm]} components={markdownComponents}>
-                        {head}
-                      </ReactMarkdown>
-                    )}
-                    <div className="partial-code-block-modern">
-                      <pre>{partial || ' '}</pre>
-                      <div className="partial-code-hint-modern">Code en cours…</div>
-                    </div>
+                    {message.content.map((part, index) => {
+                      if (part.type === 'text') {
+                        const textContent = part.text || '';
+                        return (
+                          <ReactMarkdown key={index} remarkPlugins={[remarkGfm]} components={markdownComponents}>
+                            {textContent}
+                          </ReactMarkdown>
+                        );
+                      } else if (part.type === 'image_url' && part.image_url?.url) {
+                        return (
+                          <ImageDisplay
+                            key={index}
+                            src={part.image_url.url}
+                            alt="Generated Image"
+                            className="message-embedded-image"
+                          />
+                        );
+                      }
+                      return null;
+                    })}
+                    {message.streaming && <span className="streaming-cursor">▌</span>}
+                  </>
+                );
+              } else {
+                const textContent = getMessageText(message.content);
+                return (
+                  <>
+                    <ReactMarkdown remarkPlugins={[remarkGfm]} components={markdownComponents}>
+                      {textContent}
+                    </ReactMarkdown>
                     {message.streaming && <span className="streaming-cursor">▌</span>}
                   </>
                 );
               }
-              return (
-                <>
-                  <ReactMarkdown remarkPlugins={[remarkGfm]} components={markdownComponents}>
-                    {content}
-                  </ReactMarkdown>
-                  {message.streaming && <span className="streaming-cursor">▌</span>}
-                </>
-              );
             })()}
           </div>
         </div>
 
-        {/* Actions - Pour tous les messages */}
         {!isLoading && (
           <div className="message-bubble-modern-actions">
-            {/* Bouton copier - pour tous les messages */}
             <button
               onClick={handleCopy}
               className="message-bubble-modern-action-btn"
@@ -228,8 +274,6 @@ const MessageBubbleModern: React.FC<MessageBubbleModernProps> = ({
             >
               <Copy size={14} />
             </button>
-            
-            {/* Bouton régénérer - seulement pour les messages assistant */}
             {isAssistant && onRegenerate && (
               <button
                 onClick={onRegenerate}
@@ -239,8 +283,6 @@ const MessageBubbleModern: React.FC<MessageBubbleModernProps> = ({
                 <RefreshCw size={14} />
               </button>
             )}
-            
-            {/* Bouton supprimer - pour tous les messages */}
             {onDelete && (
               <button
                 onClick={onDelete}
@@ -250,8 +292,6 @@ const MessageBubbleModern: React.FC<MessageBubbleModernProps> = ({
                 <Trash2 size={14} />
               </button>
             )}
-            
-            {/* Bouton retry pour les erreurs */}
             {onRetry && (
               <button
                 onClick={onRetry}
@@ -264,7 +304,6 @@ const MessageBubbleModern: React.FC<MessageBubbleModernProps> = ({
           </div>
         )}
 
-        {/* Indicateur d'erreur */}
         {error && (
           <div className="message-bubble-modern-error">
             <span>❌ Erreur: {error}</span>

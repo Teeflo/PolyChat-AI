@@ -16,18 +16,21 @@ const ModelSelector: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const isDark = theme === 'dark';
 
+<<<<<<< HEAD
   // Charger les modèles au montage du composant
   useEffect(() => {
     loadModels();
   }, []);
 
+=======
+>>>>>>> 140dfbeed3bd6b4935c5514f73ffd04c873877c8
   const loadModels = async () => {
     try {
       setLoading(true);
       setError(null);
       const fetchedModels = await fetchAvailableModels();
       setModels(fetchedModels);
-      
+
       // Si le modèle actuel n'est pas dans la liste, sélectionner le premier
       if (fetchedModels.length > 0 && !fetchedModels.find(m => m.id === selectedModel)) {
         setSelectedModel(fetchedModels[0].id);
@@ -39,6 +42,11 @@ const ModelSelector: React.FC = () => {
       setLoading(false);
     }
   };
+
+  // Charger les modèles au montage du composant
+  useEffect(() => {
+    loadModels();
+  }, []);
 
   const selectedModelData = models.find(m => m.id === selectedModel);
 

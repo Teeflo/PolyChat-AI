@@ -8,11 +8,35 @@ export interface ImageObject {
 export interface Message {
   id: string;
   role: 'user' | 'assistant' | 'system';
-  content: string;
+  content: string | MessageContent[];
   timestamp: Date;
   modelId?: string; // Ajout pour identifier quel modèle a généré la réponse
   streaming?: boolean; // Indique si le message est en cours de streaming
+<<<<<<< HEAD
   images?: (string | ImageObject)[];
+=======
+  imageData?: GeneratedImage; // Pour les messages contenant des images générées
+}
+
+export interface MessageContent {
+  type: 'text' | 'image_url';
+  text?: string;
+  image_url?: {
+    url: string;
+    detail?: 'low' | 'high' | 'auto';
+  };
+}
+
+export interface GeneratedImage {
+  url: string;
+  width: number;
+  height: number;
+  format: string;
+  size: number; // in bytes
+  prompt: string;
+  model: string;
+  timestamp: Date;
+>>>>>>> 140dfbeed3bd6b4935c5514f73ffd04c873877c8
 }
 
 export interface Model {
@@ -30,6 +54,7 @@ export interface Settings {
   systemPrompt: string; // Nouveau champ pour l'instruction système
   tone?: 'neutre' | 'formel' | 'amical' | 'professionnel' | 'enthousiaste';
   notificationsEnabled?: boolean;
+  ragEnabled?: boolean;
   hasOnboarded?: boolean;
 }
 
@@ -40,6 +65,7 @@ export interface ChatSession {
   messages: Message[];
   isLoading: boolean;
   error: string | null;
+  isTemporary?: boolean;
 }
 
 // New types for conversation templates and quick actions

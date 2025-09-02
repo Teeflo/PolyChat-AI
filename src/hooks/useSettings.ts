@@ -10,6 +10,7 @@ const DEFAULT_SETTINGS: Settings = {
   systemPrompt: '', // Instruction système vide par défaut
   tone: 'neutre',
   notificationsEnabled: true,
+  ragEnabled: true, // RAG activé par défaut
   hasOnboarded: false,
 };
 
@@ -24,6 +25,7 @@ interface SettingsStore extends Settings {
   setSystemPrompt: (systemPrompt: string) => void;
   setTone: (tone: NonNullable<Settings['tone']>) => void;
   setNotificationsEnabled: (enabled: boolean) => void;
+  setRagEnabled: (enabled: boolean) => void;
   setHasOnboarded: (hasOnboarded: boolean) => void;
   setShowConfigurationPopup: (show: boolean, type?: 'missing-api-key' | 'configuration-error') => void;
   toggleTheme: () => void;
@@ -45,6 +47,7 @@ export const useSettings = create<SettingsStore>()(
       setSystemPrompt: (systemPrompt) => set({ systemPrompt }),
   setTone: (tone) => set({ tone }),
   setNotificationsEnabled: (notificationsEnabled) => set({ notificationsEnabled }),
+  setRagEnabled: (ragEnabled) => set({ ragEnabled }),
   setHasOnboarded: (hasOnboarded) => set({ hasOnboarded }),
       setShowConfigurationPopup: (show, type) => set({ 
         showConfigurationPopup: show, 

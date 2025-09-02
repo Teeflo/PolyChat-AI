@@ -56,6 +56,8 @@
 }
 
 .chat-input-modern-wrapper:hover {
+  border-color: var(--polychat-accent-primary);
+  transform: translateY(-1px);
 }
 
 /* Barre de suggestions améliorée avec design moderne */
@@ -200,6 +202,18 @@
 .suggestion-2 {
   background: linear-gradient(135deg, rgba(16, 185, 129, 0.15) 0%, rgba(5, 150, 105, 0.2) 100%);
   border-color: rgba(16, 185, 129, 0.4);
+<<<<<<< HEAD
+=======
+}
+
+/* Ensure consistent styling for all suggestions by cycling through the 3 styles */
+.chat-input-suggestion-btn.suggestion-0,
+.chat-input-suggestion-btn.suggestion-1,
+.chat-input-suggestion-btn.suggestion-2 {
+  /* These inherit the base styling from .chat-input-suggestion-btn */
+  position: relative;
+  z-index: 1;
+>>>>>>> 140dfbeed3bd6b4935c5514f73ffd04c873877c8
 }
 
 .chat-input-suggestion-btn.show-more {
@@ -645,11 +659,52 @@
     width: 36px;
     height: 36px;
   }
-  
   .chat-input-clear-btn {
     width: 20px;
     height: 20px;
   }
 }
 
+/* Style spécial pour le bouton Image IA */
+.chat-input-suggestion-btn.image-generator-btn {
+  background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%);
+  color: white;
+  border: 2px solid transparent;
+  box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
+  animation: pulse-glow 2s ease-in-out infinite alternate;
+  font-weight: 600;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.chat-input-suggestion-btn.image-generator-btn:hover {
+  background: linear-gradient(135deg, #7c3aed 0%, #db2777 100%);
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 8px 25px rgba(139, 92, 246, 0.5);
+}
+
+.chat-input-suggestion-btn.image-generator-btn:active {
+  transform: translateY(-1px) scale(1.02);
+}
+
+.suggestion-badge.special {
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  animation: badgePulseSpecial 1.5s infinite;
+}
+
+@keyframes pulse-glow {
+  from {
+    box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
+  }
+  to {
+    box-shadow: 0 4px 20px rgba(139, 92, 246, 0.6);
+  }
+}
+
+@keyframes badgePulseSpecial {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.3); }
+  100% { transform: scale(1); }
+}
 
