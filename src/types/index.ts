@@ -1,10 +1,3 @@
-export interface ImageObject {
-  type: string;
-  image_url: {
-    url: string;
-  };
-}
-
 export interface Message {
   id: string;
   role: 'user' | 'assistant' | 'system';
@@ -12,9 +5,6 @@ export interface Message {
   timestamp: Date;
   modelId?: string; // Ajout pour identifier quel modèle a généré la réponse
   streaming?: boolean; // Indique si le message est en cours de streaming
-<<<<<<< HEAD
-  images?: (string | ImageObject)[];
-=======
   imageData?: GeneratedImage; // Pour les messages contenant des images générées
 }
 
@@ -36,7 +26,6 @@ export interface GeneratedImage {
   prompt: string;
   model: string;
   timestamp: Date;
->>>>>>> 140dfbeed3bd6b4935c5514f73ffd04c873877c8
 }
 
 export interface Model {
@@ -140,15 +129,4 @@ export interface UsageStats {
   avgResponseTimeMs: number;
   perModel: Record<string, ModelStats>;
   lastUpdated: string; // ISO date string
-}
-
-// Image generation types
-export interface GeneratedImage {
-  id: string;
-  url: string;
-  prompt: string;
-  model: string;
-  created: Date;
-  width?: number;
-  height?: number;
 }

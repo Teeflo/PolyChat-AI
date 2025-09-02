@@ -202,8 +202,6 @@
 .suggestion-2 {
   background: linear-gradient(135deg, rgba(16, 185, 129, 0.15) 0%, rgba(5, 150, 105, 0.2) 100%);
   border-color: rgba(16, 185, 129, 0.4);
-<<<<<<< HEAD
-=======
 }
 
 /* Ensure consistent styling for all suggestions by cycling through the 3 styles */
@@ -213,7 +211,6 @@
   /* These inherit the base styling from .chat-input-suggestion-btn */
   position: relative;
   z-index: 1;
->>>>>>> 140dfbeed3bd6b4935c5514f73ffd04c873877c8
 }
 
 .chat-input-suggestion-btn.show-more {

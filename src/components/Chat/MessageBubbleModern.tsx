@@ -32,10 +32,6 @@ const MessageBubbleModern: React.FC<MessageBubbleModernProps> = ({
   const isAssistant = message.role === 'assistant';
   const [copiedBlockId, setCopiedBlockId] = useState<string | null>(null);
 
-<<<<<<< HEAD
-  // Guard: ne rien rendre si le contenu et les images sont vides
-  if (isAssistant && (!message.content || message.content.trim() === '') && (!message.images || message.images.length === 0)) {
-=======
   const getMessageText = (content: string | MessageContent[]): string => {
     if (typeof content === 'string') {
       return content;
@@ -65,7 +61,6 @@ const MessageBubbleModern: React.FC<MessageBubbleModernProps> = ({
   };
 
   if (isAssistant && !hasVisibleContent(message.content) && !message.streaming) {
->>>>>>> 140dfbeed3bd6b4935c5514f73ffd04c873877c8
     return null;
   }
 
@@ -75,41 +70,11 @@ const MessageBubbleModern: React.FC<MessageBubbleModernProps> = ({
   };
 
   const markdownComponents = useMemo(() => ({
-<<<<<<< HEAD
-    // Image component using ImageDisplay
-    img: ({ src, alt, ...props }: React.ComponentProps<"img">) => {
-      if (!src) return null;
-
-      // Check if it's an image URL (not just any src)
-      const isImageUrl = /\.(png|jpg|jpeg|webp|gif|svg)$/i.test(src) ||
-                        src.startsWith('data:image/') ||
-                        src.includes('images.openrouter.ai') ||
-                        src.includes('generativelanguage.googleapis.com');
-
-      if (isImageUrl) {
-        return (
-          <div className="message-image-container">
-            <ImageDisplay
-              src={src}
-              alt={alt || 'Image générée par IA'}
-              className="message-embedded-image"
-            />
-          </div>
-        );
-      }
-
-      // Fallback to regular img tag for non-image URLs
-      return <img src={src} alt={alt} {...props} />;
-    },
-
-    // Inline code
-=======
     img: ({ src, alt }: React.ComponentProps<"img">) => {
       if (!src) return null;
       console.log('🎨 Rendering img via ReactMarkdown with src:', src.startsWith('data:') ? src.substring(0, 100) + '...' : src);
       return <ImageDisplay src={src} alt={alt || 'Image générée'} className="message-embedded-image" />;
     },
->>>>>>> 140dfbeed3bd6b4935c5514f73ffd04c873877c8
     code: ({ className, children, ...props }: React.ComponentProps<"code"> & { inline?: boolean; 'data-nodeid'?: string; }) => {
       const inline = props.inline;
       const match = /language-(\w+)/.exec(className || '');
@@ -182,49 +147,8 @@ const MessageBubbleModern: React.FC<MessageBubbleModernProps> = ({
 
         <div className="message-bubble-modern-body">
           <div className="message-bubble-modern-text markdown-body">
-            {/* Render images from message.images array */}
-            {message.images && message.images.map((img, index) => {
-              // Handle both raw base64 strings and data URLs
-              let src = '';
-              if (typeof img === 'string') {
-                if (!img.startsWith('data:image')) {
-                  src = `data:image/png;base64,${img}`;
-                } else {
-                  src = img;
-                }
-              } else if (img && typeof img === 'object' && 'image_url' in img) {
-                // Handle image objects from streaming responses
-                src = img.image_url?.url || '';
-              }
-
-              // Only render if we have a valid src
-              if (!src) return null;
-
-              return (
-                <div className="message-image-container" key={index}>
-                  <ImageDisplay
-                    src={src}
-                    alt={`Image générée ${index + 1}`}
-                    className="message-embedded-image"
-                  />
-                </div>
-              );
-            })}
-
             {(() => {
-<<<<<<< HEAD
-              const content = message.content;
-              if (!content) return null;
-
-              const fenceCount = (content.match(/```/g) || []).length;
-              const hasOpenFence = message.streaming && fenceCount % 2 === 1;
-              if (hasOpenFence) {
-                const lastIndex = content.lastIndexOf('```');
-                const head = content.slice(0, lastIndex);
-                const partial = content.slice(lastIndex + 3);
-=======
               if (Array.isArray(message.content)) {
->>>>>>> 140dfbeed3bd6b4935c5514f73ffd04c873877c8
                 return (
                   <>
                     {message.content.map((part, index) => {

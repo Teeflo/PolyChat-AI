@@ -35,7 +35,6 @@ const SettingsModalModern: React.FC<SettingsModalModernProps> = ({ isOpen, onClo
   if (!isOpen) return null;
 
   const handleSave = () => { onClose(); };
-
   const handleApiKeyChange = (e: React.ChangeEvent<HTMLInputElement>) => setApiKey(e.target.value);
   const handleSystemPromptChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => setSystemPrompt(e.target.value);
   const handleThemeChange = (newTheme: 'light' | 'dark') => {
@@ -108,7 +107,6 @@ const SettingsModalModern: React.FC<SettingsModalModernProps> = ({ isOpen, onClo
               <label htmlFor="apiKey" className="settings-label-modern">Votre clé API</label>
               <input id="apiKey" type="password" value={apiKey} onChange={handleApiKeyChange} placeholder="sk-or-v1-..." className="settings-input-modern" />
               <div className="settings-help-modern"><Info size={12} /><span>Obtenez votre clé API sur <a href="https://openrouter.ai/keys" target="_blank" rel="noopener noreferrer" className="settings-link-modern">OpenRouter.ai</a></span></div>
-
             </div>
           </div>
 

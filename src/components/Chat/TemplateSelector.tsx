@@ -37,10 +37,6 @@ const TemplateSelector: React.FC<Props> = ({ isOpen, onClose, onTemplateSelect, 
            action.description.toLowerCase().includes(searchTerm.toLowerCase());
   });
 
-  const getCategoryById = (id: string) => {
-    return TEMPLATE_CATEGORIES.find(cat => cat.id === id);
-  };
-
   return (
     <div className="template-selector-overlay" onClick={onClose}>
       <div className="template-selector-modal" onClick={(e) => e.stopPropagation()}>
@@ -92,9 +88,8 @@ const TemplateSelector: React.FC<Props> = ({ isOpen, onClose, onTemplateSelect, 
               {TEMPLATE_CATEGORIES.map(category => (
                 <button
                   key={category.id}
-                  className={`template-category-btn ${activeCategory === category.id ? 'active' : ''}`}
+                  className={`template-category-btn ${category.id} ${activeCategory === category.id ? 'active' : ''}`}
                   onClick={() => setActiveCategory(category.id)}
-                  style={{ '--category-color': category.color } as React.CSSProperties}
                 >
                   <span className="template-category-icon">{category.icon}</span>
                   {category.name}
@@ -106,13 +101,11 @@ const TemplateSelector: React.FC<Props> = ({ isOpen, onClose, onTemplateSelect, 
               {filteredTemplates.length > 0 ? (
                 <div className="template-grid">
                   {filteredTemplates.map(tpl => {
-                    const category = getCategoryById(tpl.category);
                     return (
-                      <button 
-                        key={tpl.id} 
-                        className="template-card"
+                      <button
+                        key={tpl.id}
+                        className={`template-card ${tpl.category}`}
                         onClick={() => onTemplateSelect(tpl)}
-                        style={{ '--category-color': category?.color } as React.CSSProperties}
                       >
                         <div className="template-card-header">
                           <div className="template-card-icon">{tpl.icon || '📄'}</div>

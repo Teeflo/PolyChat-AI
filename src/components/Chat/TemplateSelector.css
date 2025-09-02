@@ -6,6 +6,7 @@
   right: 0;
   bottom: 0;
   background: rgba(0, 0, 0, 0.85);
+  -webkit-backdrop-filter: blur(8px);
   backdrop-filter: blur(8px);
   z-index: 1000;
   display: flex;
@@ -180,6 +181,64 @@
   color: white;
   box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
   transform: translateY(-2px);
+}
+
+/* Category-specific colors */
+.template-category-btn.programming {
+  --category-color: #3B82F6;
+}
+
+.template-category-btn.writing {
+  --category-color: #10B981;
+}
+
+.template-category-btn.analysis {
+  --category-color: #F59E0B;
+}
+
+.template-category-btn.creative {
+  --category-color: #8B5CF6;
+}
+
+.template-category-btn.learning {
+  --category-color: #EF4444;
+}
+
+.template-category-btn.business {
+  --category-color: #06B6D4;
+}
+
+.template-category-btn.personal {
+  --category-color: #EC4899;
+}
+
+/* Template card category colors */
+.template-card.programming {
+  --category-color: #3B82F6;
+}
+
+.template-card.writing {
+  --category-color: #10B981;
+}
+
+.template-card.analysis {
+  --category-color: #F59E0B;
+}
+
+.template-card.creative {
+  --category-color: #8B5CF6;
+}
+
+.template-card.learning {
+  --category-color: #EF4444;
+}
+
+.template-card.business {
+  --category-color: #06B6D4;
+}
+
+.template-card.personal {
+  --category-color: #EC4899;
 }
 
 .template-category-icon {

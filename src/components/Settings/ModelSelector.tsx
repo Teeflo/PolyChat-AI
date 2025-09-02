@@ -16,14 +16,6 @@ const ModelSelector: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const isDark = theme === 'dark';
 
-<<<<<<< HEAD
-  // Charger les modèles au montage du composant
-  useEffect(() => {
-    loadModels();
-  }, []);
-
-=======
->>>>>>> 140dfbeed3bd6b4935c5514f73ffd04c873877c8
   const loadModels = async () => {
     try {
       setLoading(true);

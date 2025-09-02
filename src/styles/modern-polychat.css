@@ -145,9 +145,7 @@
 * {
   box-sizing: border-box;
   image-rendering: -webkit-optimize-contrast; /* Pour la compatibilité Edge */
-  image-rendering: -moz-crisp-edges;
   image-rendering: pixelated;
-  image-rendering: crisp-edges;
 }
 
 body {
@@ -477,8 +475,6 @@ body.theme-dark {
   box-shadow: var(--shadow-md);
 }
 
-.polychat-logo:hover {
-}
 
 
 
@@ -564,8 +560,6 @@ body.theme-dark {
   border-color: var(--polychat-accent-primary);
 }
 
-.polychat-btn-ghost:hover {
-}
 
 /* Inputs modernisés */
 .polychat-input-modern {
@@ -647,8 +641,6 @@ body.theme-dark {
   transition: var(--transition-normal);
 }
 
-.polychat-card-modern:hover {
-}
 
 .polychat-card-modern:hover::before {
   opacity: 0;
@@ -1109,9 +1101,7 @@ body.theme-dark {
 * {
   box-sizing: border-box;
   image-rendering: -webkit-optimize-contrast; /* Pour la compatibilité Edge */
-  image-rendering: -moz-crisp-edges;
   image-rendering: pixelated;
-  image-rendering: crisp-edges;
 }
 
 body {
@@ -1425,8 +1415,6 @@ body.theme-dark {
   box-shadow: var(--shadow-md);
 }
 
-.polychat-logo:hover {
-}
 
 
 
@@ -1512,8 +1500,6 @@ body.theme-dark {
   border-color: var(--polychat-accent-primary);
 }
 
-.polychat-btn-ghost:hover {
-}
 
 /* Inputs modernisés */
 .polychat-input-modern {
@@ -1595,8 +1581,6 @@ body.theme-dark {
   transition: var(--transition-normal);
 }
 
-.polychat-card-modern:hover {
-}
 
 .polychat-card-modern:hover::before {
   opacity: 0;
@@ -1808,8 +1792,6 @@ body.theme-dark {
   justify-content: center;
 }
 
-.chat-history-toggle:hover {
-}
 
 .chat-history-list {
   flex: 1;
@@ -1829,8 +1811,6 @@ body.theme-dark {
   position: relative;
 }
 
-.chat-history-item:hover {
-}
 
 .chat-history-item.active {
   background: var(--gradient-cyber);
@@ -1896,8 +1876,6 @@ body.theme-dark {
   box-shadow: var(--shadow-md);
 }
 
-.new-chat-btn:hover {
-}
 
 .new-chat-btn:active {
   transform: translateY(0);
@@ -1982,8 +1960,6 @@ body.theme-dark {
   box-shadow: var(--shadow-md);
 }
 
-.polychat-sidebar-toggle:hover {
-}
 
 /* Main content adjustment */
 .polychat-main-chat-area {
