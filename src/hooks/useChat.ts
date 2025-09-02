@@ -4,7 +4,6 @@ import { saveChatHistory, loadChatHistory } from '../services/localStorage';
 import { streamAIResponse } from '../services/openRouter';
 import { useSettings } from './useSettings';
 import { useUsageStats } from './useUsageStats';
-import { notify } from '../utils/notify';
 
 interface ChatStore {
   activeSessions: ChatSession[];
@@ -411,14 +410,7 @@ export const useChat = create<ChatStore>((set, get) => ({
         allSessions: updatedAllSessions,
         isAnyLoading: false
       });
-      // Notifications
-      const { notificationsEnabled } = useSettings.getState();
-      if (notificationsEnabled) {
-        try {
-          const count = resolvedSessions.length;
-          notify('PolyChat AI', count > 1 ? `Réponses prêtes pour ${count} modèles` : 'Réponse prête');
-        } catch {}
-      }
+      // Notifications removed
       
     } catch (error) {
       set({ isAnyLoading: false });
@@ -582,10 +574,7 @@ export const useChat = create<ChatStore>((set, get) => ({
         allSessions: finalAllSessions,
         isAnyLoading: false
       });
-      const { notificationsEnabled } = useSettings.getState();
-      if (notificationsEnabled) {
-        try { notify('PolyChat AI', 'Réponse régénérée prête'); } catch {}
-      }
+      // Notification removed
 
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Erreur lors de la régénération';
