@@ -15,12 +15,6 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({ message }) => {
   const isDark = theme === 'dark';
   const [copiedBlockId, setCopiedBlockId] = useState<string | null>(null);
 
-  // Guard: ne rien rendre si le contenu est vide après trim (évite bulle vide)
-  const contentText = typeof message.content === 'string' ? message.content : '';
-  if (message.role === 'assistant' && (!contentText || contentText.trim() === '')) {
-    return null;
-  }
-
   const markdownComponents = useMemo(() => ({
     a: ({ href, children, ...props }: React.ComponentProps<'a'>) => (
       <a href={href} target="_blank" rel="noreferrer noopener" {...props}>
@@ -37,7 +31,7 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({ message }) => {
       if (!inline) {
         const language = match ? match[1] : '';
         const codeStr = String(children).replace(/\n$/, '');
-        const blockId = `${message.id}-${(props as any)['data-nodeid'] || Math.random().toString(36).slice(2)}`;
+        const blockId = `${message.id}-${(props as { 'data-nodeid'?: string })['data-nodeid'] || Math.random().toString(36).slice(2)}`;
         const onCopyBlock = async () => {
           try {
             await navigator.clipboard.writeText(codeStr);
@@ -75,6 +69,13 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({ message }) => {
     },
     p: ({ children, ...props }: React.ComponentProps<"p">) => <p className="paragraph" {...props}>{children}</p>,
   }), [copiedBlockId, isDark, isUser, message.id]);
+
+  // Guard: ne rien rendre si le contenu est vide après trim (évite bulle vide)
+  const contentText = typeof message.content === 'string' ? message.content : '';
+  if (message.role === 'assistant' && (!contentText || contentText.trim() === '')) {
+    return null;
+  }
+
 
   return (
     <div className={`message-bubble-container ${isUser ? 'user' : 'assistant'}`}>
@@ -137,9 +138,9 @@ const MessageBubble: React.FC<MessageBubbleProps> = ({ message }) => {
         </div>
 
         <div className={`message-bubble-timestamp ${isUser ? 'user' : 'assistant'}`}>
-          {message.timestamp.toLocaleTimeString([], { 
-            hour: '2-digit', 
-            minute: '2-digit' 
+          {message.timestamp.toLocaleTimeString([], {
+            hour: '2-digit',
+            minute: '2-digit'
           })}
         </div>
       </div>

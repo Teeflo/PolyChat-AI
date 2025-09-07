@@ -11,17 +11,17 @@ interface SettingsModalModernProps {
 }
 
 const SettingsModalModern: React.FC<SettingsModalModernProps> = ({ isOpen, onClose }) => {
-  const { 
-    apiKey, 
-    selectedModel, 
-    theme, 
+  const {
+    apiKey,
+    selectedModel,
+    theme,
     accent,
     systemPrompt,
     tone,
     notificationsEnabled,
     ragEnabled, // Ajout du RAG
-    setApiKey, 
-    setSelectedModel, 
+    setApiKey,
+    setSelectedModel,
     setTheme,
     setAccent,
     setSystemPrompt,
@@ -31,6 +31,24 @@ const SettingsModalModern: React.FC<SettingsModalModernProps> = ({ isOpen, onClo
   } = useSettings();
   const { models } = useModels();
   const [modelSearch, setModelSearch] = useState('');
+  const [focusIndex, setFocusIndex] = useState(0);
+
+  const filteredModels = useMemo(()=>{
+    const q = modelSearch.trim().toLowerCase();
+    let base = models;
+    if (q) base = base.filter(m => m.id.toLowerCase().includes(q) || m.name?.toLowerCase().includes(q));
+    base = [...base].sort((a,b)=>{
+      // Garder le modèle sélectionné en premier
+      if (a.id === selectedModel) return -1; if (b.id === selectedModel) return 1;
+      // Trier par date de création (plus récent d'abord). Fallback si undefined.
+      const ca = (a as { created?: number }).created || 0;
+      const cb = (b as { created?: number }).created || 0;
+      if (cb !== ca) return cb - ca;
+      // Fallback secondaire: nom/id alphabétique
+      return (a.name || a.id).localeCompare(b.name || b.id);
+    });
+    return base.slice(0, 80);
+  },[models, modelSearch, selectedModel]);
 
   if (!isOpen) return null;
 
@@ -53,25 +71,8 @@ const SettingsModalModern: React.FC<SettingsModalModernProps> = ({ isOpen, onClo
     return parts.length > 1 ? parts[0] : 'Unknown';
   };
 
-  const filteredModels = useMemo(()=>{
-    const q = modelSearch.trim().toLowerCase();
-    let base = models;
-    if (q) base = base.filter(m => m.id.toLowerCase().includes(q) || m.name?.toLowerCase().includes(q));
-    base = [...base].sort((a,b)=>{
-      // Garder le modèle sélectionné en premier
-      if (a.id === selectedModel) return -1; if (b.id === selectedModel) return 1;
-      // Trier par date de création (plus récent d'abord). Fallback si undefined.
-      const ca = (a as any).created || 0;
-      const cb = (b as any).created || 0;
-      if (cb !== ca) return cb - ca;
-      // Fallback secondaire: nom/id alphabétique
-      return (a.name || a.id).localeCompare(b.name || b.id);
-    });
-    return base.slice(0, 80);
-  },[models, modelSearch, selectedModel]);
 
   // Navigation clavier dans la liste
-  const [focusIndex, setFocusIndex] = useState(0);
   const handleKeyNav = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (!filteredModels.length) return;
     if (e.key === 'ArrowDown') { e.preventDefault(); setFocusIndex(i => (i+1) % filteredModels.length); }
@@ -166,8 +167,8 @@ const SettingsModalModern: React.FC<SettingsModalModernProps> = ({ isOpen, onClo
                   // Tooltip détaillé basé sur m.pricing directement (prix par token *1M)
                   let tooltip = pricingFull;
                   try {
-                    const p = parseFloat((m as any).pricing?.prompt || '0');
-                    const c = parseFloat((m as any).pricing?.completion || '0');
+                    const p = parseFloat((m as { pricing?: { prompt: string; completion: string } }).pricing?.prompt || '0');
+                    const c = parseFloat((m as { pricing?: { prompt: string; completion: string } }).pricing?.completion || '0');
                     if (p === 0 && c === 0) {
                       tooltip = 'Gratuit (0$)\nEntrée: 0$/1M\nSortie: 0$/1M';
                     } else {
@@ -175,7 +176,9 @@ const SettingsModalModern: React.FC<SettingsModalModernProps> = ({ isOpen, onClo
                       const cM = (c*1000000).toFixed(c*1000000 < 1 ? 3 : 2);
                       tooltip = `Entrée: ${pM}$/1M tokens\nSortie: ${cM}$/1M tokens`;
                     }
-                  } catch {}
+                  } catch (e) {
+                    console.error('Pricing parse error:', e);
+                  }
 
                   const handleTooltipCheck = (el: HTMLElement) => {
                     // Retirer état précédent

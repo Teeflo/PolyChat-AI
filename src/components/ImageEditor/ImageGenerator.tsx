@@ -177,7 +177,7 @@ const ImageGenerator: React.FC<ImageGeneratorProps> = ({
               <select
                 id="size"
                 value={selectedSize}
-                onChange={(e) => setSelectedSize(e.target.value as any)}
+                onChange={(e) => setSelectedSize(e.target.value as '1024x1024' | '512x512' | '256x256')}
                 disabled={isGenerating}
                 className={`form-select ${isDark ? 'dark' : 'light'}`}
               >
@@ -196,7 +196,7 @@ const ImageGenerator: React.FC<ImageGeneratorProps> = ({
               <select
                 id="style"
                 value={selectedStyle}
-                onChange={(e) => setSelectedStyle(e.target.value as any)}
+                onChange={(e) => setSelectedStyle(e.target.value as 'natural' | 'vivid' | 'digital_art')}
                 disabled={isGenerating}
                 className={`form-select ${isDark ? 'dark' : 'light'}`}
               >

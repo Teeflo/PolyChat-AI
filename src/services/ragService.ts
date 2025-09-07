@@ -1,24 +1,27 @@
 
-import { pipeline, cos_sim } from '@xenova/transformers';
+import { pipeline, cos_sim, FeatureExtractionPipeline } from '@xenova/transformers';
 import type { Message } from '../types';
 
 // Singleton class to ensure we only load the model once
 class EmbeddingService {
-    private static instance: Promise<any> | null = null;
+  private static instance: FeatureExtractionPipeline | null = null;
 
-    static async getInstance() {
-        if (this.instance === null) {
-            this.instance = pipeline('feature-extraction', 'Xenova/all-MiniLM-L6-v2');
-        }
-        return this.instance;
+  static async getInstance() {
+    if (this.instance === null) {
+      this.instance = await pipeline('feature-extraction', 'Xenova/all-MiniLM-L6-v2') as FeatureExtractionPipeline;
     }
+    return this.instance;
+  }
 }
 
 // Function to calculate embeddings for a batch of texts
 async function getEmbeddings(texts: string[]): Promise<number[][]> {
-    const extractor = await EmbeddingService.getInstance();
-    const embeddings = await extractor(texts, { pooling: 'mean', normalize: true });
-    return embeddings.tolist();
+  const extractor = await EmbeddingService.getInstance();
+  const embeddings = await Promise.all(texts.map(async (text) => {
+    const embedding = await extractor(text, { pooling: 'mean', normalize: true });
+    return embedding.tolist();
+  }));
+  return embeddings;
 }
 
 // Main function to get relevant context

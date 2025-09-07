@@ -4,6 +4,8 @@ import type { Message, MessageContent } from '../types/index';
 
 const API_URL = 'https://openrouter.ai/api/v1/chat/completions';
 
+
+
 export const fetchAIResponse = async (
   messages: Message[],
   apiKey: string,
@@ -11,14 +13,14 @@ export const fetchAIResponse = async (
   systemPrompt?: string
 ): Promise<string | MessageContent[]> => {
   try {
-    const apiMessages = messages.map(({ id, timestamp, modelId, streaming, imageData, ...message }) => {
+    const apiMessages: ApiMessage[] = messages.map((message) => {
       let content = '';
       if (typeof message.content === 'string') {
         content = message.content;
       } else if (Array.isArray(message.content)) {
         content = message.content.filter(item => item.type === 'text').map(item => item.text || '').join(' ');
       }
-      return { ...message, content };
+      return { role: message.role, content };
     });
 
     if (systemPrompt && systemPrompt.trim()) {
@@ -28,7 +30,12 @@ export const fetchAIResponse = async (
       });
     }
 
-    const payload: any = {
+    interface OpenRouterPayload {
+      model: string;
+      messages: ApiMessage[];
+    }
+  
+    const payload: OpenRouterPayload = {
       model,
       messages: apiMessages,
     };
@@ -94,6 +101,8 @@ export const fetchAIResponse = async (
 };
 
 // Streaming support: yields partial text chunks as they arrive
+type ApiMessage = { role: string; content: string };
+
 export async function streamAIResponse(
   messages: Message[],
   apiKey: string,
@@ -102,8 +111,16 @@ export async function streamAIResponse(
   systemPrompt?: string,
   abortController?: AbortController
 ): Promise<string | MessageContent[]> {
-  const apiMessages = messages.map(({ id, timestamp, modelId, ...message }) => message);
-  if (systemPrompt && systemPrompt.trim()) apiMessages.unshift({ role: 'system', content: systemPrompt.trim() });
+  const apiMessages: ApiMessage[] = messages.map((message) => {
+    let content = '';
+    if (typeof message.content === 'string') {
+      content = message.content;
+    } else if (Array.isArray(message.content)) {
+      content = message.content.filter(item => item.type === 'text').map(item => item.text || '').join(' ');
+    }
+    return { role: message.role, content } as ApiMessage;
+  });
+  if (systemPrompt && systemPrompt.trim()) apiMessages.unshift({ role: 'system', content: systemPrompt.trim() } as ApiMessage);
   let response: Response;
   try {
     response = await fetch(API_URL, {
@@ -132,7 +149,7 @@ export async function streamAIResponse(
     let result;
     try {
       result = await reader.read();
-    } catch (e:any) {
+    } catch (e: unknown) {
       if (abortController?.signal.aborted) break;
       throw e;
     }

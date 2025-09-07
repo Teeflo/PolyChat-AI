@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useSettings } from '../../hooks/useSettings';
 import { Brain, Loader2, RefreshCw, Cpu } from 'lucide-react';
 import { 
@@ -13,7 +13,7 @@ const ModelSelector: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const loadModels = async () => {
+  const loadModels = useCallback(async () => {
     try {
       setLoading(true);
       setError(null);
@@ -29,11 +29,11 @@ const ModelSelector: React.FC = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [selectedModel, setSelectedModel]);
 
   useEffect(() => {
     loadModels();
-  }, []);
+  }, [loadModels]);
 
   return (
     <div className="polychat-input-group">

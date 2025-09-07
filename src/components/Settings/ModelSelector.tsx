@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useSettings } from '../../hooks/useSettings';
 import { Brain, Loader2, RefreshCw } from 'lucide-react';
 import { 
@@ -16,7 +16,7 @@ const ModelSelector: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const isDark = theme === 'dark';
 
-  const loadModels = async () => {
+  const loadModels = useCallback(async () => {
     try {
       setLoading(true);
       setError(null);
@@ -33,12 +33,12 @@ const ModelSelector: React.FC = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [selectedModel, setSelectedModel]);
 
   // Charger les modèles au montage du composant
   useEffect(() => {
     loadModels();
-  }, []);
+  }, [loadModels]);
 
   const selectedModelData = models.find(m => m.id === selectedModel);
 

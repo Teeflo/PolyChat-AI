@@ -42,6 +42,7 @@ interface ChatStore {
   abortControllers: Record<string, AbortController>; // par session
   streamingProgress: Record<string, { chars: number; start: number; lastUpdate: number }>;
   pendingTemplate: ConversationTemplate | null; // Template en attente d'édition
+  isInitialized: boolean;
   addModel: (modelId: string) => void;
   removeModel: (modelId: string) => void;
   setWindowCount: (count: number) => void; // Définir le nombre de fenêtres actives
@@ -55,10 +56,27 @@ interface ChatStore {
   createNewSession: () => void;
   deleteSession: (sessionId: string) => void;
   stopStreaming: (sessionId?: string) => void;
+  // Helper methods for sendMessageToAll
+  validateContent: (content: string) => boolean;
+  getRunnableSessions: (activeSessions: ChatSession[]) => ChatSession[];
+  checkImageCompatibility: (runnableSessions: ChatSession[]) => { isCompatible: boolean; errorMessage?: string };
+  promoteTemporarySessions: (runnableSessions: ChatSession[], stats: any, set: (updater: (state: ChatStore) => Partial<ChatStore>) => void) => ChatSession[];
+  addUserMessageToSessions: (sessionsToProcess: ChatSession[], userMessage: Message, set: (updater: (state: ChatStore) => Partial<ChatStore>) => void, _get: () => ChatStore) => ChatSession[];
+  getEffectiveSystemPrompt: (systemPrompt: string, tone: string) => string | undefined;
+  getContextMessages: (content: string, sessionMessages: Message[], ragEnabled: boolean) => Promise<Message[]>;
+  createPlaceholderMessage: (sessionId: string) => { id: string; message: any; ac: AbortController };
+  updateWithPlaceholder: (sessionId: string, placeholder: { id: string; message: any; ac: AbortController }, set: (updater: (state: ChatStore) => Partial<ChatStore>) => void, _get: () => ChatStore) => void;
+  handleImageGeneration: (session: ChatSession, userMessage: Message, apiKey: string, placeholderId: string, start: number, set: (updater: (state: ChatStore) => Partial<ChatStore>) => void, get: () => ChatStore) => Promise<ChatSession>;
+  handleTextStreaming: (contextMessages: Message[], apiKey: string, session: ChatSession, placeholderId: string, effectiveSystem: string | undefined, start: number, set: (updater: (state: ChatStore) => Partial<ChatStore>) => void, get: () => ChatStore) => Promise<ChatSession>;
+  handleResponseError: (session: ChatSession, placeholderId: string, error: any, set: (updater: (state: ChatStore) => Partial<ChatStore>) => void, get: () => ChatStore) => ChatSession;
+  processSessionResponse: (session: ChatSession, content: string, apiKey: string, tone: string, systemPrompt: string, ragEnabled: boolean, userMessage: Message, set: (updater: (state: ChatStore) => Partial<ChatStore>) => void, get: () => ChatStore) => Promise<ChatSession>;
+  updateAfterAllResponses: (resolvedSessions: ChatSession[], set: (updater: (state: ChatStore) => Partial<ChatStore>) => void, get: () => ChatStore) => void;
+  sendNotification: (resolvedSessions: ChatSession[], notificationsEnabled: boolean) => void;
   // New template and quick action methods
   applyTemplate: (template: ConversationTemplate) => void;
-  prepareTemplate: (template: ConversationTemplate) => void; // Nouvelle fonction
+  prepareTemplate: (template: ConversationTemplate | null) => void; // Nouvelle fonction
   executeQuickAction: (action: QuickAction, selectedText?: string) => void;
+  createNewTemporarySession: (modelId?: string) => ChatSession;
 }
 
 const createMessage = (role: 'user' | 'assistant', content: string, modelId?: string): Message => ({
@@ -78,8 +96,11 @@ export const useChat = create<ChatStore>((set, get) => ({
   abortControllers: {},
   streamingProgress: {},
   pendingTemplate: null,
+  isInitialized: false,
   
       initializeChat: () => {
+    if (get().isInitialized) return;
+
     const savedSessions = loadChatHistory();
     set({
       allSessions: savedSessions,
@@ -87,28 +108,13 @@ export const useChat = create<ChatStore>((set, get) => ({
 
     // Always create a new temporary session on load
     const { selectedModel } = useSettings.getState();
-    const newTemporarySession = createNewTemporarySession(selectedModel);
+    const newTemporarySession = get().createNewTemporarySession(selectedModel);
 
     set({
       activeSessions: [newTemporarySession],
       currentSessionId: newTemporarySession.id,
       selectedModels: [newTemporarySession.modelId],
     });
-
-    // Helper function to create a new temporary session
-    function createNewTemporarySession(modelId: string | undefined): ChatSession {
-      const id = `session-${Date.now()}`;
-      const model = modelId || 'default'; // Fallback if no model is selected yet
-      return {
-        id,
-        modelId: model,
-        modelName: model,
-        messages: [],
-        isLoading: false,
-        error: null,
-        isTemporary: true, // Mark as temporary
-      };
-    }
 
     // Subscribe to default model changes for new temporary sessions
     useSettings.subscribe((state) => {
@@ -153,13 +159,30 @@ export const useChat = create<ChatStore>((set, get) => ({
         console.log('🔄 Modèle par défaut changé, session mise à jour :', state.selectedModel);
       }
     });
+
+    set({ isInitialized: true });
+  },
+
+  // Helper function to create a new temporary session (moved outside)
+  createNewTemporarySession: (modelId?: string): ChatSession => {
+    const id = `session-${Date.now()}`;
+    const model = modelId || 'default'; // Fallback if no model is selected yet
+    return {
+      id,
+      modelId: model,
+      modelName: model,
+      messages: [],
+      isLoading: false,
+      error: null,
+      isTemporary: true, // Mark as temporary
+    };
   },
   
   
   setWindowCount: (count: number) => {
     const target = Math.min(3, Math.max(1, count));
     const { activeSessions } = get();
-    let sessions = [...activeSessions];
+    const sessions = [...activeSessions];
     if (target > sessions.length) {
       const toAdd = target - sessions.length;
       for (let i = 0; i < toAdd; i++) {
@@ -210,177 +233,141 @@ export const useChat = create<ChatStore>((set, get) => ({
     }
   },
   
-  sendMessageToAll: async (content: string) => {
-    if (!content.trim()) return;
-    const { activeSessions } = get();
-    const runnableSessions = activeSessions.filter(s => !s.modelId.startsWith('pending-'));
-    if (runnableSessions.length === 0) return;
+  // Helper functions for sendMessageToAll
+  validateContent: (content: string): boolean => {
+    return !!content.trim();
+  },
 
-    const { apiKey, systemPrompt, tone, ragEnabled } = useSettings.getState();
-    const stats = useUsageStats.getState();
+  getRunnableSessions: (activeSessions: ChatSession[]): ChatSession[] => {
+    return activeSessions.filter(s => !s.modelId.startsWith('pending-'));
+  },
 
-    if (!apiKey) {
-      const updatedSessions = activeSessions.map(session => ({
-        ...session,
-        error: 'API key is missing. Please set your API key in the settings.',
-        isLoading: false
-      }));
-      set({ activeSessions: updatedSessions, isAnyLoading: false });
-      return;
+  checkImageCompatibility: (runnableSessions: ChatSession[]): { isCompatible: boolean; errorMessage?: string } => {
+    const incompatibleModels = runnableSessions.filter(session => !isImageGenerationModel(session.modelId));
+    if (incompatibleModels.length > 0) {
+      return { isCompatible: false, errorMessage: getImageGenerationError(incompatibleModels[0].modelId) };
     }
+    return { isCompatible: true };
+  },
 
-    // Vérifier si le message demande la génération d'une image
-    const isImageRequest = detectImageGenerationRequest(content);
-    if (isImageRequest) {
-      // Vérifier que tous les modèles actifs peuvent générer des images
-      const incompatibleModels = runnableSessions.filter(session =>
-        !isImageGenerationModel(session.modelId)
-      );
-
-      if (incompatibleModels.length > 0) {
-        const errorMessage = getImageGenerationError(incompatibleModels[0].modelId);
-
-        const updatedSessions = activeSessions.map(session => {
-          if (incompatibleModels.some(s => s.id === session.id)) {
-            return {
-              ...session,
-              error: errorMessage,
-              isLoading: false
-            };
-          }
-          return session;
-        });
-
-        set({ activeSessions: updatedSessions, isAnyLoading: false });
-        return;
-      }
-    }
-
-    const userMessage = createMessage('user', content);
-
-    // Promote temporary sessions to permanent ones on first message
-    const sessionsToProcess = runnableSessions.map(session => {
+  promoteTemporarySessions: (runnableSessions: ChatSession[], stats: any, set: any): ChatSession[] => {
+    return runnableSessions.map(session => {
       if (session.isTemporary) {
         const promotedSession = { ...session, isTemporary: false };
-        // Add to allSessions if not already there
-        set(state => ({
-          allSessions: state.allSessions.some(s => s.id === promotedSession.id)
+        set((state: ChatStore) => ({
+          allSessions: state.allSessions.some((s: ChatSession) => s.id === promotedSession.id)
             ? state.allSessions
             : [...state.allSessions, promotedSession]
         }));
-        try { stats.recordNewConversation(promotedSession.modelId); } catch {}
+        try { stats.recordNewConversation(promotedSession.modelId); } catch (e) { console.error('Stats error:', e); }
         return promotedSession;
       }
       return session;
     });
+  },
 
+  addUserMessageToSessions: (sessionsToProcess: ChatSession[], userMessage: Message, set: any, _get: any): ChatSession[] => {
     const updatedSessions = sessionsToProcess.map(session => ({
       ...session,
       messages: [...session.messages, userMessage],
       isLoading: true,
       error: null
     }));
-
-    set({
+  
+    set((_state: ChatStore) => ({
       activeSessions: updatedSessions,
       isAnyLoading: true
-    });
+    }));
+  
+    const stats = useUsageStats.getState();
+    try { stats.recordUserMessage(updatedSessions.map(s => s.modelId)); } catch (e) { console.error('Stats error:', e); }
+  
+    return updatedSessions;
+  },
 
-    try { stats.recordUserMessage(updatedSessions.map(s => s.modelId)); } catch {}
+  getEffectiveSystemPrompt: (systemPrompt: string, tone: string): string | undefined => {
+    const tonePrefix = tone && tone !== 'neutre' ? `[Ton: ${tone}] ` : '';
+    return systemPrompt && systemPrompt.trim()
+      ? `${tonePrefix}${systemPrompt.trim()}`
+      : (tonePrefix ? `${tonePrefix}Tu es un assistant IA utile.` : undefined);
+  },
 
-    const promises = updatedSessions.map(async (session) => {
-      const tonePrefix = tone && tone !== 'neutre' ? `[Ton: ${tone}] ` : '';
-      const effectiveSystem = systemPrompt && systemPrompt.trim()
-        ? `${tonePrefix}${systemPrompt.trim()}`
-        : (tonePrefix ? `${tonePrefix}Tu es un assistant IA utile.` : undefined);
-      
-      let contextMessages = session.messages;
-      if (ragEnabled) {
-        try {
-          const relevantHistory = await getRelevantContext(content, session.messages.slice(0, -1));
-          const lastUserMessage = session.messages[session.messages.length - 1];
-          contextMessages = [...relevantHistory, lastUserMessage];
-        } catch (e) {
-          console.error("RAG Error:", e);
-        }
+  getContextMessages: async (content: string, sessionMessages: Message[], ragEnabled: boolean): Promise<Message[]> => {
+    let contextMessages = sessionMessages;
+    if (ragEnabled) {
+      try {
+        const relevantHistory = await getRelevantContext(content, sessionMessages.slice(0, -1));
+        const lastUserMessage = sessionMessages[sessionMessages.length - 1];
+        contextMessages = [...relevantHistory, lastUserMessage];
+      } catch (e) {
+        console.error("RAG Error:", e);
       }
+    }
+    return contextMessages;
+  },
 
-      const start = performance.now();
-      const placeholderId = `stream-${Date.now()}-${session.modelId}`;
-      const placeholderMessage = {
-        id: placeholderId,
-        role: 'assistant' as const,
-        content: '…',
-        timestamp: new Date(),
-        modelId: session.modelId,
-        streaming: true
-      };
-      const ac = new AbortController();
+  createPlaceholderMessage: (sessionId: string): { id: string; message: any; ac: AbortController } => {
+    const placeholderId = `stream-${Date.now()}-${sessionId}`;
+    const placeholderMessage = {
+      id: placeholderId,
+      role: 'assistant' as const,
+      content: '…',
+      timestamp: new Date(),
+      modelId: sessionId,
+      streaming: true
+    };
+    const ac = new AbortController();
+    return { id: placeholderId, message: placeholderMessage, ac };
+  },
 
-      set(state => ({
-        activeSessions: state.activeSessions.map(s => 
-          s.id === session.id 
-            ? { ...s, messages: [...s.messages, placeholderMessage] } 
-            : s
-        ),
-        allSessions: state.allSessions.map(s => 
-          s.id === session.id 
-            ? { ...s, messages: [...s.messages, placeholderMessage] } 
-            : s
-        ),
-        abortControllers: { ...state.abortControllers, [session.id]: ac }
+  updateWithPlaceholder: (sessionId: string, placeholder: { id: string; message: any; ac: AbortController }, set: (updater: (state: ChatStore) => Partial<ChatStore>) => void, _get: () => ChatStore) => {
+    set((_state: ChatStore) => ({
+      activeSessions: _state.activeSessions.map((s: ChatSession) =>
+        s.id === sessionId
+          ? { ...s, messages: [...s.messages, placeholder.message] }
+          : s
+      ),
+      allSessions: _state.allSessions.map((s: ChatSession) =>
+        s.id === sessionId
+          ? { ...s, messages: [...s.messages, placeholder.message] }
+          : s
+      ),
+      abortControllers: { ..._state.abortControllers, [sessionId]: placeholder.ac }
+    }));
+  },
+
+  handleImageGeneration: async (session: ChatSession, userMessage: Message, apiKey: string, placeholderId: string, start: number, set: any, get: any) => {
+    console.log('🎯 Image generation request detected, using reliable generation...');
+    try {
+      const responseContent = await generateImageReliable(
+        getMessageText(userMessage.content),
+        apiKey,
+        session.modelId,
+        { maxRetries: 3, size: '1024x1024', quality: 'hd' }
+      );
+
+      set((_state: ChatStore) => ({
+        activeSessions: _state.activeSessions.map((s: ChatSession) => s.id === session.id ? {
+          ...s,
+          messages: s.messages.map((m: Message) => m.id === placeholderId ? { ...m, content: responseContent, streaming: false } : m)
+        } : s),
+        allSessions: _state.allSessions.map((s: ChatSession) => s.id === session.id ? {
+          ...s,
+          messages: s.messages.map((m: Message) => m.id === placeholderId ? { ...m, content: responseContent, streaming: false } : m)
+        } : s)
       }));
 
-      try {
-        const isImageRequest = detectImageGenerationRequest(getMessageText(userMessage.content));
+      const end = performance.now();
+      try { useUsageStats.getState().recordAssistantResponse(session.modelId, Math.round(end - start)); } catch (e) { console.error('Stats error:', e); }
 
-        if (isImageRequest && isImageGenerationModel(session.modelId)) {
-          // Utiliser generateImageReliable pour une génération d'image garantie
-          console.log('🎯 Image generation request detected, using reliable generation...');
-
-          try {
-            const responseContent = await generateImageReliable(
-              getMessageText(userMessage.content),
-              apiKey,
-              session.modelId,
-              {
-                maxRetries: 3,
-                size: '1024x1024',
-                quality: 'hd'
-              }
-            );
-
-            set(state => ({
-              activeSessions: state.activeSessions.map(s => s.id === session.id ? {
-                ...s,
-                messages: s.messages.map(m => m.id === placeholderId ? { ...m, content: responseContent, streaming: false } : m)
-              } : s),
-              allSessions: state.allSessions.map(s => s.id === session.id ? {
-                ...s,
-                messages: s.messages.map(m => m.id === placeholderId ? { ...m, content: responseContent, streaming: false } : m)
-              } : s)
-            }));
-
-            const end = performance.now();
-            try { useUsageStats.getState().recordAssistantResponse(session.modelId, Math.round(end - start)); } catch {}
-
-            const current = get().activeSessions.find(s => s.id === session.id);
-            if (!current) return session;
-
-            return {
-              ...current,
-              isLoading: false,
-              error: null
-            };
-
-          } catch (error) {
-            console.error('🚨 Image generation failed completely:', error);
-
-            // Créer une réponse d'erreur informative
-            const errorContent: MessageContent[] = [
-              {
-                type: 'text',
-                text: `❌ Erreur critique lors de la génération d'image
+      const current = get().activeSessions.find((s: ChatSession) => s.id === session.id);
+      return current ? { ...current, isLoading: false, error: null } : session;
+    } catch (error) {
+      console.error('🚨 Image generation failed completely:', error);
+      const errorContent: MessageContent[] = [
+        {
+          type: 'text',
+          text: `❌ Erreur critique lors de la génération d'image
 
 Le système a essayé tous les modèles disponibles et mécanismes de secours, mais la génération d'image a échoué.
 
@@ -400,125 +387,191 @@ ${error instanceof Error ? error.message : 'Erreur inconnue'}
 • Mécanismes de secours intégrés
 
 Prompt original: "${getMessageText(userMessage.content)}"`
-              }
-            ];
-
-            set(state => ({
-              activeSessions: state.activeSessions.map(s => s.id === session.id ? {
-                ...s,
-                messages: s.messages.map(m => m.id === placeholderId ? { ...m, content: errorContent, streaming: false } : m)
-              } : s),
-              allSessions: state.allSessions.map(s => s.id === session.id ? {
-                ...s,
-                messages: s.messages.map(m => m.id === placeholderId ? { ...m, content: errorContent, streaming: false } : m)
-              } : s)
-            }));
-
-            const current = get().activeSessions.find(s => s.id === session.id);
-            return {
-              ...(current || session),
-              isLoading: false,
-              error: error instanceof Error ? error.message : 'Erreur de génération d\'image'
-            };
-          }
-
-        } else {
-          // Utiliser streamAIResponse pour les réponses textuelles normales
-          await streamAIResponse(contextMessages, apiKey, session.modelId, (delta) => {
-            const now = performance.now();
-            set(state => ({
-              activeSessions: state.activeSessions.map(s => s.id === session.id ? {
-                ...s,
-                messages: s.messages.map(m => m.id === placeholderId ? { ...m, content: m.content === '…' ? delta : m.content + delta } : m)
-              } : s),
-              allSessions: state.allSessions.map(s => s.id === session.id ? {
-                ...s,
-                messages: s.messages.map(m => m.id === placeholderId ? { ...m, content: m.content === '…' ? delta : m.content + delta } : m)
-              } : s),
-              streamingProgress: {
-                ...state.streamingProgress,
-                [session.id]: state.streamingProgress[session.id]
-                  ? { ...state.streamingProgress[session.id], chars: (state.streamingProgress[session.id].chars + delta.length), lastUpdate: now }
-                  : { chars: delta.length, start: now, lastUpdate: now }
-              }
-            }));
-          }, effectiveSystem, get().abortControllers[session.id]);
-
-          const end = performance.now();
-          try { useUsageStats.getState().recordAssistantResponse(session.modelId, Math.round(end - start)); } catch {}
-          
-          const current = get().activeSessions.find(s => s.id === session.id);
-          if (!current) return session;
-
-          return {
-            ...current,
-            messages: current.messages.map(m => m.id === placeholderId ? { ...m, streaming: false } : m),
-            isLoading: false,
-            error: null
-          };
         }
-      } catch (error) {
-        const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred';
-        
-        set(state => ({
-          activeSessions: state.activeSessions.map(s => s.id === session.id ? {
-            ...s,
-            messages: s.messages.map(m => m.id === placeholderId ? { ...m, content: `Erreur: ${errorMessage}`, streaming: false } : m)
-          } : s),
-          allSessions: state.allSessions.map(s => s.id === session.id ? {
-            ...s,
-            messages: s.messages.map(m => m.id === placeholderId ? { ...m, content: `Erreur: ${errorMessage}`, streaming: false } : m)
-          } : s)
-        }));
+      ];
 
-        const current = get().activeSessions.find(s => s.id === session.id);
-        return {
-          ...(current || session),
-          isLoading: false,
-          error: errorMessage
-        };
+      set((_state: ChatStore) => ({
+        activeSessions: _state.activeSessions.map((s: ChatSession) => s.id === session.id ? {
+          ...s,
+          messages: s.messages.map((m: Message) => m.id === placeholderId ? { ...m, content: errorContent, streaming: false } : m)
+        } : s),
+        allSessions: _state.allSessions.map((s: ChatSession) => s.id === session.id ? {
+          ...s,
+          messages: s.messages.map((m: Message) => m.id === placeholderId ? { ...m, content: errorContent, streaming: false } : m)
+        } : s)
+      }));
+
+      return { ...session, isLoading: false, error: error instanceof Error ? error.message : 'Erreur de génération d\'image' };
+    }
+  },
+
+  handleTextStreaming: async (contextMessages: Message[], apiKey: string, session: ChatSession, placeholderId: string, effectiveSystem: string | undefined, start: number, set: any, get: any) => {
+    await streamAIResponse(contextMessages, apiKey, session.modelId, (delta) => {
+      const now = performance.now();
+      set((_state: ChatStore) => ({
+        activeSessions: _state.activeSessions.map((s: ChatSession) => s.id === session.id ? {
+          ...s,
+          messages: s.messages.map((m: Message) => m.id === placeholderId ? { ...m, content: m.content === '…' ? delta : m.content + delta } : m)
+        } : s),
+        allSessions: _state.allSessions.map((s: ChatSession) => s.id === session.id ? {
+          ...s,
+          messages: s.messages.map((m: Message) => m.id === placeholderId ? { ...m, content: m.content === '…' ? delta : m.content + delta } : m)
+        } : s),
+        streamingProgress: {
+          ..._state.streamingProgress,
+          [session.id]: _state.streamingProgress[session.id]
+            ? { ..._state.streamingProgress[session.id], chars: (_state.streamingProgress[session.id].chars + delta.length), lastUpdate: now }
+            : { chars: delta.length, start: now, lastUpdate: now }
+        }
+      }));
+    }, effectiveSystem, get().abortControllers[session.id]);
+
+    const end = performance.now();
+    try { useUsageStats.getState().recordAssistantResponse(session.modelId, Math.round(end - start)); } catch (e) { console.error('Stats error:', e); }
+    
+    const current = get().activeSessions.find((s: ChatSession) => s.id === session.id);
+    if (!current) return session;
+
+    return {
+      ...current,
+      messages: current.messages.map((m: Message) => m.id === placeholderId ? { ...m, streaming: false } : m),
+      isLoading: false,
+      error: null
+    };
+  },
+
+  handleResponseError: (session: ChatSession, placeholderId: string, error: any, set: any, get: any) => {
+    const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred';
+    
+    set((_state: ChatStore) => ({
+      activeSessions: _state.activeSessions.map((s: ChatSession) => s.id === session.id ? {
+        ...s,
+        messages: s.messages.map((m: Message) => m.id === placeholderId ? { ...m, content: `Erreur: ${errorMessage}`, streaming: false } : m)
+      } : s),
+      allSessions: _state.allSessions.map((s: ChatSession) => s.id === session.id ? {
+        ...s,
+        messages: s.messages.map((m: Message) => m.id === placeholderId ? { ...m, content: `Erreur: ${errorMessage}`, streaming: false } : m)
+      } : s)
+    }));
+
+    const current = get().activeSessions.find((s: ChatSession) => s.id === session.id);
+    return { ...(current || session), isLoading: false, error: errorMessage };
+  },
+
+  processSessionResponse: async (session: ChatSession, content: string, apiKey: string, tone: string, systemPrompt: string, ragEnabled: boolean, userMessage: Message, set: any, get: any) => {
+    const effectiveSystem = get().getEffectiveSystemPrompt(systemPrompt, tone);
+    const contextMessages = await get().getContextMessages(content, session.messages, ragEnabled);
+    const start = performance.now();
+    const { id: placeholderId, message: placeholderMessage, ac } = get().createPlaceholderMessage(session.id);
+    get().updateWithPlaceholder(session.id, { id: placeholderId, message: placeholderMessage, ac }, set, get);
+
+    try {
+      const isImageRequest = detectImageGenerationRequest(getMessageText(userMessage.content));
+      if (isImageRequest && isImageGenerationModel(session.modelId)) {
+        return await get().handleImageGeneration(session, userMessage, apiKey, placeholderId, start, set, get);
+      } else {
+        return await get().handleTextStreaming(contextMessages, apiKey, session, placeholderId, effectiveSystem, start, set, get);
       }
+    } catch (error) {
+      return get().handleResponseError(session, placeholderId, error, set, get);
+    }
+  },
+
+  updateAfterAllResponses: (resolvedSessions: ChatSession[], set: any, get: any) => {
+    const currentAllSessions = get().allSessions;
+    const updatedAllSessions = currentAllSessions.map((session: ChatSession) => {
+      const updatedSession = resolvedSessions.find((s: ChatSession) => s.id === session.id);
+      return updatedSession || session;
     });
+
+    set({
+      activeSessions: resolvedSessions,
+      allSessions: updatedAllSessions,
+      isAnyLoading: false
+    });
+  },
+
+  sendNotification: (resolvedSessions: ChatSession[], notificationsEnabled: boolean) => {
+    if (!notificationsEnabled) return;
+
+    try {
+      const hasImages = resolvedSessions.some(session => {
+        const lastMessage = session.messages[session.messages.length - 1];
+        if (!lastMessage || lastMessage.role !== 'assistant') return false;
+
+        const messageText = getMessageText(lastMessage.content);
+        return messageText.includes('![Image générée]') ||
+               messageText.includes('https://') && /\.(png|jpg|jpeg|webp|gif)/i.test(messageText);
+      });
+
+      const count = resolvedSessions.length;
+      const message = hasImages
+        ? '🎨 Image(s) générée(s) prête(s)!'
+        : count > 1
+          ? `Réponses prêtes pour ${count} modèles`
+          : 'Réponse prête';
+
+      notify('PolyChat AI', message);
+    } catch (error) {
+      console.error('Notification error:', error);
+    }
+  },
+
+  sendMessageToAll: async (content: string) => {
+    if (!get().validateContent(content)) return;
+
+    const { activeSessions } = get();
+    const runnableSessions = get().getRunnableSessions(activeSessions);
+    if (runnableSessions.length === 0) return;
+
+    const { apiKey, systemPrompt, tone, ragEnabled, notificationsEnabled } = useSettings.getState();
+    const stats = useUsageStats.getState();
+
+    if (!apiKey) {
+      set((_state: ChatStore) => ({
+        activeSessions: activeSessions.map((session: ChatSession) => ({
+          ...session,
+          error: 'API key is missing. Please set your API key in the settings.',
+          isLoading: false
+        })),
+        isAnyLoading: false
+      }));
+      return;
+    }
+
+    const isImageRequest = detectImageGenerationRequest(content);
+    if (isImageRequest) {
+      const { isCompatible, errorMessage } = get().checkImageCompatibility(runnableSessions);
+      if (!isCompatible && errorMessage) {
+        set((_state: ChatStore) => ({
+          activeSessions: activeSessions.map((session: ChatSession) => {
+            if (runnableSessions.some((s: ChatSession) => s.id === session.id)) {
+              return { ...session, error: errorMessage, isLoading: false };
+            }
+            return session;
+          }),
+          isAnyLoading: false
+        }));
+        return;
+      }
+    }
+
+    const userMessage = createMessage('user', content);
+    const sessionsToProcess = get().promoteTemporarySessions(runnableSessions, stats, set);
+    get().addUserMessageToSessions(sessionsToProcess, userMessage, set, get);
+    const updatedSessions = get().activeSessions;
+
+    const promises = updatedSessions.map(session =>
+      get().processSessionResponse(session, content, apiKey, tone || 'neutre', systemPrompt || '', ragEnabled ?? false, userMessage, set, get)
+    );
 
     try {
       const resolvedSessions = await Promise.all(promises);
-
-      const currentAllSessions = get().allSessions;
-      const updatedAllSessions = currentAllSessions.map(session => {
-        const updatedSession = resolvedSessions.find(s => s.id === session.id);
-        return updatedSession || session;
-      });
-
-      set({
-        activeSessions: resolvedSessions,
-        allSessions: updatedAllSessions,
-        isAnyLoading: false
-      });
-      const { notificationsEnabled } = useSettings.getState();
-      if (notificationsEnabled) {
-        try {
-          // Vérifier si des images ont été générées
-          const hasImages = resolvedSessions.some(session => {
-            const lastMessage = session.messages[session.messages.length - 1];
-            if (!lastMessage || lastMessage.role !== 'assistant') return false;
-
-            const messageText = getMessageText(lastMessage.content);
-            return messageText.includes('![Image générée]') ||
-                   messageText.includes('https://') && /\.(png|jpg|jpeg|webp|gif)/i.test(messageText);
-          });
-
-          const count = resolvedSessions.length;
-          const message = hasImages
-            ? '🎨 Image(s) générée(s) prête(s)!'
-            : count > 1
-              ? `Réponses prêtes pour ${count} modèles`
-              : 'Réponse prête';
-
-          notify('PolyChat AI', message);
-        } catch {}
-      }
+      get().updateAfterAllResponses(resolvedSessions, set, get);
+      get().sendNotification(resolvedSessions, notificationsEnabled ?? true);
     } catch (error) {
-      set({ isAnyLoading: false });
+      console.error('Error in sendMessageToAll:', error);
+      set((_state: ChatStore) => ({ isAnyLoading: false }));
     }
   },
 
@@ -700,7 +753,7 @@ Le système a essayé plusieurs modèles et méthodes, mais la régénération a
       }
       
       const end = performance.now();
-      try { useUsageStats.getState().recordAssistantResponse(session.modelId, Math.round(end - start)); } catch {}
+      try { useUsageStats.getState().recordAssistantResponse(session.modelId, Math.round(end - start)); } catch (e) { console.error('Stats error:', e); }
       const regenId = placeholderMessage.id;
       const finalUpdateSession = (s: ChatSession) => s.id === sessionId ? {
         ...s,
@@ -717,7 +770,7 @@ Le système a essayé plusieurs modèles et méthodes, mais la régénération a
 
       const { notificationsEnabled } = useSettings.getState();
       if (notificationsEnabled) {
-        try { notify('PolyChat AI', 'Réponse régénérée prête'); } catch {}
+        try { notify('PolyChat AI', 'Réponse régénérée prête'); } catch (e) { console.error('Notify error:', e); }
       }
 
     } catch (error) {
@@ -797,7 +850,7 @@ Le système a essayé plusieurs modèles et méthodes, mais la régénération a
         currentSessionId: newSession.id,
         selectedModels: [selectedModel]
       }));
-  try { useUsageStats.getState().recordNewConversation(selectedModel); } catch {}
+      try { useUsageStats.getState().recordNewConversation(selectedModel); } catch (e) { console.error('Stats error:', e); }
     }
   },
 
@@ -824,7 +877,7 @@ Le système a essayé plusieurs modèles et méthodes, mais la régénération a
   },
 
   // Template and Quick Action methods
-  prepareTemplate: (template: ConversationTemplate) => {
+  prepareTemplate: (template: ConversationTemplate | null) => {
     // Simplement stocker le template pour que l'input puisse l'utiliser
     set({ pendingTemplate: template });
   },
@@ -978,7 +1031,7 @@ ${selectedText}`;
         allSessions: updatedAllSessions,
         selectedModels: [...selectedModels, modelId]
       });
-      try { useUsageStats.getState().recordNewConversation(modelId); } catch {}
+      try { useUsageStats.getState().recordNewConversation(modelId); } catch (e) { console.error('Stats error:', e); }
     }
   }
 }));
