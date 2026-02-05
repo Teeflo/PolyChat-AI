@@ -1,16 +1,29 @@
+/* Theme Toggle - Modern Design System */
+
 .theme-toggle-btn {
-  padding: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
-  min-width: 48px;
-  min-height: 48px;
+  width: 40px;
+  height: 40px;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: var(--radius-lg);
+  color: var(--text-tertiary);
+  cursor: pointer;
+  transition: var(--transition-all);
+}
+
+.theme-toggle-btn:hover {
+  background: var(--hover-overlay);
+  border-color: var(--border-default);
+  color: var(--text-primary);
 }
 
 .theme-toggle-btn.dark-theme {
-  background: var(--polychat-accent-tertiary);
+  color: var(--accent-tertiary);
 }
 
 .theme-toggle-btn.light-theme {
-  background: var(--polychat-accent-secondary);
+  color: var(--accent-secondary);
 }

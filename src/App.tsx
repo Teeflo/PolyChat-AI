@@ -9,7 +9,7 @@ import { ChatHistorySidebar } from './components/Layout/ChatHistorySidebar'
 import { useSettings } from './hooks/useSettings'
 import { useChat } from './hooks/useChat'
 import { useEffect } from 'react'
-import './styles/modern-polychat.css'
+// Les styles sont gérés par index.css qui importe le design system moderne
 import OnboardingModalFresh from './components/Onboarding/OnboardingModalFresh'
 import ConfigurationPopup from './components/Onboarding/ConfigurationPopup'
 import UsageDashboard from './components/Settings/UsageDashboard.tsx'
@@ -52,29 +52,7 @@ const AppContent: React.FC = () => {
     if (accent) {
       document.documentElement.setAttribute('data-accent', accent);
     }
-    document.body.className = `theme-${theme}`;
-    // Ajouter aussi la classe au conteneur principal
-    const appContainer = document.querySelector('.polychat-app-container');
-    if (appContainer) {
-      appContainer.className = `polychat-container polychat-app-container theme-${theme}`;
-    }
   }, [theme, accent]);
-
-  // Optionnel: demander la permission de notification si l'utilisateur active l'option
-  useEffect(()=>{
-    const onFocus = () => {
-      // Only request on focus to avoid intrusive popup on load
-      import('./hooks/useSettings').then(({ useSettings }) => {
-        const { notificationsEnabled } = useSettings.getState();
-        if (notificationsEnabled && 'Notification' in window && Notification.permission === 'default') {
-          Notification.requestPermission().catch(()=>{});
-        }
-      });
-      window.removeEventListener('focus', onFocus);
-    };
-    window.addEventListener('focus', onFocus);
-    return ()=>window.removeEventListener('focus', onFocus);
-  },[])
 
   // Logique pour afficher le pop-up de configuration
   useEffect(() => {
@@ -84,9 +62,9 @@ const AppContent: React.FC = () => {
   }, [hasOnboarded, apiKey, showConfigurationPopup, setShowConfigurationPopup]);
 
   return (
-    <div className={`polychat-container polychat-app-container theme-${theme}`}>
+    <div className={`polychat-app theme-${theme}`}>
       {/* Effet de grille rétro en arrière-plan */}
-      <div className="polychat-grid-background" />
+      <div className="polychat-bg-grid" />
       
       {/* Chat History Sidebar */}
       <ChatHistorySidebar

@@ -1,5 +1,6 @@
 import React from 'react';
-import { Settings, Cpu, Zap, Activity, History } from 'lucide-react';
+import { Settings, Zap, Activity, History } from 'lucide-react';
+import { Logo } from '../ui/Logo';
 import ThemeToggle from './ThemeToggle';
 import { useSettings } from '../../hooks/useSettings';
 import './HeaderModern.css';
@@ -12,7 +13,7 @@ interface HeaderProps {
 
 const HeaderModern: React.FC<HeaderProps> = ({ onSettingsClick, onModelClick, onHistoryClick }) => {
   const { selectedModel } = useSettings();
-  
+
   // Obtenir le nom d'affichage du modèle
   const getModelDisplayName = (modelName: string) => {
     if (!modelName) return 'Aucun modèle';
@@ -24,7 +25,7 @@ const HeaderModern: React.FC<HeaderProps> = ({ onSettingsClick, onModelClick, on
       <div className="header-modern-container">
         {/* Brand section + bouton historique à gauche */}
         <div className="header-modern-brand">
-          {/* Logo = bouton historique */}
+          {/* Bouton historique */}
           {onHistoryClick ? (
             <button
               onClick={onHistoryClick}
@@ -33,20 +34,11 @@ const HeaderModern: React.FC<HeaderProps> = ({ onSettingsClick, onModelClick, on
               title="Historique des conversations"
             >
               <span className="header-modern-logo-btn-inner">
-                <picture className="header-modern-logo-picture">
-                  <source srcSet="/logo.webp" type="image/webp" />
-                  <img
-                    src="/logo.svg"
-                    alt="PolyChat logo"
-                    className="header-modern-logo-img"
-                    onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }}
-                  />
-                </picture>
-                <Cpu size={28} style={{ 
-                  color: 'var(--polychat-text-inverse)',
-                  filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.3))',
-                  zIndex: 1
-                }} />
+                <Logo
+                  size={28}
+                  variant="white"
+                  className="z-[1]"
+                />
                 {/* Icône historique qui apparaît au hover */}
                 <span className="header-modern-logo-history-hover">
                   <History size={28} />
@@ -55,20 +47,11 @@ const HeaderModern: React.FC<HeaderProps> = ({ onSettingsClick, onModelClick, on
             </button>
           ) : (
             <div className="header-modern-logo polychat-glow">
-              <picture className="header-modern-logo-picture">
-                <source srcSet="/logo.webp" type="image/webp" />
-                <img
-                  src="/logo.svg"
-                  alt="PolyChat logo"
-                  className="header-modern-logo-img"
-                  onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }}
-                />
-              </picture>
-              <Cpu size={28} style={{ 
-                color: 'var(--polychat-text-inverse)',
-                filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.3))',
-                zIndex: 1
-              }} />
+              <Logo
+                size={28}
+                variant="white"
+                className="z-[1]"
+              />
             </div>
           )}
           {/* Titre avec hiérarchie moderne */}
@@ -82,11 +65,11 @@ const HeaderModern: React.FC<HeaderProps> = ({ onSettingsClick, onModelClick, on
             </div>
           </div>
         </div>
-        
+
         {/* Section centrale pour l'indicateur de modèle */}
         <div className="header-modern-middle-section">
           {/* Indicateur de modèle cliquable */}
-          <button 
+          <button
             onClick={onModelClick}
             className="header-modern-model-indicator"
             aria-label="Changer de modèle"
@@ -103,7 +86,7 @@ const HeaderModern: React.FC<HeaderProps> = ({ onSettingsClick, onModelClick, on
             <ThemeToggle />
           </div>
           {/* Bouton Settings simple et élégant */}
-          <button 
+          <button
             onClick={onSettingsClick}
             className="header-modern-settings-btn"
             aria-label="Ouvrir les paramètres"
@@ -112,7 +95,7 @@ const HeaderModern: React.FC<HeaderProps> = ({ onSettingsClick, onModelClick, on
           </button>
         </div>
       </div>
-      
+
       {/* Barre de progression décorative */}
       <div className="header-modern-progress-bar" />
     </header>

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { AlertTriangle, Key } from 'lucide-react';
 import { useSettings } from '../../hooks/useSettings';
+import './ConfigurationPopup.css';
 
 interface ConfigurationPopupProps {
   isOpen: boolean;
@@ -155,29 +156,19 @@ export function ConfigurationPopup({ isOpen, onClose, type }: ConfigurationPopup
   const Icon = config.icon;
 
   return (
-    <div className="popup-overlay">
-      <div className="popup-content">
-        <div className="popup-header">
-          <div className="popup-icon-container">
-            <div className="popup-icon">
-              <Icon className="w-5 h-5 text-amber-400" />
-            </div>
-            <div>
-              <h3 className="popup-title">
-                {config.title}
-              </h3>
-              <p className="popup-subtitle">
-                Configuration requise
-              </p>
-            </div>
-          </div>
+    <div className="config-popup-overlay">
+      <div className="config-popup-content">
+        <div className="config-popup-icon">
+          <Icon size={32} />
         </div>
-
-        <div className="popup-body">
+        
+        <h3 className="config-popup-title">{config.title}</h3>
+        
+        <div className="config-popup-body" style={{ margin: 'var(--space-4) 0' }}>
           {config.content}
         </div>
 
-        <div className="popup-footer">
+        <div className="config-popup-actions">
           {config.actions}
         </div>
       </div>

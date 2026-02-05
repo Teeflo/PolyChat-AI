@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { X, Zap, Bot, Sparkles } from 'lucide-react';
 import { useSettings } from '../../hooks/useSettings';
 import ModelSelectionStepCompact from './ModelSelectionStepCompact';
+import './OnboardingModalFresh.css';
 
 interface OnboardingModalProps {
   isOpen: boolean;
@@ -139,61 +140,55 @@ export function OnboardingModalFresh({ isOpen, onClose }: OnboardingModalProps) 
   }
 
   return (
-    <div className="popup-overlay">
-      <div className="popup-content onboarding">
-        <div className="popup-header">
-          <div className="popup-header-content">
-            <div className="popup-icon">
-              <Icon className="w-5 h-5 text-blue-400" />
-            </div>
-            <div>
-              <h3 className="popup-title">
-                {currentStepData.title}
-              </h3>
-              <p className="popup-subtitle">
-                Étape {currentStep + 1} sur {steps.length}
-              </p>
+    <div className="onboarding-fresh-container">
+      <div className="onboarding-fresh-card">
+        <div className="onboarding-sidebar">
+          <div className="polychat-logo-sm" style={{ width: '48px', height: '48px', background: 'rgba(255,255,255,0.2)', borderRadius: 'var(--radius-xl)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 'var(--space-6)' }}>
+            <Icon size={24} color="white" />
+          </div>
+          <h2 className="onboarding-step-title" style={{ color: 'white' }}>PolyChat AI</h2>
+          <p style={{ opacity: 0.8, fontSize: 'var(--text-sm)' }}>
+            L'interface ultime pour vos modèles d'IA préférés.
+          </p>
+          
+          <div style={{ marginTop: 'auto' }}>
+            <div className="step-indicator">
+               {steps.map((_, i) => (
+                 <div key={i} className={`step-dot ${i === currentStep ? 'active' : ''}`} style={{ background: i === currentStep ? 'white' : 'rgba(255,255,255,0.3)' }} />
+               ))}
             </div>
           </div>
-          <button
-            onClick={onClose}
-            className="popup-close-btn"
-            title="Fermer"
-          >
-            <X className="w-4 h-4" />
-          </button>
         </div>
 
-        <div className="popup-body">
-          <div className="popup-progress-bar">
-            {steps.map((_, index) => (
-              <div
-                key={index}
-                className={`popup-progress-step ${
-                  index <= currentStep ? 'active' : ''
-                }`}
-              />
-            ))}
+        <div className="onboarding-main">
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 'var(--space-6)' }}>
+             <div>
+               <h3 className="onboarding-step-title">{currentStepData.title}</h3>
+               <p style={{ color: 'var(--text-tertiary)', fontSize: 'var(--text-xs)', textTransform: 'uppercase', letterSpacing: '1px' }}>
+                 Étape {currentStep + 1} sur {steps.length}
+               </p>
+             </div>
+             <button onClick={onClose} style={{ color: 'var(--text-tertiary)', padding: 'var(--space-2)' }}>
+               <X size={20} />
+             </button>
           </div>
 
-          <div className="popup-step-content">
+          <div className="onboarding-step-content" style={{ flex: 1, overflowY: 'auto' }}>
             {currentStepData.content}
           </div>
-        </div>
 
-        <div className="popup-footer">
-          <div className="popup-actions">
+          <div className="onboarding-action-bar">
             <button
               onClick={handlePrev}
               disabled={currentStep === 0}
-              className="popup-secondary-btn"
+              className="polychat-btn-modern polychat-btn-secondary"
             >
               Précédent
             </button>
             <button
               onClick={handleNext}
               disabled={!canProceed()}
-              className="popup-main-btn"
+              className="polychat-btn-modern"
             >
               {currentStep === steps.length - 1 ? 'Terminer' : 'Suivant'}
             </button>

@@ -2,16 +2,16 @@
 .suggestions-panel {
   position: fixed;
   top: 50%;
-  right: 16px;
+  right: var(--space-4);
   transform: translateY(-50%);
-  background: rgba(15, 18, 25, 0.95);
-  border: 1px solid rgba(139, 92, 246, 0.15);
-  border-radius: 12px;
-  -webkit-backdrop-filter: blur(12px);
-  backdrop-filter: blur(12px);
-  box-shadow: 0 8px 25px -5px rgba(0, 0, 0, 0.3);
-  z-index: 50;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  background: var(--bg-glass-strong);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-xl);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  box-shadow: var(--shadow-glass);
+  z-index: var(--z-fixed);
+  transition: all var(--duration-normal) var(--ease-out);
   max-width: 320px;
   max-height: 80vh;
   overflow: hidden;

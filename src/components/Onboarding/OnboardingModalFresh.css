@@ -1,0 +1,83 @@
+/* PolyChat AI - Onboarding Modal Fresh Styles */
+
+.onboarding-fresh-container {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-modal);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-4);
+  background: var(--bg-overlay);
+  backdrop-filter: blur(var(--glass-blur-sm));
+  animation: fadeIn var(--duration-normal) var(--ease-out);
+}
+
+.onboarding-fresh-card {
+  background: var(--bg-glass-strong);
+  backdrop-filter: blur(var(--glass-blur-lg));
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-3xl);
+  box-shadow: var(--shadow-2xl);
+  width: 100%;
+  max-width: 56rem;
+  height: 36rem;
+  display: flex;
+  overflow: hidden;
+  animation: scaleIn var(--duration-slow) var(--ease-bounce);
+}
+
+.onboarding-sidebar {
+  width: 30%;
+  background: var(--accent-gradient);
+  padding: var(--space-8);
+  display: flex;
+  flex-direction: column;
+  color: white;
+}
+
+.onboarding-main {
+  flex: 1;
+  padding: var(--space-10);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.onboarding-step-title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: var(--text-4xl);
+  font-weight: var(--font-bold);
+  color: var(--text-primary);
+  margin-bottom: var(--space-4);
+}
+
+.onboarding-step-description {
+  color: var(--text-secondary);
+  font-size: var(--text-lg);
+  line-height: var(--leading-relaxed);
+  margin-bottom: var(--space-8);
+}
+
+.onboarding-action-bar {
+  margin-top: auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9) translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}

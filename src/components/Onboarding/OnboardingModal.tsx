@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { useSettings } from '../../hooks/useSettings';
 import { Cpu, Zap, Settings as SettingsIcon, Bell } from 'lucide-react';
 import './OnboardingModal.css';
-import './ModelSelectionStep.css';
 
 const steps = [
   {
@@ -28,7 +27,7 @@ const steps = [
 ];
 
 const OnboardingModal: React.FC = () => {
-  const { hasOnboarded, setHasOnboarded, setNotificationsEnabled, notificationsEnabled } = useSettings();
+  const { hasOnboarded, setHasOnboarded, setNotificationsEnabled } = useSettings();
   const requestNotifPermission = async () => {
     if (!('Notification' in window)) return;
     try {
@@ -49,38 +48,43 @@ const OnboardingModal: React.FC = () => {
     <div className="onboard-overlay" role="dialog" aria-modal="true">
       <div className="onboard-modal">
         <div className="onboard-header">
-          <div className="onboard-icon">{steps[index].icon}</div>
+          <div className="config-popup-icon" style={{ margin: '0 auto var(--space-4)' }}>{steps[index].icon}</div>
           <h2 className="onboard-title">{steps[index].title}</h2>
-          <p className="onboard-desc">{steps[index].description}</p>
+          <p className="onboard-text" style={{ color: 'var(--text-secondary)' }}>{steps[index].description}</p>
+        </div>
+        <div className="onboard-content">
+           <div className="step-indicator" style={{ justifyContent: 'center', marginBottom: 'var(--space-4)' }}>
+              {steps.map((_, i) => (
+                <div key={i} className={`step-dot ${i === index ? 'active' : ''}`} />
+              ))}
+           </div>
         </div>
         <div className="onboard-footer">
-          <div className="onboard-steps">{index + 1} / {steps.length}</div>
-          <div className="onboard-actions">
+          <div className="onboard-steps" style={{ fontFamily: 'var(--font-mono)', fontSize: 'var(--text-sm)', color: 'var(--text-tertiary)' }}>
+            ÉTAPE {index + 1} / {steps.length}
+          </div>
+          <div className="onboard-actions" style={{ display: 'flex', gap: 'var(--space-3)' }}>
             {index === steps.length - 1 ? (
               <>
-                <button className="onboard-btn secondary" onClick={close}>Plus tard</button>
-                <button className="onboard-btn primary" onClick={() => { requestNotifPermission(); close(); }}>
+                <button className="polychat-btn-modern polychat-btn-secondary" onClick={close}>Plus tard</button>
+                <button className="polychat-btn-modern" onClick={() => { requestNotifPermission(); close(); }}>
                   Terminer
                 </button>
               </>
             ) : (
               <>
-                <button className="onboard-btn secondary" onClick={close}>Ignorer</button>
-                <button className="onboard-btn primary" onClick={() => setIndex(i => Math.min(i + 1, steps.length - 1))}>
+                <button className="polychat-btn-modern polychat-btn-secondary" onClick={close}>Ignorer</button>
+                <button className="polychat-btn-modern" onClick={() => setIndex(i => Math.min(i + 1, steps.length - 1))}>
                   Suivant
                 </button>
               </>
             )}
           </div>
-          {index === 3 && (
-            <div className="onboard-tip">
-              État: {notificationsEnabled ? 'Notifications activées' : 'Notifications désactivées'}
-            </div>
-          )}
         </div>
       </div>
     </div>
   );
 };
+
 
 export default OnboardingModal;

@@ -1,16 +1,97 @@
-/* Simple modern modal styling matching polychat-modern theme */
-.onboard-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); display: flex; align-items: center; justify-content: center; z-index: 1000; }
-.onboard-modal { width: min(600px, 92vw); background: var(--gradient-glass); border: var(--border-thin); border-radius: 22px; box-shadow: var(--shadow-xl); padding: var(--spacing-xl); color: var(--polychat-text-primary); }
-.onboard-header { text-align: center; margin-bottom: var(--spacing-lg); }
-.onboard-icon { width: 56px; height: 56px; margin: 0 auto var(--spacing-md); display: grid; place-items: center; background: var(--gradient-cyber); color: var(--polychat-text-inverse); border-radius: 18px; }
-.onboard-title { font-family: 'Space Grotesk', sans-serif; font-size: 20px; margin: 0 0 var(--spacing-sm); }
-.onboard-desc { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--polychat-text-secondary); margin: 0; }
-.onboard-content { min-height: 80px; }
-.onboard-footer { display: flex; align-items: center; justify-content: space-between; gap: var(--spacing-md); }
-.onboard-steps { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--polychat-text-secondary); }
-.onboard-actions { display: flex; gap: var(--spacing-sm); }
-.onboard-btn { padding: 10px 14px; border-radius: 18px; border: var(--border-thin); cursor: pointer; font-weight: 600; }
-.onboard-btn.primary { background: var(--polychat-accent-primary); color: var(--polychat-text-inverse); border-color: var(--polychat-accent-primary); }
-.onboard-btn.secondary { background: var(--polychat-bg-secondary); color: var(--polychat-text-primary); border-color: var(--polychat-accent-muted); }
-.onboard-tip { margin-top: var(--spacing-sm); font-size: 11px; color: var(--polychat-text-secondary); }
-.model-empty { font-size:12px; opacity:.65; font-family:'JetBrains Mono', monospace; padding:8px 4px; }
+/* PolyChat AI - Onboarding Modal Styles */
+
+.onboard-overlay {
+  position: fixed;
+  inset: 0;
+  background: var(--bg-overlay);
+  backdrop-filter: blur(var(--glass-blur-sm));
+  -webkit-backdrop-filter: blur(var(--glass-blur-sm));
+  z-index: var(--z-modal);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-4);
+  animation: fadeIn var(--duration-normal) var(--ease-out);
+}
+
+.onboard-modal {
+  background: var(--bg-glass-strong);
+  backdrop-filter: blur(var(--glass-blur-lg));
+  -webkit-backdrop-filter: blur(var(--glass-blur-lg));
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-2xl);
+  box-shadow: var(--shadow-2xl);
+  width: 100%;
+  max-width: 42rem;
+  max-height: 90vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  animation: scaleIn var(--duration-slow) var(--ease-out);
+}
+
+.onboard-header {
+  padding: var(--space-6) var(--space-8);
+  border-bottom: 1px solid var(--border-subtle);
+  text-align: center;
+}
+
+.onboard-title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: var(--text-3xl);
+  font-weight: var(--font-bold);
+  background: var(--accent-gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  margin-bottom: var(--space-2);
+}
+
+.onboard-content {
+  padding: var(--space-8);
+  overflow-y: auto;
+  flex: 1;
+}
+
+.onboard-footer {
+  padding: var(--space-6) var(--space-8);
+  border-top: 1px solid var(--border-subtle);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--hover-overlay);
+}
+
+.step-indicator {
+  display: flex;
+  gap: var(--space-2);
+}
+
+.step-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: var(--radius-full);
+  background: var(--bg-tertiary);
+  transition: var(--transition-all);
+}
+
+.step-dot.active {
+  background: var(--accent-primary);
+  width: 24px;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}

@@ -21,7 +21,7 @@
   position: absolute;
   inset: 0;
   padding: 2px;
-  background: linear-gradient(135deg, #6366f1, #8b5cf6, #06b6d4);
+  background: var(--accent-gradient);
   border-radius: inherit;
   -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   -webkit-mask-composite: subtract;
@@ -68,13 +68,11 @@
   display: flex;
   align-items: center;
   gap: 12px;
-  background: rgba(255, 255, 255, 0.95);
-  -webkit-backdrop-filter: blur(15px);
-  backdrop-filter: blur(15px);
-  border: 1px solid #e2e8f0;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-default);
   border-radius: 30px;
   padding: 16px 24px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+  box-shadow: var(--shadow-lg);
   z-index: 1000;
   animation: slideUpBounce 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
   max-width: 350px;
@@ -152,21 +150,21 @@
 .wave-1 {
   width: 20px;
   height: 20px;
-  border-color: #6366f1;
+  border-color: var(--accent-primary);
   animation-delay: 0s;
 }
 
 .wave-2 {
   width: 30px;
   height: 30px;
-  border-color: #8b5cf6;
+  border-color: var(--accent-secondary);
   animation-delay: 1s;
 }
 
 .wave-3 {
   width: 40px;
   height: 40px;
-  border-color: #06b6d4;
+  border-color: var(--accent-tertiary);
   animation-delay: 2s;
 }
 
@@ -180,7 +178,7 @@
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background: linear-gradient(45deg, #6366f1, #8b5cf6);
+  background: var(--accent-gradient);
   animation: thinkingBounce 1.6s ease-in-out infinite;
 }
 

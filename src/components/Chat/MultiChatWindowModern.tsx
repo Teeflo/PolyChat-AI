@@ -12,6 +12,17 @@ interface MultiChatWindowModernProps {
 
 const MultiChatWindowModern: React.FC<MultiChatWindowModernProps> = ({ sessions }) => {
   const { regenerateMessage, deleteMessage, streamingProgress, setSessionModel } = useChat();
+  const scrollTails = React.useRef<Record<string, HTMLDivElement | null>>({});
+
+  // Auto-scroll to bottom when messages change
+  React.useEffect(() => {
+    sessions.forEach(session => {
+      const tail = scrollTails.current[session.id];
+      if (tail) {
+        tail.scrollIntoView({ behavior: 'smooth' });
+      }
+    });
+  }, [sessions, streamingProgress]);
 
   const renderChatWindow = (session: ChatSession) => (
     <div key={session.id} className="chat-session-modern">
@@ -110,6 +121,8 @@ const MultiChatWindowModern: React.FC<MultiChatWindowModernProps> = ({ sessions 
               />
             )}
             
+            {/* Element pour le scroll automatique */}
+            <div ref={el => { scrollTails.current[session.id] = el; }} />
           </div>
         </div>
 
