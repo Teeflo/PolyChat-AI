@@ -1,19 +1,19 @@
 # Dependencies
-/node_modules
+node_modules/
 bower_components/
 jspm_packages/
 
 # Build output
-/dist
-/dist-ssr
+dist/
+dist-ssr/
 *.tsbuildinfo
 
 # Environment variables
 .env
 .env.local
-.env.development
-.env.test
-.env.production
+.env.development.local
+.env.test.local
+.env.production.local
 .env.*.local
 !.env.example
 *.pem
@@ -28,15 +28,18 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 logs/
+*.out
 
 # Caches
-.eslintcache
 .vite/
 .cache/
+.eslintcache
+.stylelintcache
 *.cache
+.tsbuildinfo
 
 # IDE settings
-/.vscode/
+.vscode/
 .idea/
 *.iml
 *.iws
@@ -45,46 +48,60 @@ logs/
 .vs/
 *.suo
 *.user
+*.userosscache
+*.echosign
 
 # OS-generated files
 .DS_Store
 .AppleDouble
 .LSOverride
 Icon
+Icon?
 ._*
 .Spotlight-V100
 .Trashes
-Thumbs.db
 ehthumbs.db
 Desktop.ini
 $RECYCLE.BIN/
+*.lnk
 
 # Temporary files
-/temp_onboarding
-tmp/
 temp/
+tmp/
 *.tmp
 *.temp
+*.swp
+*.swo
 *.pid
 *.seed
+*.pid.lock
 
 # Testing
 coverage/
 .nyc_output/
 *.lcov
+.htmlhintrc
 
-# Compiled files
-*.com
-*.class
-*.exe
-*.dll
-*.so
-*.o
-*.obj
-*.pyc
-*.pyo
-__pycache__/
+# TypeScript
+*.tsbuildinfo
+
+# Vite
+*.local
+
+# Local storage data (contains API keys - ne pas commiter)
+localStorage/
+*.localstorage
+
+# Misc
+*.egg
 *.egg-info/
+*.egginfo/
+*.manifest
+*.spec
+*.stamp
+*.sublimerc
+.tmproj
+*~
 
 # Package files
 *.7z
@@ -100,12 +117,14 @@ __pycache__/
 *.sqlite
 *.sqlite3
 *.db
+*.mdb
 
 # Backup files
 *.bak
 *.backup
 *.orig
 *.rej
+*~
 
 # AI assistant documentation
 QWEN.md
@@ -118,3 +137,5 @@ agents*.md
 .ai/
 ai-instructions/
 prompts/
+CLAUDE.md
+CLAUDE*.md
