@@ -11,7 +11,9 @@ interface ImageModelSelectorProps {
 const ImageModelSelector: React.FC<ImageModelSelectorProps> = ({ onNext }) => {
   const { setSelectedModel } = useSettings();
   const [selectedModelId, setSelectedModelId] = useState('');
-  const [models, setModels] = useState<Array<{id: string, name: string, desc: string, emoji: string}>>([]);
+  const [models, setModels] = useState<
+    Array<{ id: string; name: string; desc: string; emoji: string }>
+  >([]);
   const [loading, setLoading] = useState(true);
 
   // Charger les modèles d'image au montage du composant
@@ -21,13 +23,27 @@ const ImageModelSelector: React.FC<ImageModelSelectorProps> = ({ onNext }) => {
         setLoading(true);
         const imageModels = await getImageModels();
         setModels(imageModels);
-      } catch (error) {
-        console.error('Error loading image models:', error);
+      } catch {
         // Fallback vers les vrais modèles d'image connus
         setModels([
-          { id: 'google/gemini-2.5-flash-image-preview:free', name: 'Gemini 2.5 Flash Image (Gratuit)', desc: 'Génération d\'images IA avancée - Version gratuite', emoji: '🎨' },
-          { id: 'google/gemini-2.5-flash-image-preview', name: 'Gemini 2.5 Flash Image (Premium)', desc: 'Génération d\'images IA avancée - Haute qualité', emoji: '🎨' },
-          { id: 'openai/gpt-4o', name: 'GPT-4o', desc: 'Modèle multimodal avec génération d\'images', emoji: '🎨' }
+          {
+            id: 'google/gemini-2.5-flash-image-preview:free',
+            name: 'Gemini 2.5 Flash Image (Gratuit)',
+            desc: "Génération d'images IA avancée - Version gratuite",
+            emoji: '🎨',
+          },
+          {
+            id: 'google/gemini-2.5-flash-image-preview',
+            name: 'Gemini 2.5 Flash Image (Premium)',
+            desc: "Génération d'images IA avancée - Haute qualité",
+            emoji: '🎨',
+          },
+          {
+            id: 'openai/gpt-4o',
+            name: 'GPT-4o',
+            desc: "Modèle multimodal avec génération d'images",
+            emoji: '🎨',
+          },
         ]);
       } finally {
         setLoading(false);
@@ -59,7 +75,7 @@ const ImageModelSelector: React.FC<ImageModelSelectorProps> = ({ onNext }) => {
           <span className="loading-text">Chargement des modèles d'image...</span>
         </div>
       ) : (
-        models.map(model => (
+        models.map((model) => (
           <button
             key={model.id}
             onClick={() => handleModelSelect(model.id)}

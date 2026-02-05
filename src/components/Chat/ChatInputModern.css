@@ -42,8 +42,8 @@
 }
 
 .chat-input-modern-wrapper:focus-within {
-  border-color: var(--accent-primary);
-  box-shadow: 0 0 0 3px rgb(139 92 246 / 0.1);
+  border-color: var(--border-strong);
+  box-shadow: none;
 }
 
 /* Suggestions bar */
@@ -94,11 +94,21 @@
   animation: slideInUp var(--duration-normal) var(--ease-out) backwards;
 }
 
-.chat-input-suggestion-btn:nth-child(1) { animation-delay: 0ms; }
-.chat-input-suggestion-btn:nth-child(2) { animation-delay: 50ms; }
-.chat-input-suggestion-btn:nth-child(3) { animation-delay: 100ms; }
-.chat-input-suggestion-btn:nth-child(4) { animation-delay: 150ms; }
-.chat-input-suggestion-btn:nth-child(5) { animation-delay: 200ms; }
+.chat-input-suggestion-btn:nth-child(1) {
+  animation-delay: 0ms;
+}
+.chat-input-suggestion-btn:nth-child(2) {
+  animation-delay: 50ms;
+}
+.chat-input-suggestion-btn:nth-child(3) {
+  animation-delay: 100ms;
+}
+.chat-input-suggestion-btn:nth-child(4) {
+  animation-delay: 150ms;
+}
+.chat-input-suggestion-btn:nth-child(5) {
+  animation-delay: 200ms;
+}
 
 .chat-input-suggestion-btn:hover {
   background: var(--hover-overlay);
@@ -204,8 +214,8 @@
 }
 
 .chat-input-modern-input-area:focus-within {
-  border-color: var(--accent-primary);
-  box-shadow: 0 0 0 3px rgb(139 92 246 / 0.1);
+  border-color: var(--border-strong);
+  box-shadow: 0 0 0 3px rgb(255 255 255 / 0.1);
 }
 
 /* Textarea */
@@ -231,6 +241,10 @@
 .chat-input-modern-textarea:disabled {
   opacity: 0.6;
   cursor: not-allowed;
+}
+
+.chat-input-modern-textarea:focus-visible {
+  outline: none;
 }
 
 .chat-input-modern-textarea::-webkit-scrollbar {
@@ -374,23 +388,23 @@
     padding: var(--space-3);
     border-radius: var(--radius-xl);
   }
-  
+
   .chat-input-suggestions-bar {
     max-height: 120px;
     padding: var(--space-2);
     gap: var(--space-1-5);
   }
-  
+
   .chat-input-suggestion-btn {
     font-size: 11px;
     padding: var(--space-1-5) var(--space-2-5);
   }
-  
+
   .chat-input-modern-input-area {
     padding: var(--space-2);
     min-height: 48px;
   }
-  
+
   .chat-input-modern-send-btn {
     width: 36px;
     height: 36px;
@@ -401,17 +415,17 @@
   .chat-input-modern-wrapper {
     padding: var(--space-2);
   }
-  
+
   .chat-input-suggestions-bar {
     gap: var(--space-1);
     margin-bottom: var(--space-2);
   }
-  
+
   .chat-input-suggestion-btn {
     font-size: 10px;
     padding: var(--space-1) var(--space-2);
   }
-  
+
   .suggestion-icon {
     font-size: var(--text-sm);
   }

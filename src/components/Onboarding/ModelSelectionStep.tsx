@@ -24,10 +24,12 @@ const ModelSelectionStep: React.FC<ModelSelectionStepProps> = ({ onNext }) => {
     }, 300);
   };
 
-  const filtered = useMemo(()=>{
+  const filtered = useMemo(() => {
     const term = searchTerm.toLowerCase();
-    return models.filter(m=> m.id.toLowerCase().includes(term) || m.name?.toLowerCase().includes(term)).slice(0,12);
-  },[models, searchTerm]);
+    return models
+      .filter((m) => m.id.toLowerCase().includes(term) || m.name?.toLowerCase().includes(term))
+      .slice(0, 12);
+  }, [models, searchTerm]);
 
   return (
     <div className="model-selection-step">
@@ -50,7 +52,7 @@ const ModelSelectionStep: React.FC<ModelSelectionStepProps> = ({ onNext }) => {
             <Star size={16} /> Résultats
           </h3>
           <div className="models-grid">
-            {filtered.map(model => (
+            {filtered.map((model) => (
               <div
                 key={model.id}
                 className={`model-card ${selectedModelId === model.id ? 'selected' : ''}`}
@@ -73,12 +75,14 @@ const ModelSelectionStep: React.FC<ModelSelectionStepProps> = ({ onNext }) => {
       <div className="selection-footer">
         <div className="selection-info">
           {selectedModelId ? (
-            <span className="selected-text">✅ Modèle sélectionné: {selectedModelId.split('/')[1]}</span>
+            <span className="selected-text">
+              ✅ Modèle sélectionné: {selectedModelId.split('/')[1]}
+            </span>
           ) : (
             <span className="no-selection">Choisissez un modèle pour continuer</span>
           )}
         </div>
-        <button 
+        <button
           className={`continue-btn ${selectedModelId ? 'enabled' : 'disabled'}`}
           onClick={onNext}
           disabled={!selectedModelId}

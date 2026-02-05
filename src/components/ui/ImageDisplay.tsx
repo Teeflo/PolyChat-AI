@@ -14,7 +14,7 @@ const ImageDisplay: React.FC<ImageDisplayProps> = ({
   alt = 'Image générée par IA',
   className = '',
   onLoad,
-  onError
+  onError,
 }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
@@ -35,10 +35,7 @@ const ImageDisplay: React.FC<ImageDisplayProps> = ({
       <div className={`image-display-error ${className}`}>
         <div className="error-content">
           <span>❌ Impossible de charger l'image</span>
-          <button
-            onClick={() => window.open(src, '_blank')}
-            className="error-link"
-          >
+          <button onClick={() => window.open(src, '_blank')} className="error-link">
             Ouvrir dans un nouvel onglet
           </button>
         </div>

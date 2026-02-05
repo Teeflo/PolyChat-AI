@@ -498,13 +498,27 @@
   border-radius: 50%;
 }
 
-.accent-violet { background: linear-gradient(135deg, #8b5cf6, #a78bfa); }
-.accent-blue { background: linear-gradient(135deg, #3b82f6, #60a5fa); }
-.accent-green { background: linear-gradient(135deg, #10b981, #34d399); }
-.accent-rose { background: linear-gradient(135deg, #f43f5e, #fb7185); }
-.accent-orange { background: linear-gradient(135deg, #f97316, #fb923c); }
-.accent-teal { background: linear-gradient(135deg, #14b8a6, #2dd4bf); }
-.accent-cyan { background: linear-gradient(135deg, #06b6d4, #22d3ee); }
+.accent-violet {
+  background: linear-gradient(135deg, #8b5cf6, #a78bfa);
+}
+.accent-blue {
+  background: linear-gradient(135deg, #3b82f6, #60a5fa);
+}
+.accent-green {
+  background: linear-gradient(135deg, #10b981, #34d399);
+}
+.accent-rose {
+  background: linear-gradient(135deg, #f43f5e, #fb7185);
+}
+.accent-orange {
+  background: linear-gradient(135deg, #f97316, #fb923c);
+}
+.accent-teal {
+  background: linear-gradient(135deg, #14b8a6, #2dd4bf);
+}
+.accent-cyan {
+  background: linear-gradient(135deg, #06b6d4, #22d3ee);
+}
 
 /* ==========================================================================
    5. THEME TOGGLE
@@ -795,9 +809,15 @@
   font-size: var(--text-xl);
 }
 
-.onboarding-feature-icon.blue { background: rgb(59 130 246 / 0.15); }
-.onboarding-feature-icon.green { background: rgb(16 185 129 / 0.15); }
-.onboarding-feature-icon.purple { background: rgb(139 92 246 / 0.15); }
+.onboarding-feature-icon.blue {
+  background: rgb(59 130 246 / 0.15);
+}
+.onboarding-feature-icon.green {
+  background: rgb(16 185 129 / 0.15);
+}
+.onboarding-feature-icon.purple {
+  background: rgb(139 92 246 / 0.15);
+}
 
 .onboarding-feature-text {
   flex: 1;
@@ -838,8 +858,9 @@
   z-index: var(--z-tooltip);
   opacity: 0;
   visibility: hidden;
-  transition: opacity var(--duration-fast) var(--ease-out),
-              visibility var(--duration-fast) var(--ease-out);
+  transition:
+    opacity var(--duration-fast) var(--ease-out),
+    visibility var(--duration-fast) var(--ease-out);
 }
 
 .tooltip:hover .tooltip-content {

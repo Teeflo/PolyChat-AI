@@ -1,5 +1,7 @@
 # Dependencies
 /node_modules
+bower_components/
+jspm_packages/
 
 # Build output
 /dist
@@ -9,7 +11,14 @@
 # Environment variables
 .env
 .env.local
+.env.development
+.env.test
+.env.production
 .env.*.local
+!.env.example
+*.pem
+*.key
+*.crt
 
 # Logs
 *.log
@@ -17,17 +26,95 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
+lerna-debug.log*
+logs/
 
 # Caches
 .eslintcache
 .vite/
+.cache/
+*.cache
 
 # IDE settings
 /.vscode/
+.idea/
+*.iml
+*.iws
+*.sublime-project
+*.sublime-workspace
+.vs/
+*.suo
+*.user
 
 # OS-generated files
 .DS_Store
+.AppleDouble
+.LSOverride
+Icon
+._*
+.Spotlight-V100
+.Trashes
 Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
 
-# Temporary directories
+# Temporary files
 /temp_onboarding
+tmp/
+temp/
+*.tmp
+*.temp
+*.pid
+*.seed
+
+# Testing
+coverage/
+.nyc_output/
+*.lcov
+
+# Compiled files
+*.com
+*.class
+*.exe
+*.dll
+*.so
+*.o
+*.obj
+*.pyc
+*.pyo
+__pycache__/
+*.egg-info/
+
+# Package files
+*.7z
+*.dmg
+*.gz
+*.iso
+*.jar
+*.rar
+*.tar
+*.zip
+
+# Database files
+*.sqlite
+*.sqlite3
+*.db
+
+# Backup files
+*.bak
+*.backup
+*.orig
+*.rej
+
+# AI assistant documentation
+QWEN.md
+QWEN*.md
+GEMINI.md
+GEMINI*.md
+AGENTS.md
+agents.md
+agents*.md
+.ai/
+ai-instructions/
+prompts/

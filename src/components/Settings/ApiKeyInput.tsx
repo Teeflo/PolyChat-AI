@@ -16,20 +16,25 @@ const ApiKeyInput: React.FC = () => {
 
   return (
     <div>
-      <label style={{
-        display: 'block',
-        fontSize: '14px',
-        fontWeight: '500',
-        color: isDark ? '#e5e7eb' : '#374151',
-        marginBottom: '8px'
-      }}>
+      <label
+        style={{
+          display: 'block',
+          fontSize: '14px',
+          fontWeight: '500',
+          color: isDark ? '#e5e7eb' : '#374151',
+          marginBottom: '8px',
+        }}
+      >
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
           <Key size={16} />
           Clé API OpenRouter
         </div>
       </label>
-      
-      <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+
+      <form
+        onSubmit={handleSubmit}
+        style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}
+      >
         <div style={{ position: 'relative' }}>
           <input
             type={showApiKey ? 'text' : 'password'}
@@ -45,7 +50,7 @@ const ApiKeyInput: React.FC = () => {
               backgroundColor: isDark ? '#374151' : '#ffffff',
               color: isDark ? '#e5e7eb' : '#374151',
               outline: 'none',
-              transition: 'border-color 0.2s ease'
+              transition: 'border-color 0.2s ease',
             }}
             onFocus={(e) => {
               (e.target as HTMLInputElement).style.borderColor = '#667eea';
@@ -66,13 +71,13 @@ const ApiKeyInput: React.FC = () => {
               border: 'none',
               color: isDark ? '#9ca3af' : '#6b7280',
               cursor: 'pointer',
-              padding: '4px'
+              padding: '4px',
             }}
           >
             {showApiKey ? <EyeOff size={16} /> : <Eye size={16} />}
           </button>
         </div>
-        
+
         <button
           type="submit"
           style={{
@@ -84,7 +89,7 @@ const ApiKeyInput: React.FC = () => {
             fontSize: '14px',
             fontWeight: '500',
             cursor: 'pointer',
-            transition: 'all 0.2s ease'
+            transition: 'all 0.2s ease',
           }}
           onMouseOver={(e) => {
             (e.target as HTMLButtonElement).style.transform = 'translateY(-1px)';
@@ -98,21 +103,23 @@ const ApiKeyInput: React.FC = () => {
           Sauvegarder
         </button>
       </form>
-      
-      <p style={{
-        fontSize: '12px',
-        color: isDark ? '#9ca3af' : '#6b7280',
-        marginTop: '8px',
-        lineHeight: '1.4'
-      }}>
+
+      <p
+        style={{
+          fontSize: '12px',
+          color: isDark ? '#9ca3af' : '#6b7280',
+          marginTop: '8px',
+          lineHeight: '1.4',
+        }}
+      >
         Vous pouvez obtenir une clé API gratuite sur{' '}
-        <a 
-          href="https://openrouter.ai/keys" 
-          target="_blank" 
+        <a
+          href="https://openrouter.ai/keys"
+          target="_blank"
           rel="noopener noreferrer"
           style={{
             color: '#667eea',
-            textDecoration: 'none'
+            textDecoration: 'none',
           }}
           onMouseOver={(e) => {
             (e.target as HTMLAnchorElement).style.textDecoration = 'underline';

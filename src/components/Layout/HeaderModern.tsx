@@ -34,11 +34,7 @@ const HeaderModern: React.FC<HeaderProps> = ({ onSettingsClick, onModelClick, on
               title="Historique des conversations"
             >
               <span className="header-modern-logo-btn-inner">
-                <Logo
-                  size={28}
-                  variant="white"
-                  className="z-[1]"
-                />
+                <Logo size={28} variant="white" className="z-[1]" />
                 {/* Icône historique qui apparaît au hover */}
                 <span className="header-modern-logo-history-hover">
                   <History size={28} />
@@ -47,18 +43,12 @@ const HeaderModern: React.FC<HeaderProps> = ({ onSettingsClick, onModelClick, on
             </button>
           ) : (
             <div className="header-modern-logo polychat-glow">
-              <Logo
-                size={28}
-                variant="white"
-                className="z-[1]"
-              />
+              <Logo size={28} variant="white" className="z-[1]" />
             </div>
           )}
           {/* Titre avec hiérarchie moderne */}
           <div>
-            <h1 className="header-modern-title">
-              PolyChat
-            </h1>
+            <h1 className="header-modern-title">PolyChat</h1>
             <div className="header-modern-subtitle">
               <Activity size={12} />
               AI Assistant

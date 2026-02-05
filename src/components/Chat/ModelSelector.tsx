@@ -20,7 +20,7 @@ const ModelSelector: React.FC = () => {
   const handleClearSelection = () => {
     // Clear all models except the first one to maintain at least one active session
     const modelsToRemove = selectedModels.slice(1);
-    modelsToRemove.forEach(modelId => removeModel(modelId));
+    modelsToRemove.forEach((modelId) => removeModel(modelId));
   };
 
   if (loading) {
@@ -46,10 +46,7 @@ const ModelSelector: React.FC = () => {
 
   return (
     <div className="polychat-model-selector">
-      <div 
-        className="polychat-model-selector-header"
-        onClick={() => setIsOpen(!isOpen)}
-      >
+      <div className="polychat-model-selector-header" onClick={() => setIsOpen(!isOpen)}>
         <span className="polychat-model-selector-title">
           MODÈLES SÉLECTIONNÉS ({selectedModels.length})
         </span>
@@ -60,10 +57,7 @@ const ModelSelector: React.FC = () => {
         <div className="polychat-model-dropdown">
           {selectedModels.length > 0 && (
             <div className="polychat-model-actions">
-              <button 
-                className="polychat-clear-button"
-                onClick={handleClearSelection}
-              >
+              <button className="polychat-clear-button" onClick={handleClearSelection}>
                 EFFACER TOUT
               </button>
             </div>

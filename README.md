@@ -1,13 +1,13 @@
 # PolyChat-AI
 
-**Votre compagnon de conversation IA, personnalisable et stylé.**
+**Your customizable, stylish AI chat companion.**
 
-Une interface moderne et intuitive pour interagir avec les meilleurs
-modèles de langage via OpenRouter
+A modern, intuitive interface for interacting with the best language models via OpenRouter.
 
 <!-- Badges -->
+
 ![Version](https://img.shields.io/badge/version-0.0.0-blue.svg)
-![Licence](https://img.shields.io/badge/licence-MIT-green.svg)
+![License](https://img.shields.io/badge/license-MIT-green.svg)
 ![React](https://img.shields.io/badge/React-19.1.0-blue?logo=react)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.8.3-blue?logo=typescript)
 ![Vite](https://img.shields.io/badge/Vite-7.0.4-purple?logo=vite)
@@ -15,411 +15,465 @@ modèles de langage via OpenRouter
 ![Zustand](https://img.shields.io/badge/Zustand-5.0.7-orange)
 
 <!-- Quick Links -->
-[🚀 Fonctionnalités](#fonctionnalités) •
-[⚙️ Installation](#installation) •
-[🔧 Configuration](#configuration) •
-[📖 Utilisation](#utilisation) •
-[🤝 Contribution](#contribution)
+
+[Features](#features) |
+[Installation](#installation) |
+[Configuration](#configuration) |
+[Usage](#usage) |
+[Contributing](#contributing)
 
 ---
 
-## 🌟 À propos du projet
+## About the Project
 
-**PolyChat-AI** est une application web de chat avec intelligence
-artificielle de nouvelle génération, conçue pour offrir une expérience
-utilisateur exceptionnelle, interactive et visuellement unique.
-Construite avec les technologies web les plus modernes, elle met
-l'accent sur la personnalisation, la performance et l'accessibilité.
+**PolyChat-AI** is a next-generation AI chat web application designed to deliver an exceptional, interactive, and visually unique user experience. Built with modern web technologies, it emphasizes customization, performance, and accessibility.
 
-### 🎯 Objectifs
+### Goals
 
-- **🤖 Accès Multi-Modèles** : Connexion à l'API **OpenRouter** pour
-  accéder à une multitude de modèles de langage (GPT-4, Claude,
-  Gemini, et bien d'autres)
-- **🎨 Interface Thématique** : Plusieurs thèmes visuels incluant un
-  design moderne et un style polychat-art rétro
-- **⚡ Performance Optimale** : Architecture React moderne avec Vite
-  pour des temps de chargement ultra-rapides
-- **🔒 Sécurité** : Gestion sécurisée des clés API avec stockage local chiffré
-- **📱 Responsive** : Interface adaptée à tous les appareils
-  (desktop, tablette, mobile)
+- **Multi-Model Access**: Connect to **OpenRouter API** for access to 100+ language models (GPT-4, Claude, Gemini, and more)
+- **AI Image Generation**: Generate images using multimodal models with automatic retry and fallback
+- **RAG Context Enhancement**: Local embeddings for intelligent conversation context
+- **Themed Interface**: Multiple visual themes including modern dark/light and retro pixel art styles
+- **Optimal Performance**: Modern React architecture with Vite for ultra-fast load times
+- **Security**: Secure API key management with local storage
+- **Responsive Design**: Interface adapted for all devices (desktop, tablet, mobile)
 
-### 🏗️ Architecture Technique
+### Technical Architecture
 
-- **Frontend** : React 19 + TypeScript + Vite
-- **Styling** : Tailwind CSS 4 avec thèmes personnalisés
-- **State Management** : Zustand pour une gestion d'état performante
-- **API** : OpenRouter pour l'accès aux modèles de langage
-- **Build Tool** : Vite pour un développement et build ultra-rapides
+| Layer | Technology |
+|-------|------------|
+| Frontend | React 19 + TypeScript + Vite |
+| Styling | Tailwind CSS 4 with custom themes |
+| State Management | Zustand for performant state handling |
+| API | OpenRouter for language model access |
+| Embeddings | @xenova/transformers for local RAG |
+| Build Tool | Vite for ultra-fast development and builds |
 
 ---
 
-## Fonctionnalités
+## Features
 
-### 🎨 Interface & Personnalisation
+### AI & Language Models
 
-- **🎭 Thèmes Multiples**:
-  - Design moderne avec mode sombre/clair
-  - Style polychat-art rétro avec animations
-  - Interface hacker avec curseur personnalisé
-- **🎛️ Personnalisation Avancée** :
-  - Instructions système personnalisables
-  - Ton de conversation configurable (neutre, formel, amical, professionnel, enthousiaste)
-  - Notifications configurables
-  - Sauvegarde automatique des préférences
+- **OpenRouter Integration**: Access to 100+ language models through a single API
+- **Popular Models**: GPT-4o, Claude 4 Sonnet, Gemini 2.5 Pro, and many more
+- **Real-time Streaming**: Fluid responses with live character count and loading animations
+- **Dynamic Model Switching**: Change models mid-conversation seamlessly
+- **Multi-Model Chat**: Run up to 3 AI models simultaneously in a grid layout for comparison
 
-### 🤖 Intelligence Artificielle
+### AI Image Generation
 
-- **🔗 Intégration OpenRouter** : Accès à plus de 100+ modèles de langage
-- **🔄 Changement Dynamique** : Basculement entre modèles en cours de conversation
-- **📊 Modèles Populaires** :
-  - GPT-4, GPT-5 Chat
-  - Claude Sonnet 4, Claude Opus
-  - Gemini 2.5 Pro
-  - Et bien d'autres...
-- **⚡ Streaming en Temps Réel** : Réponses fluides avec animation de chargement
+Generate images directly within your conversations using multimodal AI models.
 
-### 💬 Chat & Conversations
+| Feature | Description |
+|---------|-------------|
+| **Supported Models** | Gemini 2.5 Flash, GPT-4o, Claude 3.5 Sonnet |
+| **Size Options** | 256x256, 512x512, 1024x1024 |
+| **Style Presets** | Natural, Vivid, Digital Art, Photorealistic, Anime, Oil Painting, Watercolor |
+| **Mood Settings** | Bright, Dark, Serene, Dramatic, Playful, Mysterious |
+| **Lighting Options** | Natural, Studio, Dramatic, Soft, Neon, Golden Hour |
+| **Smart Features** | Automatic prompt optimization, retry with fallback models on failure |
 
-- **📜 Historique Intelligent** : Sauvegarde et gestion des conversations
-- **🔄 Sessions Multiples** : Plusieurs conversations simultanées
-- **📝 Templates de Conversation** :
-  - Programmation (debug, optimisation, explication)
-  - Créativité (brainstorming, écriture créative)
-  - Apprentissage (explication, tutoriel)
-  - Analyse (analyse de données, résumé)
-  - Business (planification, stratégie)
-- **⚡ Actions Rapides** : Boutons d'action contextuels (expliquer,
-  optimiser, traduire, etc.)
+### RAG (Context Enhancement)
 
-### 🛠️ Outils & Utilitaires
+Intelligent conversation context using local embeddings for enhanced AI responses.
 
-- **📊 Dashboard d'Usage** : Statistiques détaillées d'utilisation (Ctrl+U)
-- **🔍 Recherche Avancée** : Filtrage des modèles par fournisseur, prix, contexte
-- **📱 Onboarding Intuitif** : Guide d'installation et configuration
-- **🔧 Paramètres Avancés** : Configuration fine de tous les aspects
+- **Local Processing**: Uses @xenova/transformers with all-MiniLM-L6-v2 model
+- **Privacy-Focused**: All processing done locally, no data sent to external services
+- **Smart Context**: Automatically retrieves semantically relevant conversation history
+- **Configurable**: Enable/disable in settings based on your needs
 
-### 🎯 Fonctionnalités Avancées
+### Chat & Conversations
 
-- **🎨 Syntax Highlighting** : Coloration syntaxique pour le code
-- **📄 Markdown Support** : Rendu complet du markdown
-- **🔔 Notifications** : Alertes pour les nouvelles réponses
-- **⌨️ Raccourcis Clavier** : Navigation et actions rapides
-- **💾 Persistance Locale** : Sauvegarde automatique des données
+- **Intelligent History**: Save and manage conversations with search functionality
+- **Multiple Sessions**: Handle multiple conversations simultaneously
+- **Message Regeneration**: Regenerate assistant responses with a single click
+- **Inline Model Info**: See which model generated each response
+
+### Templates (16+ Pre-built)
+
+Jump-start conversations with professionally crafted templates across 7 categories:
+
+| Category | Templates | Examples |
+|----------|-----------|----------|
+| **Programming** | 4 | Advanced Code Review, Debugging, Optimization, Documentation |
+| **Writing** | 3 | Professional Content Creation, Grammar & Style Review, Email Writing |
+| **Analysis** | 2 | Comprehensive Data Analysis, Market Research & Competitive Analysis |
+| **Creative** | 2 | Structured Brainstorming, Professional Story Writing |
+| **Learning** | 2 | Clear Concept Explanation, Personalized Study Plan |
+| **Business** | 2 | Comprehensive Business Strategy, Presentation Preparation |
+| **Personal** | 2 | SMART Goal Setting, Structured Decision Making |
+
+Each template includes:
+- Detailed system prompts optimized for the task
+- User message templates with placeholders
+- Suggested models for best results
+- Usage examples
+
+### Quick Actions (10+)
+
+Apply instant transformations to selected text or code:
+
+| Action | Icon | Description |
+|--------|------|-------------|
+| Explain Code | 💡 | Get detailed explanations with examples |
+| Optimize | ⚡ | Performance and efficiency improvements |
+| Debug | 🐛 | Systematic bug analysis and solutions |
+| Add Comments | 📝 | Generate comprehensive documentation |
+| Translate | 🌐 | Multi-language translation |
+| Summarize | 📋 | Create concise summaries |
+| Review | ✅ | Code and text review with suggestions |
+| Improve | 🔧 | General quality improvements |
+| Simplify | 🎯 | Reduce complexity while maintaining meaning |
+| Expand | 📖 | Elaborate and add detail to content |
+
+### Customization
+
+#### Themes
+
+| Theme | Description |
+|-------|-------------|
+| Dark Mode | Elegant interface with dark background |
+| Light Mode | Clean, modern light interface |
+| Pixel Art | Retro style with animations |
+| Hacker | Terminal-style with custom cursor |
+
+#### Accent Colors (8 Options)
+
+Personalize your interface with: **Violet**, **Blue**, **Green**, **Rose**, **Orange**, **Teal**, **Red**, **Cyan**
+
+#### Advanced Settings
+
+- **System Instructions**: Customize AI behavior with custom prompts
+- **Conversation Tone**: Neutral, Formal, Friendly, Professional, Enthusiastic
+- **Notifications**: Configure alerts for new responses
+- **Default Model**: Set your preferred model
+
+### Usage Dashboard
+
+Access detailed usage statistics with `Ctrl + U`:
+
+- **Total Conversations**: Number of conversations created
+- **Messages Exchanged**: User and assistant message counts
+- **Average Response Time**: Model performance metrics
+- **Per-Model Statistics**: Usage breakdown by model
 
 ---
 
 ## Installation
 
-### Prérequis
+### Prerequisites
 
-- **Node.js** (version 18 ou supérieure)
-- **npm** ou **yarn**
-- **Clé API OpenRouter** (gratuite)
+- **Node.js** (version 18 or higher)
+- **npm** or **yarn**
+- **OpenRouter API Key** (free tier available)
 
-### Étapes d'installation
+### Steps
 
-1. **Clonez le dépôt**
+1. **Clone the repository**
 
    ```bash
    git clone https://github.com/Teeflo/PolyChat-AI.git
    cd PolyChat-AI
    ```
 
-2. **Installez les dépendances**
+2. **Install dependencies**
 
    ```bash
    npm install
-   # ou
+   # or
    yarn install
    ```
 
-3. **Lancez le serveur de développement**
+3. **Start the development server**
 
    ```bash
    npm run dev
-   # ou
+   # or
    yarn dev
    ```
 
-4. **Ouvrez votre navigateur**
-   L'application sera disponible à l'adresse `http://localhost:5173`
+4. **Open your browser**
+
+   The application will be available at `http://localhost:5173`
 
 ---
 
 ## Configuration
 
-### 🔑 Configuration de l'API OpenRouter
+### API Key Setup
 
-1. **Obtenez votre clé API gratuite** :
-   - Rendez-vous sur [OpenRouter.ai](https://openrouter.ai/)
-   - Créez un compte gratuit
-   - Générez votre clé API
+1. **Get your free API key**:
+   - Visit [OpenRouter.ai](https://openrouter.ai/)
+   - Create a free account
+   - Generate your API key
 
-2. **Configuration automatique** :
-   - Au premier lancement, une fenêtre modale apparaîtra
-   - Entrez votre clé API OpenRouter
-   - La clé sera stockée de manière sécurisée dans le `localStorage`
+2. **Automatic configuration**:
+   - On first launch, a modal will appear
+   - Enter your OpenRouter API key
+   - The key will be securely stored in `localStorage`
 
-3. **Configuration manuelle** :
-   - Ouvrez les paramètres (icône ⚙️)
-   - Allez dans l'onglet "API"
-   - Entrez votre clé API
+3. **Manual configuration**:
+   - Open settings (⚙️ icon)
+   - Go to the "API" tab
+   - Enter your API key
 
-### 🎨 Personnalisation
+### Theme Customization
 
-#### Thèmes Disponibles
+Select from 4 themes and 8 accent colors in the settings panel to match your preferences.
 
-- **🌙 Mode Sombre** : Interface élégante avec fond sombre
-- **☀️ Mode Clair** : Interface claire et moderne
-- **🎮 Pixel Art** : Style rétro avec animations polychat
-- **👨‍💻 Hacker** : Interface avec curseur personnalisé
+### RAG Configuration
 
-#### Paramètres Avancés
-
-- **Instructions Système** : Personnalisez le comportement de l'IA
-- **Ton de Conversation** : Choisissez le style de communication
-- **Notifications** : Activez/désactivez les alertes
-- **Modèle par Défaut** : Sélectionnez votre modèle préféré
+Enable or disable RAG (Retrieval Augmented Generation) in settings. When enabled, the AI will use semantic search to find relevant context from your conversation history.
 
 ---
 
-## Utilisation
+## Usage
 
-### 🚀 Premiers Pas
+### Getting Started
 
-1. **Configuration Initiale** :
-   - Suivez l'onboarding automatique
-   - Entrez votre clé API OpenRouter
-   - Choisissez votre modèle préféré
+1. **Initial Setup**:
+   - Follow the automatic onboarding
+   - Enter your OpenRouter API key
+   - Choose your preferred model
 
-2. **Démarrage d'une Conversation** :
-   - Cliquez sur "Nouvelle Conversation"
-   - Sélectionnez un modèle (optionnel)
-   - Commencez à taper votre message
+2. **Start a Conversation**:
+   - Click "New Conversation"
+   - Select a model (optional)
+   - Start typing your message
 
-### 💬 Fonctionnalités de Chat
+### Using Templates
 
-#### Templates de Conversation
+1. Click the template icon in the chat input
+2. Browse categories or search for specific templates
+3. Select a template to apply its system prompt
+4. Fill in the placeholder fields
+5. Send your message
 
-- **Programmation** : Debug, optimisation, explication de code
-- **Créativité** : Brainstorming, écriture créative, génération d'idées
-- **Apprentissage** : Explications, tutoriels, résumés
-- **Analyse** : Analyse de données, recherche, synthèse
-- **Business** : Planification, stratégie, conseils
+### Using Quick Actions
 
-#### Actions Rapides
+1. Type or paste your code/text in the chat
+2. Click on a quick action button
+3. The action will be applied with optimized prompts
+4. Receive AI-enhanced results
 
-- **🔍 Expliquer** : Demander une explication détaillée
-- **⚡ Optimiser** : Améliorer le code ou le contenu
-- **🐛 Debug** : Identifier et corriger les problèmes
-- **💬 Commenter** : Ajouter des commentaires explicatifs
-- **🌐 Traduire** : Traduire dans différentes langues
-- **📝 Résumer** : Créer un résumé concis
-- **✅ Réviser** : Revoir et améliorer le contenu
+### Multi-Model Chat
 
-### 🎛️ Raccourcis Clavier
+1. Click the multi-model icon to enable grid view
+2. Select up to 3 different models
+3. Send a message to compare responses side-by-side
+4. Each response shows which model generated it
 
-| Raccourci | Action |
-|-----------|--------|
-| `Ctrl/Cmd + U` | Ouvrir le dashboard d'usage |
-| `Ctrl/Cmd + K` | Ouvrir les paramètres |
-| `Ctrl/Cmd + N` | Nouvelle conversation |
-| `Ctrl/Cmd + S` | Sauvegarder la conversation |
-| `Ctrl/Cmd + /` | Afficher l'aide |
+### Image Generation
 
-### 📊 Dashboard d'Usage
+1. Use a prompt like "Generate an image of..."
+2. Select an image-capable model (Gemini 2.5 Flash, GPT-4o, etc.)
+3. The system will automatically optimize your prompt
+4. If generation fails, fallback models will be tried automatically
 
-Accédez aux statistiques détaillées avec `Ctrl + U` :
+### Keyboard Shortcuts
 
-- **Conversations totales** : Nombre de conversations créées
-- **Messages échangés** : Statistiques des messages utilisateur/assistant
-- **Temps de réponse moyen** : Performance des modèles
-- **Utilisation par modèle** : Répartition de l'usage
+| Shortcut | Action |
+|----------|--------|
+| `Ctrl/Cmd + U` | Open usage dashboard |
+| `Ctrl/Cmd + K` | Open settings |
+| `Ctrl/Cmd + N` | New conversation |
+| `Ctrl/Cmd + S` | Save conversation |
+| `Ctrl/Cmd + /` | Show help |
 
 ---
 
-## 🏗️ Structure du Projet
+## Project Structure
 
-```text
+```
 PolyChat-AI/
-├── 📁 public/                 # Fichiers statiques (logo, icônes, etc.)
-├── 📁 src/
-│   ├── 📁 assets/            # Ressources (images, etc.)
-│   ├── 📁 components/        # Composants React
-│   │   ├── 📁 Chat/          # Composants de la fenêtre de chat et ses fonctionnalités
-│   │   ├── 📁 Layout/        # Composants de mise en page (Header, Sidebar)
-│   │   ├── 📁 Settings/      # Composants pour les paramètres
-│   │   ├── 📁 Onboarding/    # Composants pour le premier lancement
-│   │   └── 📁 ui/            # Composants d'interface utilisateur génériques
-│   ├── 📁 context/           # Contexte React (ChatProvider)
-│   ├── 📁 data/              # Données statiques (templates de conversation)
-│   ├── 📁 hooks/             # Hooks personnalisés (useChat, useSettings, etc.)
-│   ├── 📁 services/          # Logique métier et appels API (OpenRouter)
-│   ├── 📁 styles/            # Fichiers CSS et thèmes globaux
-│   ├── 📁 types/             # Définitions de types TypeScript
-│   ├── 📁 utils/             # Fonctions utilitaires
-│   ├── App.tsx               # Composant Racine de l'application
-│   └── main.tsx              # Point d'entrée de l'application
-├── .gitignore                # Fichiers ignorés par Git
-├── eslint.config.js          # Configuration ESLint
-├── package.json              # Dépendances et scripts du projet
-├── README.md                 # Ce fichier
-├── tsconfig.json             # Configuration TypeScript
-└── vite.config.ts            # Configuration Vite
+├── public/                    # Static files (logo, icons, etc.)
+├── src/
+│   ├── assets/               # Resources (images, etc.)
+│   ├── components/           # React components
+│   │   ├── Chat/             # Chat window and features
+│   │   ├── Layout/           # Layout components (Header, Sidebar)
+│   │   ├── Settings/         # Settings components
+│   │   ├── Onboarding/       # First-launch components
+│   │   └── ui/               # Generic UI components
+│   ├── context/              # React context (ChatProvider)
+│   ├── data/                 # Static data (conversation templates)
+│   ├── hooks/                # Custom hooks (useChat, useSettings, etc.)
+│   ├── services/             # Business logic and API calls
+│   │   ├── openRouter.ts     # OpenRouter API + image generation
+│   │   ├── ragService.ts     # RAG with local embeddings
+│   │   ├── modelsApi.ts      # Model fetching and filtering
+│   │   └── localStorage.ts   # Data persistence
+│   ├── styles/               # CSS files and global themes
+│   ├── types/                # TypeScript definitions
+│   ├── utils/                # Utility functions
+│   ├── App.tsx               # Root application component
+│   └── main.tsx              # Application entry point
+├── .gitignore
+├── .prettierrc               # Prettier configuration
+├── eslint.config.js          # ESLint configuration
+├── package.json              # Dependencies and scripts
+├── README.md                 # This file
+├── tsconfig.json             # TypeScript configuration
+└── vite.config.ts            # Vite configuration
 ```
 
 ---
 
-## 🚀 Scripts Disponibles
+## Available Scripts
 
-| Commande | Description |
-|----------|-------------|
-| `npm run dev` | Lance le serveur de développement |
-| `npm run build` | Compile pour la production |
-| `npm run preview` | Prévisualise le build de production |
-| `npm run lint` | Vérifie la qualité du code |
+| Command | Description |
+|---------|-------------|
+| `npm run dev` | Start development server |
+| `npm run build` | TypeScript check + production build |
+| `npm run preview` | Preview production build locally |
+| `npm run lint` | Check code quality with ESLint |
+| `npm run format` | Format code with Prettier |
 
-### 🎯 Développement
+### Development Workflow
 
 ```bash
-# Installation des dépendances
+# Install dependencies
 npm install
 
-# Lancement en mode développement
+# Start development mode
 npm run dev
 
-# Build de production
+# Production build
 npm run build
 
-# Vérification du code
+# Check code quality
 npm run lint
+
+# Format code
+npm run format
 ```
 
 ---
 
-## Contribution
+## Contributing
 
-Les contributions sont ce qui fait vivre la communauté open-source.
-Toute contribution que vous apporterez sera **grandement appréciée**.
+Contributions are what make the open-source community thrive. Any contribution you make will be **greatly appreciated**.
 
-### 🎯 Comment Contribuer
+### How to Contribute
 
-1. **🔍 Signaler un Bug**
-   - Ouvrez une issue avec le tag "bug"
-   - Décrivez le problème de manière détaillée
-   - Incluez les étapes pour reproduire le bug
+1. **Report a Bug**
+   - Open an issue with the "bug" tag
+   - Describe the problem in detail
+   - Include steps to reproduce
 
-2. **💡 Proposer une Amélioration**
-   - Ouvrez une issue avec le tag "enhancement"
-   - Expliquez votre idée et ses bénéfices
-   - Discutez de l'implémentation
+2. **Suggest an Enhancement**
+   - Open an issue with the "enhancement" tag
+   - Explain your idea and its benefits
+   - Discuss implementation approach
 
-3. **🔧 Soumettre du Code**
-   - Forkez le projet
-   - Créez une branche de fonctionnalité
-   - Committez vos changements
-   - Ouvrez une Pull Request
+3. **Submit Code**
+   - Fork the project
+   - Create a feature branch
+   - Commit your changes
+   - Open a Pull Request
 
-### 📋 Processus de Contribution
+### Contribution Process
 
-1. **Forkez le Projet**
+1. **Fork the Project**
 
    ```bash
-   git clone https://github.com/VOTRE_USERNAME/PolyChat-AI.git
+   git clone https://github.com/YOUR_USERNAME/PolyChat-AI.git
    cd PolyChat-AI
    ```
 
-2. **Créez votre branche de fonctionnalité**
+2. **Create your feature branch**
 
    ```bash
-   git checkout -b feature/NouvelleFonctionnalite
+   git checkout -b feature/AmazingFeature
    ```
 
-3. **Commitez vos changements**
+3. **Commit your changes**
 
    ```bash
-   git commit -m 'feat: Ajout de NouvelleFonctionnalite'
+   git commit -m 'feat: Add AmazingFeature'
    ```
 
-4. **Pushez vers la branche**
+4. **Push to the branch**
 
    ```bash
-   git push origin feature/NouvelleFonctionnalite
+   git push origin feature/AmazingFeature
    ```
 
-5. **Ouvrez une Pull Request**
+5. **Open a Pull Request**
 
-### 📝 Standards de Code
+### Code Standards
 
-- **TypeScript** : Utilisez TypeScript pour tout nouveau code
-- **ESLint** : Respectez les règles de linting configurées
-- **Commits** : Utilisez des messages de commit conventionnels
-- **Tests** : Ajoutez des tests pour les nouvelles fonctionnalités
-
----
-
-## 🐛 Problèmes Connus
-
-### Limitations Actuelles
-
-- **Taille des Messages** : Limitation basée sur le contexte du modèle sélectionné
-- **Historique** : Stockage local uniquement (pas de synchronisation cloud)
-- **Modèles** : Dépendance à l'API OpenRouter pour la disponibilité
-
-### Solutions de Contournement
-
-- **Messages Longs** : Divisez les messages volumineux en plusieurs parties
-- **Sauvegarde** : Exportez régulièrement vos conversations importantes
-- **Modèles Indisponibles** : L'application propose automatiquement des alternatives
+- **TypeScript**: Use TypeScript for all new code
+- **ESLint**: Follow the configured linting rules
+- **Prettier**: Format code before committing
+- **Commits**: Use conventional commit messages
+- **Tests**: Add tests for new features when possible
 
 ---
 
-## 📄 Licence
+## Known Limitations
 
-Ce projet est distribué sous la licence **MIT**. Voir le fichier
-`LICENSE` pour plus d'informations.
+### Current Limitations
 
-### 📋 Conditions de la Licence MIT
+- **Message Size**: Limited by the context window of the selected model
+- **History Storage**: Local storage only (no cloud synchronization)
+- **Model Availability**: Dependent on OpenRouter API availability
+- **Image Generation**: Requires models that support image output
 
-- ✅ **Utilisation Commerciale** : Autorisée
-- ✅ **Modification** : Autorisée
-- ✅ **Distribution** : Autorisée
-- ✅ **Utilisation Privée** : Autorisée
-- ❌ **Responsabilité** : Non garantie
-- ❌ **Garantie** : Aucune garantie
+### Workarounds
 
----
-
-## 🙏 Remerciements
-
-- **OpenRouter** pour l'accès aux modèles de langage
-- **React Team** pour l'excellent framework
-- **Vite Team** pour l'outil de build ultra-rapide
-- **Tailwind CSS** pour le framework CSS utilitaire
-- **Zustand** pour la gestion d'état simple et performante
+- **Long Messages**: Split large messages into multiple parts
+- **Backup**: Export important conversations regularly
+- **Unavailable Models**: The application automatically suggests alternatives
 
 ---
 
-## 📞 Support
+## License
 
-### 🆘 Besoin d'Aide ?
+This project is distributed under the **MIT License**. See the `LICENSE` file for more information.
 
-- **📖 Documentation** : Consultez ce README
-- **🐛 Bug Report** : [Ouvrir une issue](https://github.com/Teeflo/PolyChat-AI/issues)
-- **💬 Discussions** : [Forum GitHub](https://github.com/Teeflo/PolyChat-AI/discussions)
-- **📧 Contact** : [Créer une issue](https://github.com/Teeflo/PolyChat-AI/issues/new)
+### MIT License Terms
 
-### 🔗 Liens Utiles
-
-- **🌐 Site Web** : [PolyChat-AI](https://github.com/Teeflo/PolyChat-AI)
-- **📚 Documentation** : [Wiki du projet](https://github.com/Teeflo/PolyChat-AI/wiki)
-- **🚀 Releases** : [Versions](https://github.com/Teeflo/PolyChat-AI/releases)
-- **📊 Analytics** : [Statistiques](https://github.com/Teeflo/PolyChat-AI/graphs/contributors)
+- ✅ **Commercial Use**: Allowed
+- ✅ **Modification**: Allowed
+- ✅ **Distribution**: Allowed
+- ✅ **Private Use**: Allowed
+- ❌ **Liability**: Not guaranteed
+- ❌ **Warranty**: None provided
 
 ---
 
-**Créé avec ❤️ par [Teeflo](https://github.com/Teeflo)**
+## Acknowledgments
+
+- **[OpenRouter](https://openrouter.ai/)** for language model API access
+- **[React Team](https://react.dev/)** for the excellent framework
+- **[Vite Team](https://vitejs.dev/)** for the ultra-fast build tool
+- **[Tailwind CSS](https://tailwindcss.com/)** for the utility-first CSS framework
+- **[Zustand](https://github.com/pmndrs/zustand)** for simple, performant state management
+- **[@xenova/transformers](https://github.com/xenova/transformers.js)** for browser-based ML embeddings
+
+---
+
+## Support
+
+### Need Help?
+
+- **Documentation**: See this README
+- **Bug Report**: [Open an issue](https://github.com/Teeflo/PolyChat-AI/issues)
+- **Discussions**: [GitHub Forum](https://github.com/Teeflo/PolyChat-AI/discussions)
+- **Contact**: [Create an issue](https://github.com/Teeflo/PolyChat-AI/issues/new)
+
+### Useful Links
+
+- **Website**: [PolyChat-AI](https://github.com/Teeflo/PolyChat-AI)
+- **Documentation**: [Project Wiki](https://github.com/Teeflo/PolyChat-AI/wiki)
+- **Releases**: [Versions](https://github.com/Teeflo/PolyChat-AI/releases)
+- **Analytics**: [Statistics](https://github.com/Teeflo/PolyChat-AI/graphs/contributors)
+
+---
+
+**Created with care by [Teeflo](https://github.com/Teeflo)**
 
 [![Stars](https://img.shields.io/github/stars/Teeflo/PolyChat-AI?style=social)](https://github.com/Teeflo/PolyChat-AI/stargazers)
 [![Forks](https://img.shields.io/github/forks/Teeflo/PolyChat-AI?style=social)](https://github.com/Teeflo/PolyChat-AI/forks)
@@ -427,18 +481,16 @@ Ce projet est distribué sous la licence **MIT**. Voir le fichier
 
 ---
 
-## 🚀 Feuille de Route (Prochaines Fonctionnalités)
+## Roadmap
 
-Voici une liste des fonctionnalités prévues pour les prochaines versions de PolyChat-AI. Votre contribution est la bienvenue !
+Planned features for upcoming releases:
 
-- [ ] **Afficher les Capacités des Modèles** : Indiquer clairement les
-  capacités de chaque modèle (ex: raisonnement sur image, analyse de
-  documents, etc.) directement dans le sélecteur de modèle.
-- [ ] **Édition et Régénération d'Images** : Ajouter des options pour
-  corriger une image générée ou en créer une nouvelle variation à
-  partir d'un résultat existant.
-- [ ] **Amélioration du Panneau d'Historique** : Moderniser le design du
-  panneau de l'historique des conversations pour une meilleure
-  lisibilité et gestion.
-- [ ] **Corriger le bug de changement de modèle** : Empêcher le changement de modèle automatique lors d'une génération d'image erronée.
-- [ ] **Améliorer le README** : Revoir le contenu et corriger le superflu.
+- [ ] **Display Model Capabilities**: Show model capabilities (image reasoning, document analysis, etc.) directly in the model selector
+- [ ] **Image Editing & Regeneration**: Add options to edit generated images or create variations
+- [ ] **History Panel Improvement**: Modernize the conversation history panel design for better readability
+- [ ] **Cloud Synchronization**: Optional cloud backup for conversations
+- [ ] **Custom Templates**: Create and save your own conversation templates
+- [ ] **Voice Input**: Add speech-to-text for hands-free interaction
+- [ ] **Export Options**: Export conversations to Markdown, PDF, or JSON formats
+
+Your contributions are welcome!

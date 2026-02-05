@@ -10,16 +10,16 @@ const getMessageText = (content: string | MessageContent[]): string => {
   }
   // For MessageContent[], extract text from text type content
   return content
-    .filter(item => item.type === 'text')
-    .map(item => item.text || '')
+    .filter((item) => item.type === 'text')
+    .map((item) => item.text || '')
     .join(' ');
 };
 
 export const saveMessages = (messages: Message[]) => {
   try {
     localStorage.setItem(MESSAGES_STORAGE_KEY, JSON.stringify(messages));
-  } catch (error) {
-    console.error('Failed to save messages to localStorage:', error);
+  } catch {
+    // Storage quota exceeded or disabled
   }
 };
 
@@ -37,8 +37,7 @@ export const loadMessages = (): Message[] => {
     // Si rien n'est stocké, ou si les données sont corrompues/invalides
     localStorage.removeItem(MESSAGES_STORAGE_KEY); // Nettoyer les données invalides
     return [];
-  } catch (error) {
-    console.error('Failed to load or parse messages from localStorage:', error);
+  } catch {
     // En cas d'erreur de parsing, nettoyer le stockage
     localStorage.removeItem(MESSAGES_STORAGE_KEY);
     return [];
@@ -48,17 +47,17 @@ export const loadMessages = (): Message[] => {
 export const saveChatHistory = (sessions: ChatSession[]) => {
   try {
     // Filter out empty conversations to avoid data pollution
-    const filteredSessions = sessions.filter(session => {
+    const filteredSessions = sessions.filter((session) => {
       // Keep sessions that have at least one non-empty message
-      return session.messages.some(message => {
+      return session.messages.some((message) => {
         const textContent = getMessageText(message.content);
         return textContent && textContent.trim().length > 0;
       });
     });
 
     localStorage.setItem(HISTORY_STORAGE_KEY, JSON.stringify(filteredSessions));
-  } catch (error) {
-    console.error('Failed to save chat history to localStorage:', error);
+  } catch {
+    // Storage quota exceeded
   }
 };
 
@@ -69,19 +68,18 @@ export const loadChatHistory = (): ChatSession[] => {
       const parsed = JSON.parse(stored);
       if (Array.isArray(parsed)) {
         // Convertir les timestamps string en objets Date
-        return parsed.map(session => ({
+        return parsed.map((session) => ({
           ...session,
           messages: session.messages.map((msg: Message) => ({
             ...msg,
-            timestamp: new Date(msg.timestamp)
-          }))
+            timestamp: new Date(msg.timestamp),
+          })),
         }));
       }
     }
     localStorage.removeItem(HISTORY_STORAGE_KEY);
     return [];
-  } catch (error) {
-    console.error('Failed to load or parse chat history from localStorage:', error);
+  } catch {
     localStorage.removeItem(HISTORY_STORAGE_KEY);
     return [];
   }

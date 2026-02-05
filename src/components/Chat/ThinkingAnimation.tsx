@@ -7,19 +7,19 @@ interface ThinkingAnimationProps {
   onStop?: () => void;
 }
 
-const ThinkingAnimation: React.FC<ThinkingAnimationProps> = ({ 
-  theme, 
+const ThinkingAnimation: React.FC<ThinkingAnimationProps> = ({
+  theme,
   position = 'bottom',
-  onStop 
+  onStop,
 }) => {
   const [currentMessage, setCurrentMessage] = useState(0);
-  
+
   const thinkingMessages = [
     "L'IA réfléchit...",
-    "Analyse en cours...", 
-    "Traitement de votre demande...",
-    "Formulation de la réponse...",
-    "Recherche des meilleures informations..."
+    'Analyse en cours...',
+    'Traitement de votre demande...',
+    'Formulation de la réponse...',
+    'Recherche des meilleures informations...',
   ];
 
   useEffect(() => {
@@ -55,20 +55,15 @@ const ThinkingAnimation: React.FC<ThinkingAnimationProps> = ({
           <div className="wave wave-3"></div>
         </div>
       </div>
-      
+
       <div className="thinking-dots">
         {[1, 2, 3, 4].map((i) => (
-          <div
-            key={i}
-            className={`thinking-dot thinking-dot-${i}`}
-          />
+          <div key={i} className={`thinking-dot thinking-dot-${i}`} />
         ))}
       </div>
-      
-      <span className="thinking-text">
-        {thinkingMessages[currentMessage]}
-      </span>
-      
+
+      <span className="thinking-text">{thinkingMessages[currentMessage]}</span>
+
       {(position === 'bottom' || position === 'integrated') && onStop && (
         <button onClick={onStop} className="thinking-stop-btn">
           ⏹️ Arrêter

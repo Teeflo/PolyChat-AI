@@ -10,14 +10,13 @@ interface ImageGeneratorProps {
   onClose: () => void;
 }
 
-const ImageGenerator: React.FC<ImageGeneratorProps> = ({
-  onImageGenerated,
-  onClose
-}) => {
+const ImageGenerator: React.FC<ImageGeneratorProps> = ({ onImageGenerated, onClose }) => {
   const [prompt, setPrompt] = useState('');
   const [isGenerating, setIsGenerating] = useState(false);
   const [selectedModel, setSelectedModel] = useState('google/gemini-2.5-flash-image-preview:free');
-  const [selectedSize, setSelectedSize] = useState<'1024x1024' | '512x512' | '256x256'>('1024x1024');
+  const [selectedSize, setSelectedSize] = useState<'1024x1024' | '512x512' | '256x256'>(
+    '1024x1024'
+  );
   const [selectedStyle, setSelectedStyle] = useState<'natural' | 'vivid' | 'digital_art'>('vivid');
   const { theme, apiKey } = useSettings();
 
@@ -27,19 +26,19 @@ const ImageGenerator: React.FC<ImageGeneratorProps> = ({
     { value: 'google/gemini-2.5-flash-image-preview:free', label: 'Gemini 2.5 Flash (Gratuit)' },
     { value: 'google/gemini-2.5-flash-image-preview', label: 'Gemini 2.5 Flash (Premium)' },
     { value: 'openai/gpt-4o', label: 'GPT-4o (Multimodal)' },
-    { value: 'anthropic/claude-3.5-sonnet', label: 'Claude 3.5 Sonnet' }
+    { value: 'anthropic/claude-3.5-sonnet', label: 'Claude 3.5 Sonnet' },
   ];
 
   const sizeOptions = [
     { value: '1024x1024', label: 'Grande (1024×1024)' },
     { value: '512x512', label: 'Moyenne (512×512)' },
-    { value: '256x256', label: 'Petite (256×256)' }
+    { value: '256x256', label: 'Petite (256×256)' },
   ];
 
   const styleOptions = [
     { value: 'natural', label: 'Naturel' },
     { value: 'vivid', label: 'Vif' },
-    { value: 'digital_art', label: 'Art numérique' }
+    { value: 'digital_art', label: 'Art numérique' },
   ];
 
   const handleGenerate = async () => {
@@ -48,19 +47,12 @@ const ImageGenerator: React.FC<ImageGeneratorProps> = ({
     setIsGenerating(true);
 
     try {
-      console.log('🎨 Starting image generation with prompt:', prompt);
-
-      const result = await generateImageReliable(
-        prompt.trim(),
-        apiKey,
-        selectedModel,
-        {
-          maxRetries: 3,
-          size: selectedSize,
-          style: selectedStyle,
-          quality: 'hd'
-        }
-      );
+      const result = await generateImageReliable(prompt.trim(), apiKey, selectedModel, {
+        maxRetries: 3,
+        size: selectedSize,
+        style: selectedStyle,
+        quality: 'hd',
+      });
 
       // Convertir le résultat en GeneratedImage
       let imageUrl = '';
@@ -91,18 +83,15 @@ const ImageGenerator: React.FC<ImageGeneratorProps> = ({
           size: 0, // Sera mis à jour si on peut récupérer la taille
           prompt: prompt.trim(),
           model: selectedModel,
-          timestamp: new Date()
+          timestamp: new Date(),
         };
 
-        console.log('✅ Image generated successfully:', generatedImage);
         onImageGenerated(generatedImage);
         onClose();
       } else {
-        throw new Error('Aucune URL d\'image trouvée dans la réponse');
+        throw new Error("Aucune URL d'image trouvée dans la réponse");
       }
-
-    } catch (error) {
-      console.error('❌ Image generation failed:', error);
+    } catch {
       // L'erreur sera affichée dans le chat via le système de génération fiable
     } finally {
       setIsGenerating(false);
@@ -123,11 +112,7 @@ const ImageGenerator: React.FC<ImageGeneratorProps> = ({
           <Wand2 size={20} className="inline mr-2" />
           Générateur d'Images IA
         </h3>
-        <button
-          onClick={onClose}
-          className="image-generator-close"
-          aria-label="Fermer"
-        >
+        <button onClick={onClose} className="image-generator-close" aria-label="Fermer">
           <X size={20} />
         </button>
       </div>
@@ -162,7 +147,7 @@ const ImageGenerator: React.FC<ImageGeneratorProps> = ({
                 disabled={isGenerating}
                 className={`form-select ${isDark ? 'dark' : 'light'}`}
               >
-                {modelOptions.map(option => (
+                {modelOptions.map((option) => (
                   <option key={option.value} value={option.value}>
                     {option.label}
                   </option>
@@ -177,11 +162,13 @@ const ImageGenerator: React.FC<ImageGeneratorProps> = ({
               <select
                 id="size"
                 value={selectedSize}
-                onChange={(e) => setSelectedSize(e.target.value as '1024x1024' | '512x512' | '256x256')}
+                onChange={(e) =>
+                  setSelectedSize(e.target.value as '1024x1024' | '512x512' | '256x256')
+                }
                 disabled={isGenerating}
                 className={`form-select ${isDark ? 'dark' : 'light'}`}
               >
-                {sizeOptions.map(option => (
+                {sizeOptions.map((option) => (
                   <option key={option.value} value={option.value}>
                     {option.label}
                   </option>
@@ -196,11 +183,13 @@ const ImageGenerator: React.FC<ImageGeneratorProps> = ({
               <select
                 id="style"
                 value={selectedStyle}
-                onChange={(e) => setSelectedStyle(e.target.value as 'natural' | 'vivid' | 'digital_art')}
+                onChange={(e) =>
+                  setSelectedStyle(e.target.value as 'natural' | 'vivid' | 'digital_art')
+                }
                 disabled={isGenerating}
                 className={`form-select ${isDark ? 'dark' : 'light'}`}
               >
-                {styleOptions.map(option => (
+                {styleOptions.map((option) => (
                   <option key={option.value} value={option.value}>
                     {option.label}
                   </option>
@@ -251,9 +240,15 @@ const ImageGenerator: React.FC<ImageGeneratorProps> = ({
           <div className="info-section">
             <h4>🎨 Styles disponibles :</h4>
             <ul>
-              <li><strong>Naturel :</strong> Style photographique réaliste</li>
-              <li><strong>Vif :</strong> Couleurs saturées et contrastées</li>
-              <li><strong>Art numérique :</strong> Style artistique stylisé</li>
+              <li>
+                <strong>Naturel :</strong> Style photographique réaliste
+              </li>
+              <li>
+                <strong>Vif :</strong> Couleurs saturées et contrastées
+              </li>
+              <li>
+                <strong>Art numérique :</strong> Style artistique stylisé
+              </li>
             </ul>
           </div>
         </div>

@@ -90,25 +90,16 @@ export class ConversationManager {
   static generateMetadata(session: ChatSession): ConversationMetadata {
     // Génération automatique des métadonnées
   }
-  
-  static searchConversations(
-    sessions: ChatSession[],
-    searchTerm: string
-  ): ChatSession[] {
+
+  static searchConversations(sessions: ChatSession[], searchTerm: string): ChatSession[] {
     // Recherche full-text dans les conversations
   }
-  
-  static filterConversations(
-    sessions: ChatSession[],
-    filters: HistoryFilters
-  ): ChatSession[] {
+
+  static filterConversations(sessions: ChatSession[], filters: HistoryFilters): ChatSession[] {
     // Filtrage avancé des conversations
   }
-  
-  static exportConversations(
-    sessions: ChatSession[],
-    options: ExportOptions
-  ): Promise<Blob> {
+
+  static exportConversations(sessions: ChatSession[], options: ExportOptions): Promise<Blob> {
     // Export des conversations dans différents formats
   }
 }
@@ -117,6 +108,7 @@ export class ConversationManager {
 ### Composants d'Interface
 
 #### HistorySearchBar
+
 ```typescript
 interface HistorySearchBarProps {
   searchTerm: string;
@@ -128,6 +120,7 @@ interface HistorySearchBarProps {
 ```
 
 #### ConversationCard
+
 ```typescript
 interface ConversationCardProps {
   conversation: ChatSession;
@@ -144,6 +137,7 @@ interface ConversationCardProps {
 ```
 
 #### HistoryFilters
+
 ```typescript
 interface HistoryFiltersProps {
   filters: HistoryFilters;
@@ -155,6 +149,7 @@ interface HistoryFiltersProps {
 ```
 
 #### ConversationFolder
+
 ```typescript
 interface ConversationFolderProps {
   folder: ConversationFolder;
@@ -245,16 +240,19 @@ interface HistoryOrganization {
 ## Implementation Phases
 
 ### Phase 1 : Infrastructure et Recherche
+
 - Extension des interfaces de données
 - Implémentation du système de recherche
 - Refonte de la base du composant ChatHistorySidebar
 
 ### Phase 2 : Interface et Filtrage
+
 - Nouveaux composants d'interface
 - Système de filtres avancés
 - Actions rapides sur les conversations
 
 ### Phase 3 : Organisation et Export
+
 - Système de dossiers et épinglage
 - Fonctionnalités d'export multiples
 - Optimisations de performance

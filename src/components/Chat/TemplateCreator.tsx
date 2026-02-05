@@ -10,11 +10,7 @@ interface TemplateCreatorProps {
   onSave: (template: ConversationTemplate) => void;
 }
 
-const TemplateCreator: React.FC<TemplateCreatorProps> = ({
-  isOpen,
-  onClose,
-  onSave
-}) => {
+const TemplateCreator: React.FC<TemplateCreatorProps> = ({ isOpen, onClose, onSave }) => {
   const [name, setName] = useState('');
   const [category, setCategory] = useState<TemplateCategory>('programming');
   const [description, setDescription] = useState('');
@@ -39,7 +35,7 @@ const TemplateCreator: React.FC<TemplateCreatorProps> = ({
       tags,
       isCustom: true,
       icon: '📝',
-      color: TEMPLATE_CATEGORIES.find(c => c.id === category)?.color || '#3B82F6'
+      color: TEMPLATE_CATEGORIES.find((c) => c.id === category)?.color || '#3B82F6',
     };
 
     onSave(template);
@@ -65,7 +61,7 @@ const TemplateCreator: React.FC<TemplateCreatorProps> = ({
   };
 
   const removeTag = (tagToRemove: string) => {
-    setTags(tags.filter(tag => tag !== tagToRemove));
+    setTags(tags.filter((tag) => tag !== tagToRemove));
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -78,7 +74,7 @@ const TemplateCreator: React.FC<TemplateCreatorProps> = ({
 
   return (
     <div className="template-creator-overlay" onClick={handleClose}>
-      <div className="template-creator-modal" onClick={e => e.stopPropagation()}>
+      <div className="template-creator-modal" onClick={(e) => e.stopPropagation()}>
         {/* Header */}
         <div className="template-creator-header">
           <div className="template-creator-title">
@@ -112,7 +108,7 @@ const TemplateCreator: React.FC<TemplateCreatorProps> = ({
               onChange={(e) => setCategory(e.target.value as TemplateCategory)}
               className="template-creator-select"
             >
-              {TEMPLATE_CATEGORIES.map(cat => (
+              {TEMPLATE_CATEGORIES.map((cat) => (
                 <option key={cat.id} value={cat.id}>
                   {cat.icon} {cat.name}
                 </option>
@@ -168,22 +164,15 @@ const TemplateCreator: React.FC<TemplateCreatorProps> = ({
                   placeholder="Add a tag..."
                   className="template-creator-input"
                 />
-                <button
-                  type="button"
-                  onClick={addTag}
-                  className="template-creator-add-tag-btn"
-                >
+                <button type="button" onClick={addTag} className="template-creator-add-tag-btn">
                   Add
                 </button>
               </div>
               <div className="template-creator-tags-list">
-                {tags.map(tag => (
+                {tags.map((tag) => (
                   <span key={tag} className="template-creator-tag">
                     {tag}
-                    <button
-                      onClick={() => removeTag(tag)}
-                      className="template-creator-tag-remove"
-                    >
+                    <button onClick={() => removeTag(tag)} className="template-creator-tag-remove">
                       ×
                     </button>
                   </span>
@@ -195,10 +184,7 @@ const TemplateCreator: React.FC<TemplateCreatorProps> = ({
 
         {/* Footer */}
         <div className="template-creator-footer">
-          <button
-            onClick={handleClose}
-            className="template-creator-cancel-btn"
-          >
+          <button onClick={handleClose} className="template-creator-cancel-btn">
             Cancel
           </button>
           <button
@@ -216,4 +202,3 @@ const TemplateCreator: React.FC<TemplateCreatorProps> = ({
 };
 
 export default TemplateCreator;
-

@@ -31,34 +31,66 @@ export function WelcomePopup({ isOpen, onClose, modelName = 'IA' }: WelcomePopup
 
       <div className="welcome-popup-body">
         <p style={{ marginBottom: 'var(--space-4)' }}>
-          Bonjour ! 👋 Je suis votre assistant IA personnel. Je peux vous aider avec une grande variété de tâches.
+          Bonjour ! 👋 Je suis votre assistant IA personnel. Je peux vous aider avec une grande
+          variété de tâches.
         </p>
 
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-2)', marginBottom: 'var(--space-6)' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-2)', fontSize: 'var(--text-sm)' }}>
-             <MessageCircle size={14} color="var(--accent-primary)" />
-             <span>Répondre à vos questions</span>
-          </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-2)', fontSize: 'var(--text-sm)' }}>
-             <Bot size={14} color="var(--accent-secondary)" />
-             <span>Vous aider dans vos tâches</span>
-          </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-2)', fontSize: 'var(--text-sm)' }}>
-             <Sparkles size={14} color="var(--accent-tertiary)" />
-             <span>Créer du contenu</span>
-          </div>
-        </div>
-
-        <div className="polychat-card-modern" style={{ padding: 'var(--space-3)', fontSize: 'var(--text-xs)', marginBottom: 'var(--space-4)' }}>
-           <Sparkles size={12} style={{ display: 'inline', marginRight: 'var(--space-2)' }} />
-           <strong>Astuce :</strong> Utilisez les templates pour des prompts prêts à l'emploi !
-        </div>
-
-        <button
-          onClick={onClose}
-          className="polychat-btn-modern"
-          style={{ width: '100%' }}
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: 'var(--space-2)',
+            marginBottom: 'var(--space-6)',
+          }}
         >
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: 'var(--space-2)',
+              fontSize: 'var(--text-sm)',
+            }}
+          >
+            <MessageCircle size={14} color="var(--accent-primary)" />
+            <span>Répondre à vos questions</span>
+          </div>
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: 'var(--space-2)',
+              fontSize: 'var(--text-sm)',
+            }}
+          >
+            <Bot size={14} color="var(--accent-secondary)" />
+            <span>Vous aider dans vos tâches</span>
+          </div>
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: 'var(--space-2)',
+              fontSize: 'var(--text-sm)',
+            }}
+          >
+            <Sparkles size={14} color="var(--accent-tertiary)" />
+            <span>Créer du contenu</span>
+          </div>
+        </div>
+
+        <div
+          className="polychat-card-modern"
+          style={{
+            padding: 'var(--space-3)',
+            fontSize: 'var(--text-xs)',
+            marginBottom: 'var(--space-4)',
+          }}
+        >
+          <Sparkles size={12} style={{ display: 'inline', marginRight: 'var(--space-2)' }} />
+          <strong>Astuce :</strong> Utilisez les templates pour des prompts prêts à l'emploi !
+        </div>
+
+        <button onClick={onClose} className="polychat-btn-modern" style={{ width: '100%' }}>
           Commencer à chatter
         </button>
       </div>

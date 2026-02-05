@@ -51,8 +51,12 @@
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 .image-display-error {
@@ -96,7 +100,7 @@
 }
 
 /* Dark theme support */
-[data-theme="dark"] .image-loading {
+[data-theme='dark'] .image-loading {
   background: var(--polychat-bg-secondary-dark, #111827);
   color: var(--polychat-text-secondary-dark, #9ca3af);
 }

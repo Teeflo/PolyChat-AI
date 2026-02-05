@@ -152,11 +152,32 @@
 }
 
 @keyframes flashBorder {
-  0% { box-shadow: 0 0 0 0 rgb(139 92 246 / 0), 0 0 0 0 rgb(255 255 255 / 0); border-color: var(--accent-primary); }
-  10% { box-shadow: 0 0 0 3px rgb(139 92 246 / 0.4), 0 0 20px -4px rgb(139 92 246 / 0.6); }
-  35% { box-shadow: 0 0 0 2px rgb(139 92 246 / 0.5), 0 0 12px -2px rgb(139 92 246 / 0.5); }
-  65% { box-shadow: 0 0 0 4px rgb(139 92 246 / 0.25), 0 0 8px -2px rgb(139 92 246 / 0.3); }
-  100% { box-shadow: 0 0 0 0 rgb(139 92 246 / 0), 0 0 0 0 rgb(139 92 246 / 0); }
+  0% {
+    box-shadow:
+      0 0 0 0 rgb(139 92 246 / 0),
+      0 0 0 0 rgb(255 255 255 / 0);
+    border-color: var(--accent-primary);
+  }
+  10% {
+    box-shadow:
+      0 0 0 3px rgb(139 92 246 / 0.4),
+      0 0 20px -4px rgb(139 92 246 / 0.6);
+  }
+  35% {
+    box-shadow:
+      0 0 0 2px rgb(139 92 246 / 0.5),
+      0 0 12px -2px rgb(139 92 246 / 0.5);
+  }
+  65% {
+    box-shadow:
+      0 0 0 4px rgb(139 92 246 / 0.25),
+      0 0 8px -2px rgb(139 92 246 / 0.3);
+  }
+  100% {
+    box-shadow:
+      0 0 0 0 rgb(139 92 246 / 0),
+      0 0 0 0 rgb(139 92 246 / 0);
+  }
 }
 
 .settings-section-modern-header {
@@ -244,7 +265,9 @@
 
 .settings-input-modern:focus {
   border-color: var(--accent-primary);
-  box-shadow: 0 0 0 3px rgb(139 92 246 / 0.15), var(--shadow-glow-sm);
+  box-shadow:
+    0 0 0 3px rgb(139 92 246 / 0.15),
+    var(--shadow-glow-sm);
 }
 
 .settings-input-modern::placeholder {
@@ -293,7 +316,9 @@
 
 .settings-textarea-modern:focus {
   border-color: var(--accent-primary);
-  box-shadow: 0 0 0 3px rgb(139 92 246 / 0.15), var(--shadow-glow-sm);
+  box-shadow:
+    0 0 0 3px rgb(139 92 246 / 0.15),
+    var(--shadow-glow-sm);
 }
 
 .settings-textarea-modern::placeholder {
@@ -379,7 +404,7 @@
   gap: var(--space-2);
 }
 
-.settings-toggle-modern input[type="checkbox"] {
+.settings-toggle-modern input[type='checkbox'] {
   width: 40px;
   height: 22px;
   -webkit-appearance: none;
@@ -392,7 +417,7 @@
   transition: var(--transition-all);
 }
 
-.settings-toggle-modern input[type="checkbox"]::before {
+.settings-toggle-modern input[type='checkbox']::before {
   content: '';
   position: absolute;
   top: 2px;
@@ -404,12 +429,12 @@
   transition: var(--transition-all);
 }
 
-.settings-toggle-modern input[type="checkbox"]:checked {
+.settings-toggle-modern input[type='checkbox']:checked {
   background: var(--accent-primary);
   border-color: var(--accent-primary);
 }
 
-.settings-toggle-modern input[type="checkbox"]:checked::before {
+.settings-toggle-modern input[type='checkbox']:checked::before {
   left: 20px;
   background: white;
 }
@@ -545,8 +570,14 @@
   letter-spacing: var(--tracking-wider);
 }
 
-.hdr-name { text-align: left; }
-.hdr-ctx, .hdr-price, .hdr-sel { text-align: center; }
+.hdr-name {
+  text-align: left;
+}
+.hdr-ctx,
+.hdr-price,
+.hdr-sel {
+  text-align: center;
+}
 
 /* Model option item (grid layout) */
 .model-option-item {
@@ -589,7 +620,9 @@
 .model-option-item.active {
   border-color: var(--accent-primary);
   background: var(--selected-bg);
-  box-shadow: 0 0 0 1px rgb(139 92 246 / 0.4), 0 0 0 4px rgb(139 92 246 / 0.15);
+  box-shadow:
+    0 0 0 1px rgb(139 92 246 / 0.4),
+    0 0 0 4px rgb(139 92 246 / 0.15);
 }
 
 .model-option-item.grid-layout {
@@ -923,14 +956,30 @@
   box-shadow: 0 0 0 2px var(--accent-secondary);
 }
 
-.accent-violet { background: linear-gradient(135deg, #8b5cf6, #a78bfa); }
-.accent-blue { background: linear-gradient(135deg, #3b82f6, #60a5fa); }
-.accent-green { background: linear-gradient(135deg, #10b981, #34d399); }
-.accent-rose { background: linear-gradient(135deg, #e11d48, #fb7185); }
-.accent-orange { background: linear-gradient(135deg, #f97316, #fb923c); }
-.accent-teal { background: linear-gradient(135deg, #14b8a6, #2dd4bf); }
-.accent-red { background: linear-gradient(135deg, #ef4444, #f87171); }
-.accent-cyan { background: linear-gradient(135deg, #06b6d4, #22d3ee); }
+.accent-violet {
+  background: linear-gradient(135deg, #8b5cf6, #a78bfa);
+}
+.accent-blue {
+  background: linear-gradient(135deg, #3b82f6, #60a5fa);
+}
+.accent-green {
+  background: linear-gradient(135deg, #10b981, #34d399);
+}
+.accent-rose {
+  background: linear-gradient(135deg, #e11d48, #fb7185);
+}
+.accent-orange {
+  background: linear-gradient(135deg, #f97316, #fb923c);
+}
+.accent-teal {
+  background: linear-gradient(135deg, #14b8a6, #2dd4bf);
+}
+.accent-red {
+  background: linear-gradient(135deg, #ef4444, #f87171);
+}
+.accent-cyan {
+  background: linear-gradient(135deg, #06b6d4, #22d3ee);
+}
 
 /* ==========================================================================
    12. INFO GRID
@@ -1040,27 +1089,27 @@
     width: 95%;
     max-height: 95vh;
   }
-  
+
   .settings-modal-modern-header {
     padding: var(--space-4);
   }
-  
+
   .settings-modal-modern-title h2 {
     font-size: var(--text-xl);
   }
-  
+
   .settings-modal-modern-content {
     padding: var(--space-4);
   }
-  
+
   .settings-section-modern {
     padding: var(--space-3);
   }
-  
+
   .settings-theme-options-modern {
     grid-template-columns: 1fr;
   }
-  
+
   .settings-modal-modern-footer {
     padding: var(--space-3) var(--space-4);
     flex-direction: column;
@@ -1083,22 +1132,22 @@
     align-items: flex-start;
     gap: var(--space-3);
   }
-  
+
   .settings-modal-modern-close {
     align-self: flex-end;
     margin-top: -44px;
   }
-  
+
   .settings-info-grid-modern {
     grid-template-columns: 1fr;
   }
-  
+
   .settings-section-modern-header {
     flex-direction: column;
     align-items: flex-start;
     gap: var(--space-2);
   }
-  
+
   .settings-section-modern-header h3 {
     font-size: var(--text-base);
   }
@@ -1107,7 +1156,7 @@
     grid-template-columns: repeat(4, 28px);
     gap: var(--space-3);
   }
-  
+
   .accent-swatch {
     width: 28px;
     height: 28px;
@@ -1117,7 +1166,7 @@
     grid-template-columns: 1fr 40px 70px 24px;
     font-size: var(--text-xs);
   }
-  
+
   .model-option-header {
     grid-template-columns: 1fr 40px 70px 24px;
     font-size: 9px;

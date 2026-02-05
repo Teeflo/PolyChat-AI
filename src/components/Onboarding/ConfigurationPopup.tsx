@@ -40,15 +40,11 @@ export function ConfigurationPopup({ isOpen, onClose, type }: ConfigurationPopup
                   <Key className="w-8 h-8 text-white" />
                 </div>
                 <h4>Clé API manquante</h4>
-                <p>
-                  Veuillez configurer votre clé API OpenRouter pour utiliser PolyChat AI.
-                </p>
+                <p>Veuillez configurer votre clé API OpenRouter pour utiliser PolyChat AI.</p>
               </div>
 
               <div className="popup-form-group">
-                <label className="popup-label">
-                  Clé API OpenRouter
-                </label>
+                <label className="popup-label">Clé API OpenRouter</label>
                 <input
                   type="password"
                   placeholder="Votre clé API OpenRouter"
@@ -63,15 +59,15 @@ export function ConfigurationPopup({ isOpen, onClose, type }: ConfigurationPopup
                   <Key className="w-4 h-4 text-blue-400" />
                   <span>
                     <strong>Gratuit :</strong> Créez un compte sur{' '}
-                    <a 
-                      href="https://openrouter.ai" 
-                      target="_blank" 
+                    <a
+                      href="https://openrouter.ai"
+                      target="_blank"
                       rel="noopener noreferrer"
                       className="popup-link"
                     >
                       openrouter.ai
-                    </a>
-                    {' '}pour obtenir votre clé API.
+                    </a>{' '}
+                    pour obtenir votre clé API.
                   </span>
                 </p>
               </div>
@@ -79,10 +75,7 @@ export function ConfigurationPopup({ isOpen, onClose, type }: ConfigurationPopup
           ),
           actions: (
             <div className="popup-actions">
-              <button
-                onClick={onClose}
-                className="popup-secondary-btn"
-              >
+              <button onClick={onClose} className="popup-secondary-btn">
                 Plus tard
               </button>
               <button
@@ -93,7 +86,7 @@ export function ConfigurationPopup({ isOpen, onClose, type }: ConfigurationPopup
                 Sauvegarder
               </button>
             </div>
-          )
+          ),
         };
 
       case 'configuration-error':
@@ -109,9 +102,7 @@ export function ConfigurationPopup({ isOpen, onClose, type }: ConfigurationPopup
                 <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto">
                   <AlertTriangle className="w-8 h-8 text-red-600" />
                 </div>
-                <h4 className="text-lg font-semibold text-gray-900">
-                  Configuration incorrecte
-                </h4>
+                <h4 className="text-lg font-semibold text-gray-900">Configuration incorrecte</h4>
                 <p className="text-gray-600 text-sm">
                   Il y a un problème avec votre configuration. Veuillez vérifier vos paramètres.
                 </p>
@@ -142,7 +133,7 @@ export function ConfigurationPopup({ isOpen, onClose, type }: ConfigurationPopup
                 Paramètres
               </button>
             </div>
-          )
+          ),
         };
 
       default:
@@ -161,16 +152,14 @@ export function ConfigurationPopup({ isOpen, onClose, type }: ConfigurationPopup
         <div className="config-popup-icon">
           <Icon size={32} />
         </div>
-        
+
         <h3 className="config-popup-title">{config.title}</h3>
-        
+
         <div className="config-popup-body" style={{ margin: 'var(--space-4) 0' }}>
           {config.content}
         </div>
 
-        <div className="config-popup-actions">
-          {config.actions}
-        </div>
+        <div className="config-popup-actions">{config.actions}</div>
       </div>
     </div>
   );

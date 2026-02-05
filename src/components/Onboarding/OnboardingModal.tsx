@@ -48,33 +48,60 @@ const OnboardingModal: React.FC = () => {
     <div className="onboard-overlay" role="dialog" aria-modal="true">
       <div className="onboard-modal">
         <div className="onboard-header">
-          <div className="config-popup-icon" style={{ margin: '0 auto var(--space-4)' }}>{steps[index].icon}</div>
+          <div className="config-popup-icon" style={{ margin: '0 auto var(--space-4)' }}>
+            {steps[index].icon}
+          </div>
           <h2 className="onboard-title">{steps[index].title}</h2>
-          <p className="onboard-text" style={{ color: 'var(--text-secondary)' }}>{steps[index].description}</p>
+          <p className="onboard-text" style={{ color: 'var(--text-secondary)' }}>
+            {steps[index].description}
+          </p>
         </div>
         <div className="onboard-content">
-           <div className="step-indicator" style={{ justifyContent: 'center', marginBottom: 'var(--space-4)' }}>
-              {steps.map((_, i) => (
-                <div key={i} className={`step-dot ${i === index ? 'active' : ''}`} />
-              ))}
-           </div>
+          <div
+            className="step-indicator"
+            style={{ justifyContent: 'center', marginBottom: 'var(--space-4)' }}
+          >
+            {steps.map((_, i) => (
+              <div key={i} className={`step-dot ${i === index ? 'active' : ''}`} />
+            ))}
+          </div>
         </div>
         <div className="onboard-footer">
-          <div className="onboard-steps" style={{ fontFamily: 'var(--font-mono)', fontSize: 'var(--text-sm)', color: 'var(--text-tertiary)' }}>
+          <div
+            className="onboard-steps"
+            style={{
+              fontFamily: 'var(--font-mono)',
+              fontSize: 'var(--text-sm)',
+              color: 'var(--text-tertiary)',
+            }}
+          >
             ÉTAPE {index + 1} / {steps.length}
           </div>
           <div className="onboard-actions" style={{ display: 'flex', gap: 'var(--space-3)' }}>
             {index === steps.length - 1 ? (
               <>
-                <button className="polychat-btn-modern polychat-btn-secondary" onClick={close}>Plus tard</button>
-                <button className="polychat-btn-modern" onClick={() => { requestNotifPermission(); close(); }}>
+                <button className="polychat-btn-modern polychat-btn-secondary" onClick={close}>
+                  Plus tard
+                </button>
+                <button
+                  className="polychat-btn-modern"
+                  onClick={() => {
+                    requestNotifPermission();
+                    close();
+                  }}
+                >
                   Terminer
                 </button>
               </>
             ) : (
               <>
-                <button className="polychat-btn-modern polychat-btn-secondary" onClick={close}>Ignorer</button>
-                <button className="polychat-btn-modern" onClick={() => setIndex(i => Math.min(i + 1, steps.length - 1))}>
+                <button className="polychat-btn-modern polychat-btn-secondary" onClick={close}>
+                  Ignorer
+                </button>
+                <button
+                  className="polychat-btn-modern"
+                  onClick={() => setIndex((i) => Math.min(i + 1, steps.length - 1))}
+                >
                   Suivant
                 </button>
               </>
@@ -85,6 +112,5 @@ const OnboardingModal: React.FC = () => {
     </div>
   );
 };
-
 
 export default OnboardingModal;

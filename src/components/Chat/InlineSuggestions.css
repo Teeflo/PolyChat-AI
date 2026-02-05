@@ -134,16 +134,16 @@
   .inline-suggestions {
     padding: 10px;
   }
-  
+
   .inline-suggestions-buttons {
     gap: 6px;
   }
-  
+
   .suggestion-button {
     padding: 6px 10px;
     font-size: 11px;
   }
-  
+
   .suggestion-button-icon {
     font-size: 12px;
   }
@@ -153,7 +153,7 @@
   .inline-suggestions-buttons {
     flex-direction: column;
   }
-  
+
   .suggestion-button {
     justify-content: center;
     width: 100%;

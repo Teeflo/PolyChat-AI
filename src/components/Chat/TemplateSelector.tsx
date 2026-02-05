@@ -13,7 +13,13 @@ interface Props {
   onSaveCustomTemplate?: (template: ConversationTemplate) => void;
 }
 
-const TemplateSelector: React.FC<Props> = ({ isOpen, onClose, onTemplateSelect, onQuickAction, selectedText }) => {
+const TemplateSelector: React.FC<Props> = ({
+  isOpen,
+  onClose,
+  onTemplateSelect,
+  onQuickAction,
+  selectedText,
+}) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<'templates' | 'actions'>('templates');
@@ -21,20 +27,23 @@ const TemplateSelector: React.FC<Props> = ({ isOpen, onClose, onTemplateSelect, 
   if (!isOpen) return null;
 
   // Filter templates based on search and category
-  const filteredTemplates = PRE_BUILT_TEMPLATES.filter(template => {
-    const matchesSearch = template.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                          template.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                          template.tags.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase()));
-    
+  const filteredTemplates = PRE_BUILT_TEMPLATES.filter((template) => {
+    const matchesSearch =
+      template.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      template.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      template.tags.some((tag) => tag.toLowerCase().includes(searchTerm.toLowerCase()));
+
     const matchesCategory = !activeCategory || template.category === activeCategory;
-    
+
     return matchesSearch && matchesCategory;
   });
 
   // Filter quick actions based on search
-  const filteredActions = QUICK_ACTIONS.filter(action => {
-    return action.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-           action.description.toLowerCase().includes(searchTerm.toLowerCase());
+  const filteredActions = QUICK_ACTIONS.filter((action) => {
+    return (
+      action.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      action.description.toLowerCase().includes(searchTerm.toLowerCase())
+    );
   });
 
   return (
@@ -62,13 +71,13 @@ const TemplateSelector: React.FC<Props> = ({ isOpen, onClose, onTemplateSelect, 
         </div>
 
         <div className="template-selector-tabs">
-          <button 
+          <button
             className={`template-selector-tab ${activeTab === 'templates' ? 'active' : ''}`}
             onClick={() => setActiveTab('templates')}
           >
             Templates ({filteredTemplates.length})
           </button>
-          <button 
+          <button
             className={`template-selector-tab ${activeTab === 'actions' ? 'active' : ''}`}
             onClick={() => setActiveTab('actions')}
           >
@@ -85,7 +94,7 @@ const TemplateSelector: React.FC<Props> = ({ isOpen, onClose, onTemplateSelect, 
               >
                 Tous ({PRE_BUILT_TEMPLATES.length})
               </button>
-              {TEMPLATE_CATEGORIES.map(category => (
+              {TEMPLATE_CATEGORIES.map((category) => (
                 <button
                   key={category.id}
                   className={`template-category-btn ${category.id} ${activeCategory === category.id ? 'active' : ''}`}
@@ -100,7 +109,7 @@ const TemplateSelector: React.FC<Props> = ({ isOpen, onClose, onTemplateSelect, 
             <div className="template-selector-content">
               {filteredTemplates.length > 0 ? (
                 <div className="template-grid">
-                  {filteredTemplates.map(tpl => {
+                  {filteredTemplates.map((tpl) => {
                     return (
                       <button
                         key={tpl.id}
@@ -118,7 +127,9 @@ const TemplateSelector: React.FC<Props> = ({ isOpen, onClose, onTemplateSelect, 
                         {tpl.tags && tpl.tags.length > 0 && (
                           <div className="template-card-tags">
                             {tpl.tags.slice(0, 3).map((tag, index) => (
-                              <span key={index} className="template-card-tag">#{tag}</span>
+                              <span key={index} className="template-card-tag">
+                                #{tag}
+                              </span>
                             ))}
                           </div>
                         )}
@@ -162,9 +173,9 @@ const TemplateSelector: React.FC<Props> = ({ isOpen, onClose, onTemplateSelect, 
           <div className="template-selector-content">
             {filteredActions.length > 0 ? (
               <div className="quick-actions-grid">
-                {filteredActions.map(act => (
-                  <button 
-                    key={act.id} 
+                {filteredActions.map((act) => (
+                  <button
+                    key={act.id}
                     className="quick-action-card"
                     onClick={() => onQuickAction(act, selectedText)}
                   >
@@ -189,10 +200,9 @@ const TemplateSelector: React.FC<Props> = ({ isOpen, onClose, onTemplateSelect, 
 
         <div className="template-selector-footer">
           <div className="template-selector-stats">
-            {activeTab === 'templates' 
-              ? `${filteredTemplates.length} template${filteredTemplates.length !== 1 ? 's' : ''}` 
-              : `${filteredActions.length} action${filteredActions.length !== 1 ? 's' : ''}`
-            }
+            {activeTab === 'templates'
+              ? `${filteredTemplates.length} template${filteredTemplates.length !== 1 ? 's' : ''}`
+              : `${filteredActions.length} action${filteredActions.length !== 1 ? 's' : ''}`}
           </div>
           <button className="template-selector-create-btn">
             <Sparkles size={16} />

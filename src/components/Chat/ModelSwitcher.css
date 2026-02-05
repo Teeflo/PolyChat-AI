@@ -360,7 +360,9 @@
   margin-left: var(--space-1-5);
   border-radius: var(--radius-full);
   background: var(--accent-gradient);
-  box-shadow: 0 0 0 2px rgb(139 92 246 / 0.25), 0 0 6px 2px rgb(139 92 246 / 0.4);
+  box-shadow:
+    0 0 0 2px rgb(139 92 246 / 0.25),
+    0 0 6px 2px rgb(139 92 246 / 0.4);
   animation: pulse 1.6s var(--ease-in-out) infinite;
 }
 

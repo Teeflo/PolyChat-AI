@@ -45,7 +45,7 @@ export function OnboardingModalFresh({ isOpen, onClose }: OnboardingModalProps) 
             </div>
           </div>
         </div>
-      )
+      ),
     },
     {
       icon: Sparkles,
@@ -57,11 +57,9 @@ export function OnboardingModalFresh({ isOpen, onClose }: OnboardingModalProps) 
           </div>
           <h4>Configuration de votre clé API</h4>
           <p>Ajoutez votre clé API pour utiliser PolyChat.</p>
-          
+
           <div className="popup-form-group">
-            <label className="popup-label">
-              Clé API OpenRouter
-            </label>
+            <label className="popup-label">Clé API OpenRouter</label>
             <input
               type="password"
               placeholder="Votre clé API OpenRouter"
@@ -76,20 +74,20 @@ export function OnboardingModalFresh({ isOpen, onClose }: OnboardingModalProps) 
               <Sparkles className="w-4 h-4 text-blue-400" />
               <span>
                 <strong>Gratuit :</strong> Créez un compte sur{' '}
-                <a 
-                  href="https://openrouter.ai" 
-                  target="_blank" 
+                <a
+                  href="https://openrouter.ai"
+                  target="_blank"
                   rel="noopener noreferrer"
                   className="popup-link"
                 >
                   openrouter.ai
-                </a>
-                {' '}pour obtenir votre clé API.
+                </a>{' '}
+                pour obtenir votre clé API.
               </span>
             </p>
           </div>
         </div>
-      )
+      ),
     },
     {
       icon: Bot,
@@ -102,8 +100,8 @@ export function OnboardingModalFresh({ isOpen, onClose }: OnboardingModalProps) 
           <h4>Choisissez votre modèle d'IA par défaut</h4>
           <ModelSelectionStepCompact onNext={() => handleNext()} />
         </div>
-      )
-    }
+      ),
+    },
   ];
 
   const currentStepData = steps[currentStep];
@@ -113,7 +111,7 @@ export function OnboardingModalFresh({ isOpen, onClose }: OnboardingModalProps) 
     if (currentStep === 1 && tempApiKey.trim()) {
       setApiKey(tempApiKey.trim());
     }
-    
+
     if (currentStep < steps.length - 1) {
       setCurrentStep(currentStep + 1);
     } else {
@@ -143,34 +141,69 @@ export function OnboardingModalFresh({ isOpen, onClose }: OnboardingModalProps) 
     <div className="onboarding-fresh-container">
       <div className="onboarding-fresh-card">
         <div className="onboarding-sidebar">
-          <div className="polychat-logo-sm" style={{ width: '48px', height: '48px', background: 'rgba(255,255,255,0.2)', borderRadius: 'var(--radius-xl)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 'var(--space-6)' }}>
+          <div
+            className="polychat-logo-sm"
+            style={{
+              width: '48px',
+              height: '48px',
+              background: 'rgba(255,255,255,0.2)',
+              borderRadius: 'var(--radius-xl)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              marginBottom: 'var(--space-6)',
+            }}
+          >
             <Icon size={24} color="white" />
           </div>
-          <h2 className="onboarding-step-title" style={{ color: 'white' }}>PolyChat AI</h2>
+          <h2 className="onboarding-step-title" style={{ color: 'white' }}>
+            PolyChat AI
+          </h2>
           <p style={{ opacity: 0.8, fontSize: 'var(--text-sm)' }}>
             L'interface ultime pour vos modèles d'IA préférés.
           </p>
-          
+
           <div style={{ marginTop: 'auto' }}>
             <div className="step-indicator">
-               {steps.map((_, i) => (
-                 <div key={i} className={`step-dot ${i === currentStep ? 'active' : ''}`} style={{ background: i === currentStep ? 'white' : 'rgba(255,255,255,0.3)' }} />
-               ))}
+              {steps.map((_, i) => (
+                <div
+                  key={i}
+                  className={`step-dot ${i === currentStep ? 'active' : ''}`}
+                  style={{ background: i === currentStep ? 'white' : 'rgba(255,255,255,0.3)' }}
+                />
+              ))}
             </div>
           </div>
         </div>
 
         <div className="onboarding-main">
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 'var(--space-6)' }}>
-             <div>
-               <h3 className="onboarding-step-title">{currentStepData.title}</h3>
-               <p style={{ color: 'var(--text-tertiary)', fontSize: 'var(--text-xs)', textTransform: 'uppercase', letterSpacing: '1px' }}>
-                 Étape {currentStep + 1} sur {steps.length}
-               </p>
-             </div>
-             <button onClick={onClose} style={{ color: 'var(--text-tertiary)', padding: 'var(--space-2)' }}>
-               <X size={20} />
-             </button>
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              marginBottom: 'var(--space-6)',
+            }}
+          >
+            <div>
+              <h3 className="onboarding-step-title">{currentStepData.title}</h3>
+              <p
+                style={{
+                  color: 'var(--text-tertiary)',
+                  fontSize: 'var(--text-xs)',
+                  textTransform: 'uppercase',
+                  letterSpacing: '1px',
+                }}
+              >
+                Étape {currentStep + 1} sur {steps.length}
+              </p>
+            </div>
+            <button
+              onClick={onClose}
+              style={{ color: 'var(--text-tertiary)', padding: 'var(--space-2)' }}
+            >
+              <X size={20} />
+            </button>
           </div>
 
           <div className="onboarding-step-content" style={{ flex: 1, overflowY: 'auto' }}>
@@ -185,11 +218,7 @@ export function OnboardingModalFresh({ isOpen, onClose }: OnboardingModalProps) 
             >
               Précédent
             </button>
-            <button
-              onClick={handleNext}
-              disabled={!canProceed()}
-              className="polychat-btn-modern"
-            >
+            <button onClick={handleNext} disabled={!canProceed()} className="polychat-btn-modern">
               {currentStep === steps.length - 1 ? 'Terminer' : 'Suivant'}
             </button>
           </div>

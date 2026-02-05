@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useSettings } from '../../hooks/useSettings';
 import { Brain, Loader2, RefreshCw, Cpu } from 'lucide-react';
-import { 
-  fetchAvailableModels, 
-  formatModelName, 
-  type OpenRouterModel 
+import {
+  fetchAvailableModels,
+  formatModelName,
+  type OpenRouterModel,
 } from '../../services/modelsApi';
 
 const ModelSelector: React.FC = () => {
@@ -20,12 +20,11 @@ const ModelSelector: React.FC = () => {
       const fetchedModels = await fetchAvailableModels();
       setModels(fetchedModels);
 
-      if (fetchedModels.length > 0 && !fetchedModels.find(m => m.id === selectedModel)) {
+      if (fetchedModels.length > 0 && !fetchedModels.find((m) => m.id === selectedModel)) {
         setSelectedModel(fetchedModels[0].id);
       }
-    } catch (err) {
+    } catch {
       setError('MODEL LOADING FAILED');
-      console.error('Model loading error:', err);
     } finally {
       setLoading(false);
     }
@@ -74,11 +73,7 @@ const ModelSelector: React.FC = () => {
           className={`polychat-btn polychat-btn-secondary polychat-refresh-btn ${loading ? 'loading' : ''}`}
           title="REFRESH MODELS"
         >
-          {loading ? (
-            <Loader2 size={12} className="polychat-pulse" />
-          ) : (
-            <RefreshCw size={12} />
-          )}
+          {loading ? <Loader2 size={12} className="polychat-pulse" /> : <RefreshCw size={12} />}
         </button>
       </div>
 

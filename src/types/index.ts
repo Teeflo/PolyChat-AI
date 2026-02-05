@@ -73,13 +73,13 @@ export interface ConversationTemplate {
   examples?: string[]; // Exemples d'utilisation du template
 }
 
-export type TemplateCategory = 
-  | 'programming' 
-  | 'writing' 
-  | 'analysis' 
-  | 'creative' 
-  | 'learning' 
-  | 'business' 
+export type TemplateCategory =
+  | 'programming'
+  | 'writing'
+  | 'analysis'
+  | 'creative'
+  | 'learning'
+  | 'business'
   | 'personal';
 
 export interface QuickAction {
@@ -94,16 +94,16 @@ export interface QuickAction {
   userMessageTemplate?: string;
 }
 
-export type QuickActionType = 
-  | 'explain' 
-  | 'optimize' 
-  | 'debug' 
-  | 'comment' 
-  | 'translate' 
-  | 'summarize' 
-  | 'review' 
-  | 'improve' 
-  | 'simplify' 
+export type QuickActionType =
+  | 'explain'
+  | 'optimize'
+  | 'debug'
+  | 'comment'
+  | 'translate'
+  | 'summarize'
+  | 'review'
+  | 'improve'
+  | 'simplify'
   | 'expand';
 
 export interface TemplateCategoryInfo {

@@ -16,7 +16,7 @@ const MultiChatWindowModern: React.FC<MultiChatWindowModernProps> = ({ sessions 
 
   // Auto-scroll to bottom when messages change
   React.useEffect(() => {
-    sessions.forEach(session => {
+    sessions.forEach((session) => {
       const tail = scrollTails.current[session.id];
       if (tail) {
         tail.scrollIntoView({ behavior: 'smooth' });
@@ -38,20 +38,18 @@ const MultiChatWindowModern: React.FC<MultiChatWindowModernProps> = ({ sessions 
                 sessionId={session.id}
                 currentModelId={session.modelId}
                 currentModelName={session.modelName}
-                onSelect={(id)=> setSessionModel(session.id, id)}
+                onSelect={(id) => setSessionModel(session.id, id)}
               />
               <span className="chat-header-modern-subtitle">
                 {/* Affiche 0 si aucun message utilisateur n'a été envoyé */}
-                {session.messages.filter(m => m.role !== 'system').length} messages
+                {session.messages.filter((m) => m.role !== 'system').length} messages
               </span>
             </div>
           </div>
-          
+
           <div className="chat-header-modern-status">
             {/* Point vert retiré */}
-            {session.isLoading && (
-              <span className="chat-status-text-modern">Réflexion...</span>
-            )}
+            {session.isLoading && <span className="chat-status-text-modern">Réflexion...</span>}
           </div>
         </div>
 
@@ -62,7 +60,7 @@ const MultiChatWindowModern: React.FC<MultiChatWindowModernProps> = ({ sessions 
               <div className="chat-stream-bar">
                 {(() => {
                   const chars = streamingProgress[session.id].chars;
-                  const pct = Math.min(90, 10 + (Math.log10(chars + 10) * 25));
+                  const pct = Math.min(90, 10 + Math.log10(chars + 10) * 25);
                   const bucket = Math.round(pct / 5) * 5; // step 5%
                   const cls = `w-${bucket}`; // will map in CSS
                   return <div className={`chat-stream-bar-fill ${cls}`} />;
@@ -82,9 +80,7 @@ const MultiChatWindowModern: React.FC<MultiChatWindowModernProps> = ({ sessions 
                   <Zap size={32} />
                 </div>
                 <div className="chat-welcome-modern-content">
-                  <h3 className="chat-welcome-modern-title">
-                    Assistant IA Prêt
-                  </h3>
+                  <h3 className="chat-welcome-modern-title">Assistant IA Prêt</h3>
                   <p className="chat-welcome-modern-subtitle">
                     {session.modelName.split('/').pop()} • Modèle optimisé
                   </p>
@@ -102,11 +98,15 @@ const MultiChatWindowModern: React.FC<MultiChatWindowModernProps> = ({ sessions 
                 key={message.id}
                 message={message}
                 error={session.error}
-                onRegenerate={message.role === 'assistant' ? () => regenerateMessage(session.id, message.id) : undefined}
+                onRegenerate={
+                  message.role === 'assistant'
+                    ? () => regenerateMessage(session.id, message.id)
+                    : undefined
+                }
                 onDelete={() => deleteMessage(session.id, message.id)}
               />
             ))}
-            
+
             {/* Message de chargement */}
             {session.isLoading && (
               <MessageBubbleModern
@@ -115,14 +115,18 @@ const MultiChatWindowModern: React.FC<MultiChatWindowModernProps> = ({ sessions 
                   role: 'assistant',
                   content: '',
                   timestamp: new Date(),
-                  modelId: session.modelId
+                  modelId: session.modelId,
                 }}
                 isLoading={true}
               />
             )}
-            
+
             {/* Element pour le scroll automatique */}
-            <div ref={el => { scrollTails.current[session.id] = el; }} />
+            <div
+              ref={(el) => {
+                scrollTails.current[session.id] = el;
+              }}
+            />
           </div>
         </div>
 
@@ -132,11 +136,7 @@ const MultiChatWindowModern: React.FC<MultiChatWindowModernProps> = ({ sessions 
             <Terminal size={12} />
             <span>{session.modelId}</span>
           </div>
-          {session.error && (
-            <div className="chat-footer-modern-error">
-              ⚠️ Erreur de connexion
-            </div>
-          )}
+          {session.error && <div className="chat-footer-modern-error">⚠️ Erreur de connexion</div>}
         </div>
       </div>
     </div>
@@ -148,9 +148,7 @@ const MultiChatWindowModern: React.FC<MultiChatWindowModernProps> = ({ sessions 
         <div className="chat-empty-state-modern-icon">
           <Bot size={48} />
         </div>
-        <h3 className="chat-empty-state-modern-title">
-          Aucun modèle sélectionné
-        </h3>
+        <h3 className="chat-empty-state-modern-title">Aucun modèle sélectionné</h3>
         <p className="chat-empty-state-modern-description">
           Sélectionnez un modèle d'IA pour commencer une conversation
         </p>
@@ -162,9 +160,7 @@ const MultiChatWindowModern: React.FC<MultiChatWindowModernProps> = ({ sessions 
     <div className="multi-chat-container-modern">
       {sessions.length === 1 ? (
         // Affichage pleine largeur pour une seule session
-        <div className="single-chat-modern">
-          {renderChatWindow(sessions[0])}
-        </div>
+        <div className="single-chat-modern">{renderChatWindow(sessions[0])}</div>
       ) : (
         // Affichage en grille pour plusieurs sessions
         <div className={`multi-chat-grid-modern grid-${Math.min(sessions.length, 3)}`}>

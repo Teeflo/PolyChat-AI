@@ -8,35 +8,39 @@ The application is structured with a clear separation of concerns, with componen
 
 To get the project running locally, use the following commands:
 
-*   **Install dependencies:**
-    ```bash
-    npm install
-    ```
+- **Install dependencies:**
 
-*   **Run the development server:**
-    ```bash
-    npm run dev
-    ```
+  ```bash
+  npm install
+  ```
 
-*   **Build for production:**
-    ```bash
-    npm run build
-    ```
+- **Run the development server:**
 
-*   **Lint the code:**
-    ```bash
-    npm run lint
-    ```
+  ```bash
+  npm run dev
+  ```
 
-*   **Preview the production build:**
-    ```bash
-    npm run preview
-    ```
+- **Build for production:**
+
+  ```bash
+  npm run build
+  ```
+
+- **Lint the code:**
+
+  ```bash
+  npm run lint
+  ```
+
+- **Preview the production build:**
+  ```bash
+  npm run preview
+  ```
 
 ## Development Conventions
 
-*   **Linting:** The project uses ESLint for code linting. Run `npm run lint` to check for issues.
-*   **Styling:** The project uses Tailwind CSS for styling, with a custom theme defined in `tailwind.config.js` and additional styles in the `src/styles` directory.
-*   **Component Structure:** The application is built with a component-based architecture. Components are located in `src/components` and organized by feature (Chat, Layout, Settings).
-*   **State Management:** Global state is managed using Zustand, with the `ChatProvider` in `src/context/ChatProvider.tsx` and custom hooks in `src/hooks`.
-*   **API Interaction:** API calls to the OpenRouter API are handled in the `src/services` directory.
+- **Linting:** The project uses ESLint for code linting. Run `npm run lint` to check for issues.
+- **Styling:** The project uses Tailwind CSS for styling, with a custom theme defined in `tailwind.config.js` and additional styles in the `src/styles` directory.
+- **Component Structure:** The application is built with a component-based architecture. Components are located in `src/components` and organized by feature (Chat, Layout, Settings).
+- **State Management:** Global state is managed using Zustand, with the `ChatProvider` in `src/context/ChatProvider.tsx` and custom hooks in `src/hooks`.
+- **API Interaction:** API calls to the OpenRouter API are handled in the `src/services` directory.

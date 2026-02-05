@@ -27,7 +27,10 @@ interface SettingsStore extends Settings {
   setNotificationsEnabled: (enabled: boolean) => void;
   setRagEnabled: (enabled: boolean) => void;
   setHasOnboarded: (hasOnboarded: boolean) => void;
-  setShowConfigurationPopup: (show: boolean, type?: 'missing-api-key' | 'configuration-error') => void;
+  setShowConfigurationPopup: (
+    show: boolean,
+    type?: 'missing-api-key' | 'configuration-error'
+  ) => void;
   toggleTheme: () => void;
   toggleSettings: () => void;
   closeSettings: () => void;
@@ -45,14 +48,15 @@ export const useSettings = create<SettingsStore>()(
       setTheme: (theme) => set({ theme }),
       setAccent: (accent) => set({ accent }),
       setSystemPrompt: (systemPrompt) => set({ systemPrompt }),
-  setTone: (tone) => set({ tone }),
-  setNotificationsEnabled: (notificationsEnabled) => set({ notificationsEnabled }),
-  setRagEnabled: (ragEnabled) => set({ ragEnabled }),
-  setHasOnboarded: (hasOnboarded) => set({ hasOnboarded }),
-      setShowConfigurationPopup: (show, type) => set({ 
-        showConfigurationPopup: show, 
-        configurationPopupType: show ? type || null : null 
-      }),
+      setTone: (tone) => set({ tone }),
+      setNotificationsEnabled: (notificationsEnabled) => set({ notificationsEnabled }),
+      setRagEnabled: (ragEnabled) => set({ ragEnabled }),
+      setHasOnboarded: (hasOnboarded) => set({ hasOnboarded }),
+      setShowConfigurationPopup: (show, type) =>
+        set({
+          showConfigurationPopup: show,
+          configurationPopupType: show ? type || null : null,
+        }),
       toggleTheme: () => set({ theme: get().theme === 'light' ? 'dark' : 'light' }),
       toggleSettings: () => set({ isSettingsOpen: !get().isSettingsOpen }),
       closeSettings: () => set({ isSettingsOpen: false }),

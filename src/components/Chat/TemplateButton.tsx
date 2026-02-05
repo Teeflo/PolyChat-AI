@@ -15,7 +15,7 @@ const TemplateButton: React.FC<TemplateButtonProps> = ({
   onTemplateSelect,
   onQuickAction,
   selectedText,
-  onSaveCustomTemplate
+  onSaveCustomTemplate,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
 

@@ -8,7 +8,7 @@ const ModelSelectorInChat: React.FC = () => {
   const { models } = useModels();
   const [isExpanded, setIsExpanded] = useState(false);
 
-  const availableModels = models.filter(model => !selectedModels.includes(model.id));
+  const availableModels = models.filter((model) => !selectedModels.includes(model.id));
   const canAddMore = selectedModels.length < 3;
 
   const handleAddModel = (modelId: string) => {
@@ -29,7 +29,7 @@ const ModelSelectorInChat: React.FC = () => {
         <div className="polychat-models-header">
           <span className="polychat-models-title">ACTIVE MODELS ({selectedModels.length}/3)</span>
         </div>
-        
+
         <div className="polychat-models-list">
           {activeSessions.map((session) => (
             <div key={session.id} className="polychat-model-chip">
@@ -47,7 +47,7 @@ const ModelSelectorInChat: React.FC = () => {
               )}
             </div>
           ))}
-          
+
           {/* Bouton pour ajouter un modèle */}
           {canAddMore && (
             <div className="polychat-add-model-container">
@@ -60,7 +60,7 @@ const ModelSelectorInChat: React.FC = () => {
                 <span>ADD MODEL</span>
                 {isExpanded ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
               </button>
-              
+
               {/* Dropdown des modèles disponibles */}
               {isExpanded && (
                 <div className="polychat-models-dropdown">
@@ -80,9 +80,7 @@ const ModelSelectorInChat: React.FC = () => {
                         </button>
                       ))
                     ) : (
-                      <div className="polychat-dropdown-empty">
-                        No more models available
-                      </div>
+                      <div className="polychat-dropdown-empty">No more models available</div>
                     )}
                   </div>
                 </div>

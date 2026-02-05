@@ -7,50 +7,50 @@ export const TEMPLATE_CATEGORIES: TemplateCategoryInfo[] = [
     name: 'Programming',
     description: 'Code review, debugging, and development assistance',
     icon: '💻',
-    color: '#3B82F6'
+    color: '#3B82F6',
   },
   {
     id: 'writing',
     name: 'Writing',
     description: 'Content creation, editing, and writing assistance',
     icon: '✍️',
-    color: '#10B981'
+    color: '#10B981',
   },
   {
     id: 'analysis',
     name: 'Analysis',
     description: 'Data analysis, research, and insights',
     icon: '📊',
-    color: '#F59E0B'
+    color: '#F59E0B',
   },
   {
     id: 'creative',
     name: 'Creative',
     description: 'Brainstorming, ideation, and creative projects',
     icon: '🎨',
-    color: '#8B5CF6'
+    color: '#8B5CF6',
   },
   {
     id: 'learning',
     name: 'Learning',
     description: 'Educational content and learning assistance',
     icon: '📚',
-    color: '#EF4444'
+    color: '#EF4444',
   },
   {
     id: 'business',
     name: 'Business',
     description: 'Business strategy, planning, and professional tasks',
     icon: '💼',
-    color: '#06B6D4'
+    color: '#06B6D4',
   },
   {
     id: 'personal',
     name: 'Personal',
     description: 'Personal development and life assistance',
     icon: '🌟',
-    color: '#EC4899'
-  }
+    color: '#EC4899',
+  },
 ];
 
 // Pre-built conversation templates
@@ -60,7 +60,8 @@ export const PRE_BUILT_TEMPLATES: ConversationTemplate[] = [
     id: 'code-review-advanced',
     name: 'Revue de Code Avancée',
     category: 'programming',
-    description: 'Analyse approfondie du code avec focus sur la sécurité, performance et bonnes pratiques',
+    description:
+      'Analyse approfondie du code avec focus sur la sécurité, performance et bonnes pratiques',
     systemPrompt: `Tu es un expert en développement logiciel senior avec 15+ ans d'expérience dans les domaines critiques comme la finance, la santé et les systèmes distribués. Analyse le code en détail en suivant cette méthodologie rigoureuse :
 
 1. Sécurité :
@@ -125,8 +126,8 @@ Documentation existante :
     examples: [
       'Analyse cette fonction de traitement de paiement pour des vulnérabilités de sécurité',
       'Vérifie les performances de cette requête SQL sur un jeu de données de 1 million de lignes',
-      'Évalue la maintenabilité de cette classe de service avec plus de 1000 lignes'
-    ]
+      'Évalue la maintenabilité de cette classe de service avec plus de 1000 lignes',
+    ],
   },
   {
     id: 'debug-avance',
@@ -193,9 +194,9 @@ Changements récents :
     color: '#EF4444',
     examples: [
       'Mon application plante avec une erreur de segmentation aléatoire en production',
-      'La requête SQL prend 10 secondes à s\'exécuter seulement pour 0.1% des utilisateurs',
-      'Erreur de concurrence intermittente dans mon application multi-thread avec deadlocks'
-    ]
+      "La requête SQL prend 10 secondes à s'exécuter seulement pour 0.1% des utilisateurs",
+      'Erreur de concurrence intermittente dans mon application multi-thread avec deadlocks',
+    ],
   },
   {
     id: 'optimisation-avancee',
@@ -274,10 +275,10 @@ Objectifs d'optimisation :
     color: '#F59E0B',
     examples: [
       'Comment optimiser cette fonction de tri pour des jeux de données de plusieurs gigaoctets ?',
-      'Cette requête GraphQL prend 5 secondes pour des datasets complexes, comment l\'améliorer ?',
-      'Optimisation des performances d\'une boucle de rendu React avec des milliers d\'éléments'
+      "Cette requête GraphQL prend 5 secondes pour des datasets complexes, comment l'améliorer ?",
+      "Optimisation des performances d'une boucle de rendu React avec des milliers d'éléments",
     ],
-    modelSpecific: ['gpt-4', 'claude-3']
+    modelSpecific: ['gpt-4', 'claude-3'],
   },
   {
     id: 'documentation-avancee',
@@ -341,12 +342,12 @@ Documentation existante :
     isCustom: false,
     examples: [
       'Documente cette API REST complète avec des exemples de requêtes et schémas',
-      'Crée un README professionnel pour ce projet React avec instructions d\'installation et déploiement',
-      'Génère des docstrings complètes pour cette classe Python avec types et exemples'
+      "Crée un README professionnel pour ce projet React avec instructions d'installation et déploiement",
+      'Génère des docstrings complètes pour cette classe Python avec types et exemples',
     ],
     modelSpecific: ['gpt-4', 'claude-3-sonnet'],
     icon: '📝',
-    color: '#10B981'
+    color: '#10B981',
   },
 
   // Writing Templates - Améliorés et plus complets
@@ -354,7 +355,7 @@ Documentation existante :
     id: 'creation-contenu-pro',
     name: 'Création de Contenu Professionnel',
     category: 'writing',
-    description: 'Création de contenu optimisé pour le référencement et l\'engagement',
+    description: "Création de contenu optimisé pour le référencement et l'engagement",
     systemPrompt: `Tu es un expert en création de contenu avec 10+ ans d'expérience dans le marketing digital, le SEO et la conversion. Crée du contenu qui :
 
 1. Capte l'attention :
@@ -411,11 +412,11 @@ Contraintes spécifiques :
     examples: [
       'Rédige un article de blog de 1500 mots sur les avantages du télétravail pour les PME avec statistiques',
       'Crée un post LinkedIn engageant pour annoncer notre nouvelle fonctionnalité IA avec témoignage client',
-      'Écris une page de vente complète pour notre formation en développement web avec objections et réponses'
+      'Écris une page de vente complète pour notre formation en développement web avec objections et réponses',
     ],
     modelSpecific: ['gpt-4', 'claude-3-opus'],
     icon: '✍️',
-    color: '#10B981'
+    color: '#10B981',
   },
   {
     id: 'grammar-check',
@@ -467,7 +468,7 @@ Specific concerns:
     isCustom: false,
     modelSpecific: ['gpt-4', 'claude-3'],
     icon: '📖',
-    color: '#8B5CF6'
+    color: '#8B5CF6',
   },
   {
     id: 'email-writing',
@@ -521,7 +522,7 @@ Expected response: [what you want them to do after reading]`,
     isCustom: false,
     modelSpecific: ['gpt-4', 'claude-3'],
     icon: '📧',
-    color: '#06B6D4'
+    color: '#06B6D4',
   },
 
   // Analysis Templates
@@ -591,7 +592,7 @@ Expected deliverables:
     isCustom: false,
     modelSpecific: ['gpt-4', 'claude-3'],
     icon: '📊',
-    color: '#F59E0B'
+    color: '#F59E0B',
   },
   {
     id: 'market-research',
@@ -655,7 +656,7 @@ Research depth required:
     isCustom: false,
     modelSpecific: ['gpt-4', 'claude-3'],
     icon: '🔍',
-    color: '#8B5CF6'
+    color: '#8B5CF6',
   },
 
   // Creative Templates
@@ -715,7 +716,7 @@ Creative direction:
     isCustom: false,
     modelSpecific: ['gpt-4', 'claude-3', 'gemini-pro'],
     icon: '💡',
-    color: '#8B5CF6'
+    color: '#8B5CF6',
   },
   {
     id: 'story-writing',
@@ -782,7 +783,7 @@ Style preferences:
     isCustom: false,
     modelSpecific: ['gpt-4', 'claude-3', 'gemini-pro'],
     icon: '📚',
-    color: '#EC4899'
+    color: '#EC4899',
   },
 
   // Learning Templates
@@ -848,7 +849,7 @@ Learning preferences:
     isCustom: false,
     modelSpecific: ['gpt-4', 'claude-3', 'gemini-pro'],
     icon: '🎓',
-    color: '#EF4444'
+    color: '#EF4444',
   },
   {
     id: 'study-plan',
@@ -917,7 +918,7 @@ Success metrics:
     isCustom: false,
     modelSpecific: ['gpt-4', 'claude-3'],
     icon: '📅',
-    color: '#10B981'
+    color: '#10B981',
   },
 
   // Business Templates
@@ -990,7 +991,7 @@ Resource parameters:
     isCustom: false,
     modelSpecific: ['gpt-4', 'claude-3'],
     icon: '💼',
-    color: '#06B6D4'
+    color: '#06B6D4',
   },
   {
     id: 'presentation-prep',
@@ -1061,7 +1062,7 @@ Supporting information:
     isCustom: false,
     modelSpecific: ['gpt-4', 'claude-3'],
     icon: '📊',
-    color: '#F59E0B'
+    color: '#F59E0B',
   },
 
   // Personal Templates
@@ -1135,7 +1136,7 @@ Accountability preferences:
     isCustom: false,
     modelSpecific: ['gpt-4', 'claude-3'],
     icon: '🎯',
-    color: '#EC4899'
+    color: '#EC4899',
   },
   {
     id: 'decision-making',
@@ -1206,8 +1207,8 @@ Information needed:
     isCustom: false,
     modelSpecific: ['gpt-4', 'claude-3'],
     icon: '🤔',
-    color: '#8B5CF6'
-  }
+    color: '#8B5CF6',
+  },
 ];
 
 // Quick Actions
@@ -1240,7 +1241,7 @@ Include:
 - Step-by-step execution flow
 - Important variables, functions, or constructs
 - Any design patterns or best practices used
-- Potential edge cases or limitations`
+- Potential edge cases or limitations`,
   },
   {
     id: 'optimize-code',
@@ -1274,7 +1275,7 @@ Focus on:
 - Memory usage reduction
 - Code readability and maintainability
 - Language-specific best practices
-- Performance benchmarking if relevant`
+- Performance benchmarking if relevant`,
   },
   {
     id: 'debug-code',
@@ -1310,7 +1311,7 @@ Look for:
 - Edge cases and boundary conditions
 - Performance issues and security concerns
 
-If unclear what the code should do, ask for clarification.`
+If unclear what the code should do, ask for clarification.`,
   },
   {
     id: 'add-comments',
@@ -1344,7 +1345,7 @@ Include:
 - Function and class documentation with parameters/returns
 - Explanations of complex logic or algorithms
 - Important implementation decisions
-- Usage examples for key functions`
+- Usage examples for key functions`,
   },
   {
     id: 'translate-text',
@@ -1374,7 +1375,7 @@ Consider:
 - Formality level and tone matching
 - Technical terms and specialized vocabulary
 - Regional variations if relevant
-- Target audience preferences and expectations`
+- Target audience preferences and expectations`,
   },
   {
     id: 'summarize-text',
@@ -1400,7 +1401,7 @@ Structure summaries with:
 
 \`\`\`
 {selectedText}
-\`\`\`\n\nInclude:\n- Main ideas and key points\n- Essential supporting details\n- Important conclusions or recommendations\n- Action items if relevant\n\nFormat for easy scanning and quick understanding.`
+\`\`\`\n\nInclude:\n- Main ideas and key points\n- Essential supporting details\n- Important conclusions or recommendations\n- Action items if relevant\n\nFormat for easy scanning and quick understanding.`,
   },
   {
     id: 'improve-writing',
@@ -1434,7 +1435,7 @@ Focus on:
 - Improving sentence structure and flow
 - Correcting grammar and style issues
 - Enhancing overall impact and readability
-- Maintaining the original voice and intent`
+- Maintaining the original voice and intent`,
   },
   {
     id: 'simplify-text',
@@ -1468,7 +1469,7 @@ Make it:
 - Free of unnecessary jargon
 - More direct and concise
 - Accessible to a general audience
-- Clear about key points and takeaways`
+- Clear about key points and takeaways`,
   },
   {
     id: 'expand-ideas',
@@ -1502,7 +1503,7 @@ Develop:
 - Supporting examples and evidence
 - Related ideas and connections
 - Practical applications and implementations
-- Potential questions and deeper insights`
+- Potential questions and deeper insights`,
   },
   {
     id: 'review-content',
@@ -1538,7 +1539,6 @@ Evaluate:
 - Strengths and areas for improvement
 - Specific suggestions for enhancement
 
-Consider the intended audience and context.`
-  }
+Consider the intended audience and context.`,
+  },
 ];
-

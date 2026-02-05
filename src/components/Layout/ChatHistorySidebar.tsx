@@ -8,25 +8,17 @@ interface ChatHistorySidebarProps {
   onClose: () => void;
 }
 
-export const ChatHistorySidebar: React.FC<ChatHistorySidebarProps> = ({
-  isOpen,
-  onClose,
-}) => {
-  const { 
-    allSessions, 
-    currentSessionId, 
-    setActiveSession, 
-    createNewSession, 
-    deleteSession 
-  } = useChat();
+export const ChatHistorySidebar: React.FC<ChatHistorySidebarProps> = ({ isOpen, onClose }) => {
+  const { allSessions, currentSessionId, setActiveSession, createNewSession, deleteSession } =
+    useChat();
 
   const getSessionTitle = (session: ChatSession): string => {
     // Try to find the first user message
-    const userMessage = session.messages.find(msg => msg.role === 'user');
+    const userMessage = session.messages.find((msg) => msg.role === 'user');
     if (userMessage && typeof userMessage.content === 'string' && userMessage.content.trim()) {
       return userMessage.content.trim();
     }
-    
+
     // Fallback based on model name and date
     const date = new Date(session.messages[0]?.timestamp || Date.now()).toLocaleDateString();
     return `Conversation ${session.modelName} (${date})`;
@@ -34,7 +26,7 @@ export const ChatHistorySidebar: React.FC<ChatHistorySidebarProps> = ({
 
   const getSessionPreview = (session: ChatSession): string => {
     if (!session.messages.length) return 'Nouvelle conversation';
-    
+
     const lastMessage = session.messages[session.messages.length - 1];
     if (lastMessage && typeof lastMessage.content === 'string' && lastMessage.content.trim()) {
       return lastMessage.content.trim();
@@ -47,7 +39,7 @@ export const ChatHistorySidebar: React.FC<ChatHistorySidebarProps> = ({
   const filteredSessions = useMemo(() => {
     if (!searchQuery.trim()) return allSessions;
     const query = searchQuery.toLowerCase();
-    return allSessions.filter(session => {
+    return allSessions.filter((session) => {
       const title = getSessionTitle(session).toLowerCase();
       const preview = getSessionPreview(session).toLowerCase();
       return title.includes(query) || preview.includes(query);
@@ -57,10 +49,10 @@ export const ChatHistorySidebar: React.FC<ChatHistorySidebarProps> = ({
   // Group sessions by date
   const groupedSessions = useMemo(() => {
     const groups: Record<string, ChatSession[]> = {
-      'Aujourd\'hui': [],
-      'Hier': [],
+      "Aujourd'hui": [],
+      Hier: [],
       '7 derniers jours': [],
-      'Plus ancien': []
+      'Plus ancien': [],
     };
 
     const now = new Date();
@@ -72,23 +64,26 @@ export const ChatHistorySidebar: React.FC<ChatHistorySidebarProps> = ({
 
     // Sort sessions by most recent message/creation
     const sortedSessions = [...filteredSessions].sort((a, b) => {
-      const dateA = a.messages.length > 0 
-        ? new Date(a.messages[a.messages.length - 1].timestamp).getTime() 
-        : parseInt(a.id.split('-')[1] || '0');
-      
-      const dateB = b.messages.length > 0 
-        ? new Date(b.messages[b.messages.length - 1].timestamp).getTime() 
-        : parseInt(b.id.split('-')[1] || '0');
-        
+      const dateA =
+        a.messages.length > 0
+          ? new Date(a.messages[a.messages.length - 1].timestamp).getTime()
+          : parseInt(a.id.split('-')[1] || '0');
+
+      const dateB =
+        b.messages.length > 0
+          ? new Date(b.messages[b.messages.length - 1].timestamp).getTime()
+          : parseInt(b.id.split('-')[1] || '0');
+
       return dateB - dateA;
     });
 
-    sortedSessions.forEach(session => {
+    sortedSessions.forEach((session) => {
       // Determine session date (last message or creation)
-      let sessionDateStr = session.messages.length > 0 
-        ? session.messages[session.messages.length - 1].timestamp 
-        : null;
-        
+      let sessionDateStr =
+        session.messages.length > 0
+          ? session.messages[session.messages.length - 1].timestamp
+          : null;
+
       // Fallback to timestamp in ID if no messages
       if (!sessionDateStr) {
         const parts = session.id.split('-');
@@ -100,10 +95,14 @@ export const ChatHistorySidebar: React.FC<ChatHistorySidebarProps> = ({
       }
 
       const sessionDate = new Date(sessionDateStr);
-      const sessionDateOnly = new Date(sessionDate.getFullYear(), sessionDate.getMonth(), sessionDate.getDate());
+      const sessionDateOnly = new Date(
+        sessionDate.getFullYear(),
+        sessionDate.getMonth(),
+        sessionDate.getDate()
+      );
 
       if (sessionDateOnly.getTime() === today.getTime()) {
-        groups['Aujourd\'hui'].push(session);
+        groups["Aujourd'hui"].push(session);
       } else if (sessionDateOnly.getTime() === yesterday.getTime()) {
         groups['Hier'].push(session);
       } else if (sessionDateOnly > lastWeek) {
@@ -140,14 +139,13 @@ export const ChatHistorySidebar: React.FC<ChatHistorySidebarProps> = ({
 
   return (
     <>
-      {isOpen && (
-        <div 
-          className="polychat-sidebar-overlay"
-          onClick={onClose}
-        />
-      )}
-      
-      <div className={`polychat-sidebar ${isOpen ? 'open' : ''}`} role="complementary" aria-label="Historique des conversations">
+      {isOpen && <div className="polychat-sidebar-overlay" onClick={onClose} />}
+
+      <div
+        className={`polychat-sidebar ${isOpen ? 'open' : ''}`}
+        role="complementary"
+        aria-label="Historique des conversations"
+      >
         <div className="polychat-sidebar-header">
           <h2 className="polychat-sidebar-title">
             <MessageSquare size={18} />
@@ -166,9 +164,9 @@ export const ChatHistorySidebar: React.FC<ChatHistorySidebarProps> = ({
         <div className="chat-history-search">
           <div className="chat-history-search-input">
             <Search size={14} />
-            <input 
-              type="text" 
-              placeholder="Rechercher..." 
+            <input
+              type="text"
+              placeholder="Rechercher..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
@@ -185,10 +183,7 @@ export const ChatHistorySidebar: React.FC<ChatHistorySidebarProps> = ({
             <div className="empty-history-message">
               <Calendar size={48} strokeWidth={1} />
               <p>Votre historique est vide</p>
-              <button 
-                className="polychat-new-chat-btn" 
-                onClick={handleNewChat}
-              >
+              <button className="polychat-new-chat-btn" onClick={handleNewChat}>
                 Commencer
               </button>
             </div>
@@ -198,55 +193,56 @@ export const ChatHistorySidebar: React.FC<ChatHistorySidebarProps> = ({
               <p>Aucun résultat pour "{searchQuery}"</p>
             </div>
           ) : (
-            Object.entries(groupedSessions).map(([group, sessions]) => (
-              sessions.length > 0 && (
-                <div key={group} className="polychat-history-section">
-                  <div className="polychat-history-section-title">{group}</div>
-                  {sessions.map((session) => (
-                    <div
-                      key={session.id}
-                      className={`polychat-history-item ${
-                        session.id === currentSessionId ? 'active' : ''
-                      }`}
-                      onClick={() => handleSessionClick(session.id)}
-                    >
-                      <div className="polychat-history-item-content">
-                        <div className="polychat-history-item-title" title={getSessionTitle(session)}>
-                          {getSessionTitle(session)}
-                        </div>
-                        <div className="polychat-history-item-preview">
-                          {getSessionPreview(session)}
-                        </div>
-                        <div className="polychat-history-item-meta">
-                          <span className="polychat-history-item-model">
-                            {session.modelName.split('/').pop()}
-                          </span>
-                          <span className="polychat-history-item-date">
-                            • {session.messages.length} msg
-                          </span>
-                        </div>
-                      </div>
-                      <button
-                        className="polychat-history-delete-btn"
-                        onClick={(e) => handleDeleteSession(e, session.id)}
-                        aria-label="Supprimer la conversation"
-                        title="Supprimer"
+            Object.entries(groupedSessions).map(
+              ([group, sessions]) =>
+                sessions.length > 0 && (
+                  <div key={group} className="polychat-history-section">
+                    <div className="polychat-history-section-title">{group}</div>
+                    {sessions.map((session) => (
+                      <div
+                        key={session.id}
+                        className={`polychat-history-item ${
+                          session.id === currentSessionId ? 'active' : ''
+                        }`}
+                        onClick={() => handleSessionClick(session.id)}
                       >
-                        <Trash2 size={14} />
-                      </button>
-                    </div>
-                  ))}
-                </div>
-              )
-            ))
+                        <div className="polychat-history-item-content">
+                          <div
+                            className="polychat-history-item-title"
+                            title={getSessionTitle(session)}
+                          >
+                            {getSessionTitle(session)}
+                          </div>
+                          <div className="polychat-history-item-preview">
+                            {getSessionPreview(session)}
+                          </div>
+                          <div className="polychat-history-item-meta">
+                            <span className="polychat-history-item-model">
+                              {session.modelName.split('/').pop()}
+                            </span>
+                            <span className="polychat-history-item-date">
+                              • {session.messages.length} msg
+                            </span>
+                          </div>
+                        </div>
+                        <button
+                          className="polychat-history-delete-btn"
+                          onClick={(e) => handleDeleteSession(e, session.id)}
+                          aria-label="Supprimer la conversation"
+                          title="Supprimer"
+                        >
+                          <Trash2 size={14} />
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                )
+            )
           )}
         </div>
 
         <div className="polychat-sidebar-footer">
-          <button
-            className="polychat-new-chat-btn"
-            onClick={handleNewChat}
-          >
+          <button className="polychat-new-chat-btn" onClick={handleNewChat}>
             <Plus size={16} />
             Nouvelle Conversation
           </button>

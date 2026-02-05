@@ -39,16 +39,28 @@ export const useUsageStats = create<UsageStatsStore>()(
       },
       recordAssistantResponse: (modelId: string, responseTimeMs: number) => {
         const state = get();
-        const model = state.perModel[modelId] || { conversations: 0, messages: 0, avgResponseTimeMs: 0 };
+        const model = state.perModel[modelId] || {
+          conversations: 0,
+          messages: 0,
+          avgResponseTimeMs: 0,
+        };
         // Update averaged response time for model
-        const newModelAvg = model.messages > 0
-          ? Math.round(((model.avgResponseTimeMs * Math.max(model.messages - 1, 0)) + responseTimeMs) / model.messages)
-          : responseTimeMs;
+        const newModelAvg =
+          model.messages > 0
+            ? Math.round(
+                (model.avgResponseTimeMs * Math.max(model.messages - 1, 0) + responseTimeMs) /
+                  model.messages
+              )
+            : responseTimeMs;
         // Update global avg using totalAssistantMessages count
         const newTotalAssistant = state.totalAssistantMessages + 1;
-        const newGlobalAvg = state.totalAssistantMessages > 0
-          ? Math.round(((state.avgResponseTimeMs * state.totalAssistantMessages) + responseTimeMs) / newTotalAssistant)
-          : responseTimeMs;
+        const newGlobalAvg =
+          state.totalAssistantMessages > 0
+            ? Math.round(
+                (state.avgResponseTimeMs * state.totalAssistantMessages + responseTimeMs) /
+                  newTotalAssistant
+              )
+            : responseTimeMs;
         set({
           totalMessages: state.totalMessages + 1,
           totalAssistantMessages: newTotalAssistant,
@@ -62,10 +74,17 @@ export const useUsageStats = create<UsageStatsStore>()(
       },
       recordNewConversation: (modelId: string) => {
         const state = get();
-        const model = state.perModel[modelId] || { conversations: 0, messages: 0, avgResponseTimeMs: 0 };
+        const model = state.perModel[modelId] || {
+          conversations: 0,
+          messages: 0,
+          avgResponseTimeMs: 0,
+        };
         set({
           totalConversations: state.totalConversations + 1,
-          perModel: { ...state.perModel, [modelId]: { ...model, conversations: model.conversations + 1 } },
+          perModel: {
+            ...state.perModel,
+            [modelId]: { ...model, conversations: model.conversations + 1 },
+          },
           lastUpdated: new Date().toISOString(),
         });
       },

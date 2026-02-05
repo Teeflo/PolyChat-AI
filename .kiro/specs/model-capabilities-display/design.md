@@ -36,11 +36,7 @@ export interface ModelCapability {
   priority: number; // Pour l'ordre d'affichage
 }
 
-export type CapabilityCategory = 
-  | 'input' 
-  | 'output' 
-  | 'reasoning' 
-  | 'specialized';
+export type CapabilityCategory = 'input' | 'output' | 'reasoning' | 'specialized';
 
 export interface ModelCapabilities {
   modelId: string;
@@ -72,13 +68,13 @@ export class ModelCapabilityAnalyzer {
     // Détection des capacités spécialisées
     // Calcul des métriques de performance
   }
-  
+
   static getCapabilityDefinitions(): ModelCapability[] {
     // Retourne la liste des capacités supportées
   }
-  
+
   static filterModelsByCapability(
-    models: OpenRouterModel[], 
+    models: OpenRouterModel[],
     capabilityId: string
   ): OpenRouterModel[] {
     // Filtre les modèles par capacité
@@ -89,6 +85,7 @@ export class ModelCapabilityAnalyzer {
 ### Composants d'Interface
 
 #### ModelCapabilityBadge
+
 ```typescript
 interface ModelCapabilityBadgeProps {
   capability: ModelCapability;
@@ -99,6 +96,7 @@ interface ModelCapabilityBadgeProps {
 ```
 
 #### ModelCapabilityTooltip
+
 ```typescript
 interface ModelCapabilityTooltipProps {
   model: EnhancedOpenRouterModel;
@@ -108,6 +106,7 @@ interface ModelCapabilityTooltipProps {
 ```
 
 #### ModelCapabilityFilter
+
 ```typescript
 interface ModelCapabilityFilterProps {
   availableCapabilities: ModelCapability[];
@@ -126,7 +125,7 @@ Le système analysera les données OpenRouter pour détecter :
 1. **Modalités d'Entrée**
    - Texte (`text`)
    - Images (`image`)
-   - Audio (`audio`) 
+   - Audio (`audio`)
    - Vidéo (`video`)
 
 2. **Modalités de Sortie**
@@ -204,21 +203,25 @@ interface CapabilitiesCache {
 ## Implementation Notes
 
 ### Phase 1 : Analyse et Stockage
+
 - Extension du service `modelsApi` pour analyser les capacités
 - Ajout des nouvelles interfaces TypeScript
 - Système de cache pour les capacités analysées
 
 ### Phase 2 : Interface Basique
+
 - Badges de capacités dans le sélecteur existant
 - Tooltips avec informations détaillées
 - Filtrage simple par capacités principales
 
 ### Phase 3 : Interface Avancée
+
 - Modal de comparaison de modèles
 - Filtres avancés par catégories de capacités
 - Recommandations de modèles basées sur l'usage
 
 ### Phase 4 : Optimisations
+
 - Cache intelligent des capacités
 - Mise à jour automatique des métadonnées
 - Analytics sur l'utilisation des capacités

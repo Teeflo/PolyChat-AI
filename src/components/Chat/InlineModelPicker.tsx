@@ -31,16 +31,18 @@ const InlineModelPicker: React.FC<InlineModelPickerProps> = ({ onSelect, current
 
   // Allow current model to be re-selected in this window
   const filtered = useMemo(() => {
-    const base = models.filter(m => !selectedModels.includes(m.id) || m.id === currentModelId);
+    const base = models.filter((m) => !selectedModels.includes(m.id) || m.id === currentModelId);
     if (!query.trim()) return base.slice(0, 40);
     const q = query.toLowerCase();
-    return base.filter(m => m.id.toLowerCase().includes(q) || m.name?.toLowerCase().includes(q)).slice(0, 60);
+    return base
+      .filter((m) => m.id.toLowerCase().includes(q) || m.name?.toLowerCase().includes(q))
+      .slice(0, 60);
   }, [models, selectedModels, query, currentModelId]);
 
   // Find current model for display
   const currentModel = useMemo(() => {
     if (!currentModelId) return null;
-    return models.find(m => m.id === currentModelId) || null;
+    return models.find((m) => m.id === currentModelId) || null;
   }, [models, currentModelId]);
 
   return (
@@ -50,12 +52,18 @@ const InlineModelPicker: React.FC<InlineModelPickerProps> = ({ onSelect, current
         className="imp-trigger"
         aria-haspopup="listbox"
         aria-expanded={open}
-        onClick={()=> setOpen(o=>!o)}
-        title={currentModel ? `Changer de modèle (actuel: ${currentModel.name || currentModel.id})` : 'Choisir un modèle'}
+        onClick={() => setOpen((o) => !o)}
+        title={
+          currentModel
+            ? `Changer de modèle (actuel: ${currentModel.name || currentModel.id})`
+            : 'Choisir un modèle'
+        }
       >
         {currentModel ? (
           <>
-            <span className="imp-name">{currentModel.name?.split('/').pop() || currentModel.id}</span>
+            <span className="imp-name">
+              {currentModel.name?.split('/').pop() || currentModel.id}
+            </span>
           </>
         ) : (
           <>
@@ -72,17 +80,15 @@ const InlineModelPicker: React.FC<InlineModelPickerProps> = ({ onSelect, current
             <input
               placeholder="Filtrer..."
               value={query}
-              onChange={e=>setQuery(e.target.value)}
+              onChange={(e) => setQuery(e.target.value)}
               aria-label="Filtrer les modèles"
             />
           </div>
           {loading && <div className="imp-empty">Chargement…</div>}
-          {!loading && filtered.length===0 && (
-            <div className="imp-empty">Aucun résultat</div>
-          )}
-          {!loading && filtered.length>0 && (
+          {!loading && filtered.length === 0 && <div className="imp-empty">Aucun résultat</div>}
+          {!loading && filtered.length > 0 && (
             <ul className="imp-list" role="listbox" aria-label="Modèles filtrés">
-              {filtered.map(m => (
+              {filtered.map((m) => (
                 <li
                   key={m.id}
                   role="option"
@@ -91,15 +97,30 @@ const InlineModelPicker: React.FC<InlineModelPickerProps> = ({ onSelect, current
                   onClick={() => {
                     const isInitial = !currentModelId || currentModelId.startsWith('pending-');
                     if (!isInitial && m.id !== currentModelId) {
-                      if (!window.confirm('Changer de modèle ? Cette action peut réinitialiser le contexte.')) return;
+                      if (
+                        !window.confirm(
+                          'Changer de modèle ? Cette action peut réinitialiser le contexte.'
+                        )
+                      )
+                        return;
                     }
-                    onSelect(m.id); setOpen(false);
+                    onSelect(m.id);
+                    setOpen(false);
                   }}
                   tabIndex={0}
-                  onKeyDown={(e)=>{
+                  onKeyDown={(e) => {
                     const isInitial = !currentModelId || currentModelId.startsWith('pending-');
-                    if((e.key==='Enter'||e.key===' ') && (isInitial || m.id === currentModelId || window.confirm('Changer de modèle ? Cette action peut réinitialiser le contexte.'))) {
-                      e.preventDefault(); onSelect(m.id); setOpen(false);
+                    if (
+                      (e.key === 'Enter' || e.key === ' ') &&
+                      (isInitial ||
+                        m.id === currentModelId ||
+                        window.confirm(
+                          'Changer de modèle ? Cette action peut réinitialiser le contexte.'
+                        ))
+                    ) {
+                      e.preventDefault();
+                      onSelect(m.id);
+                      setOpen(false);
                     }
                   }}
                 >
@@ -119,15 +140,22 @@ const InlineModelPicker: React.FC<InlineModelPickerProps> = ({ onSelect, current
                         const c = completion * 1_000_000;
                         const fp = p ? p.toFixed(p < 0.1 ? 3 : 2) : '0';
                         const fc = c ? c.toFixed(c < 0.1 ? 3 : 2) : '0';
-                        shortPrice = (p && c && fp !== fc) ? `${fp}/${fc}$` : `${(p||c).toFixed((p||c) < 0.1 ? 3 : 2)}$`;
+                        shortPrice =
+                          p && c && fp !== fc
+                            ? `${fp}/${fc}$`
+                            : `${(p || c).toFixed((p || c) < 0.1 ? 3 : 2)}$`;
                       }
-                    } catch { /* ignore */ }
+                    } catch {
+                      /* ignore */
+                    }
                     return (
                       <>
                         <span className="imp-name">{m.id.split('/').pop()}</span>
                         <div className="imp-meta-row">
                           <span className="imp-provider">{provider}</span>
-                          <span className={`imp-price ${priceClass}`} title={getModelPricing(m)}>{shortPrice}</span>
+                          <span className={`imp-price ${priceClass}`} title={getModelPricing(m)}>
+                            {shortPrice}
+                          </span>
                         </div>
                       </>
                     );

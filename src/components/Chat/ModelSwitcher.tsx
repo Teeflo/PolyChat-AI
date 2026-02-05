@@ -24,8 +24,11 @@ const ModelSwitcher: React.FC = () => {
     return () => document.removeEventListener('mousedown', handler);
   }, []);
 
-  const currentLabel = useMemo(() => `${activeSessions.length} fenêtre${activeSessions.length>1?'s':''}`, [activeSessions.length]);
-  const handleToggle = () => setOpen(o => !o);
+  const currentLabel = useMemo(
+    () => `${activeSessions.length} fenêtre${activeSessions.length > 1 ? 's' : ''}`,
+    [activeSessions.length]
+  );
+  const handleToggle = () => setOpen((o) => !o);
 
   return (
     <div className="model-switcher" ref={ref}>
@@ -36,8 +39,8 @@ const ModelSwitcher: React.FC = () => {
         title="Choisir le nombre de fenêtres (Alt+clic pour fermer)"
         type="button"
       >
-  <Sparkles size={14} />
-  <span className="model-switcher-label">{currentLabel}</span>
+        <Sparkles size={14} />
+        <span className="model-switcher-label">{currentLabel}</span>
         <ChevronDown size={14} className="model-switcher-caret" />
       </button>
 
@@ -46,20 +49,28 @@ const ModelSwitcher: React.FC = () => {
           <div className="model-switcher-section active">
             <div className="model-switcher-section-title">Fenêtres ({activeSessions.length}/3)</div>
             <div className="model-switcher-window-buttons">
-              {[1,2,3].map(n => (
+              {[1, 2, 3].map((n) => (
                 <button
                   key={n}
-                  className={`window-count-btn ${activeSessions.length===n ? 'active' : ''}`}
-                  onClick={()=> { setWindowCount(n); setOpen(false); }}
+                  className={`window-count-btn ${activeSessions.length === n ? 'active' : ''}`}
+                  onClick={() => {
+                    setWindowCount(n);
+                    setOpen(false);
+                  }}
                   type="button"
-                >{n}</button>
+                >
+                  {n}
+                </button>
               ))}
             </div>
             <ul className="model-switcher-active-list">
-              {activeSessions.map((s,i) => (
+              {activeSessions.map((s, i) => (
                 <li key={s.id} className="model-switcher-active-item">
                   <span className="model-switcher-active-name">
-                    Fenêtre {i+1} {s.modelId.startsWith('pending-') ? '• (choisir modèle dans la fenêtre)' : `• ${s.modelId.split('/').pop()}`}
+                    Fenêtre {i + 1}{' '}
+                    {s.modelId.startsWith('pending-')
+                      ? '• (choisir modèle dans la fenêtre)'
+                      : `• ${s.modelId.split('/').pop()}`}
                   </span>
                 </li>
               ))}

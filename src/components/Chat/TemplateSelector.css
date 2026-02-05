@@ -185,64 +185,64 @@
 
 /* Category-specific colors */
 .template-category-btn.programming {
-  --category-color: #3B82F6;
+  --category-color: #3b82f6;
 }
 
 .template-category-btn.writing {
-  --category-color: #10B981;
+  --category-color: #10b981;
 }
 
 .template-category-btn.analysis {
-  --category-color: #F59E0B;
+  --category-color: #f59e0b;
 }
 
 .template-category-btn.creative {
-  --category-color: #8B5CF6;
+  --category-color: #8b5cf6;
 }
 
 .template-category-btn.learning {
-  --category-color: #EF4444;
+  --category-color: #ef4444;
 }
 
 .template-category-btn.business {
-  --category-color: #06B6D4;
+  --category-color: #06b6d4;
 }
 
 .template-category-btn.personal {
-  --category-color: #EC4899;
+  --category-color: #ec4899;
 }
 
 /* Template card category colors */
 .template-card.programming {
-  --category-color: #3B82F6;
+  --category-color: #3b82f6;
 }
 
 .template-card.writing {
-  --category-color: #10B981;
+  --category-color: #10b981;
 }
 
 .template-card.analysis {
-  --category-color: #F59E0B;
+  --category-color: #f59e0b;
 }
 
 .template-card.creative {
-  --category-color: #8B5CF6;
+  --category-color: #8b5cf6;
 }
 
 .template-card.learning {
-  --category-color: #EF4444;
+  --category-color: #ef4444;
 }
 
 .template-card.business {
-  --category-color: #06B6D4;
+  --category-color: #06b6d4;
 }
 
 .template-card.personal {
-  --category-color: #EC4899;
+  --category-color: #ec4899;
 }
 
 .template-category-icon {
-  font-size: 1var(--glass-blur-sm);
+  font-size: 1var (--glass-blur-sm);
 }
 
 .template-selector-content {
@@ -310,7 +310,7 @@
 }
 
 .template-card-icon {
-  font-size: 2var(--glass-blur-sm);
+  font-size: 2var (--glass-blur-sm);
   flex-shrink: 0;
   width: 40px;
   height: 40px;
@@ -327,7 +327,7 @@
 }
 
 .template-card-title {
-  font-size: 1var(--glass-blur-sm);
+  font-size: 1var (--glass-blur-sm);
   font-weight: 700;
   color: var(--text-primary);
   margin: 0 0 var(--glass-blur-sm) 0;
@@ -546,82 +546,82 @@
     max-height: 95vh;
     border-radius: 12px;
   }
-  
+
   .template-selector-header {
     padding: 16px 20px;
     border-radius: 12px 12px 0 0;
   }
-  
+
   .template-selector-title {
-    font-size: 1var(--glass-blur-sm);
+    font-size: 1var (--glass-blur-sm);
   }
-  
+
   .template-selector-search {
     padding: 16px 20px;
   }
-  
+
   .template-selector-search-input {
     padding: 10px 14px;
     font-size: 14px;
   }
-  
+
   .template-selector-tab {
     padding: 14px var(--glass-blur-sm);
     font-size: 14px;
   }
-  
+
   .template-selector-categories {
     padding: 16px 20px;
     gap: var(--glass-blur-sm);
   }
-  
+
   .template-category-btn {
     padding: 6px 12px;
     font-size: 13px;
   }
-  
+
   .template-selector-content {
     padding: 20px;
   }
-  
+
   .template-grid {
     grid-template-columns: 1fr;
     gap: 16px;
   }
-  
+
   .quick-actions-grid {
     grid-template-columns: 1fr;
     gap: 12px;
   }
-  
+
   .template-card {
     padding: 16px;
   }
-  
+
   .template-card-header {
     gap: 12px;
     margin-bottom: 12px;
   }
-  
+
   .template-card-icon {
     font-size: 24px;
     width: 36px;
     height: 36px;
   }
-  
+
   .template-card-title {
     font-size: 16px;
   }
-  
+
   .template-card-description {
     font-size: 13px;
   }
-  
+
   .template-selector-footer {
     padding: 16px 20px;
     border-radius: 0 0 12px 12px;
   }
-  
+
   .template-selector-create-btn {
     padding: 10px 16px;
     font-size: 14px;
@@ -646,4 +646,3 @@
 .template-selector-content::-webkit-scrollbar-thumb:hover {
   background: var(--accent-primary);
 }
-

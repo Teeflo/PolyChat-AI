@@ -86,30 +86,33 @@ const Modal: React.FC<ModalProps> = ({
           <div className="modal-header">
             <div className="flex items-center gap-3">
               {icon && (
-                <div className="polychat-logo-sm" style={{ width: '40px', height: '40px', background: 'var(--accent-gradient)', borderRadius: 'var(--radius-xl)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white' }}>
+                <div
+                  className="polychat-logo-sm"
+                  style={{
+                    width: '40px',
+                    height: '40px',
+                    background: 'var(--accent-gradient)',
+                    borderRadius: 'var(--radius-xl)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    color: 'white',
+                  }}
+                >
                   {icon}
                 </div>
               )}
               <div>
                 {title && (
-                  <h2
-                    id="modal-title"
-                    className="modal-title"
-                  >
+                  <h2 id="modal-title" className="modal-title">
                     {title}
                   </h2>
                 )}
-                {subtitle && (
-                  <p className="text-sm text-tertiary">{subtitle}</p>
-                )}
+                {subtitle && <p className="text-sm text-tertiary">{subtitle}</p>}
               </div>
             </div>
             {showCloseButton && (
-              <button
-                onClick={onClose}
-                className="modal-close-btn"
-                aria-label="Fermer"
-              >
+              <button onClick={onClose} className="modal-close-btn" aria-label="Fermer">
                 <X size={18} />
               </button>
             )}
@@ -117,9 +120,7 @@ const Modal: React.FC<ModalProps> = ({
         )}
 
         {/* Body */}
-        <div className="modal-body">
-          {children}
-        </div>
+        <div className="modal-body">{children}</div>
 
         {/* Footer */}
         {footer && (

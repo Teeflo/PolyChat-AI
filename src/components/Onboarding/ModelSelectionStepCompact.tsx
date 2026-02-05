@@ -10,7 +10,9 @@ interface ModelSelectionStepProps {
 const ModelSelectionStep: React.FC<ModelSelectionStepProps> = ({ onNext }) => {
   const { setSelectedModel } = useSettings();
   const [selectedModelId, setSelectedModelId] = useState('');
-  const [models, setModels] = useState<Array<{id: string, name: string, desc: string, emoji: string}>>([]);
+  const [models, setModels] = useState<
+    Array<{ id: string; name: string; desc: string; emoji: string }>
+  >([]);
   const [loading, setLoading] = useState(true);
 
   // Charger les modèles les plus populaires au montage du composant
@@ -20,13 +22,22 @@ const ModelSelectionStep: React.FC<ModelSelectionStepProps> = ({ onNext }) => {
         setLoading(true);
         const topModels = await getTopWeeklyModels();
         setModels(topModels);
-      } catch (error) {
-        console.error('Error loading top models:', error);
+      } catch {
         // Fallback vers des modèles par défaut
         setModels([
           { id: 'openai/gpt-4o', name: 'GPT-4o', desc: 'Le plus polyvalent', emoji: '🎯' },
-          { id: 'anthropic/claude-3.5-sonnet', name: 'Claude 3.5 Sonnet', desc: 'Excellent pour l\'écriture', emoji: '✍️' },
-          { id: 'openai/gpt-4o-mini', name: 'GPT-4o Mini', desc: 'Rapide et économique', emoji: '⚡' }
+          {
+            id: 'anthropic/claude-3.5-sonnet',
+            name: 'Claude 3.5 Sonnet',
+            desc: "Excellent pour l'écriture",
+            emoji: '✍️',
+          },
+          {
+            id: 'openai/gpt-4o-mini',
+            name: 'GPT-4o Mini',
+            desc: 'Rapide et économique',
+            emoji: '⚡',
+          },
         ]);
       } finally {
         setLoading(false);
@@ -53,13 +64,11 @@ const ModelSelectionStep: React.FC<ModelSelectionStepProps> = ({ onNext }) => {
           <span className="loading-text">Chargement des modèles populaires...</span>
         </div>
       ) : (
-        models.map(model => (
+        models.map((model) => (
           <button
             key={model.id}
             onClick={() => handleModelSelect(model.id)}
-            className={`model-card ${
-              selectedModelId === model.id ? 'selected' : ''
-            }`}
+            className={`model-card ${selectedModelId === model.id ? 'selected' : ''}`}
           >
             <div className="model-card-content">
               <div className="model-emoji">{model.emoji}</div>
@@ -76,7 +85,7 @@ const ModelSelectionStep: React.FC<ModelSelectionStepProps> = ({ onNext }) => {
           </button>
         ))
       )}
-      
+
       {selectedModelId && (
         <div className="model-success-message">
           <div className="model-success-content">

@@ -8,7 +8,8 @@ import './ModelSelectorModern.css';
 
 const ModelSelectorModern: React.FC<{ compact?: boolean }> = ({ compact = true }) => {
   const { activeSessions, selectedModels, addModel, removeModel } = useChat();
-  const { models, availableProviders, updateFilters, filters, loading, refreshModels } = useModels();
+  const { models, availableProviders, updateFilters, filters, loading, refreshModels } =
+    useModels();
   const [isExpanded, setIsExpanded] = useState(false);
   const [showFilters, setShowFilters] = useState(false);
   const [showAllModels, setShowAllModels] = useState(false);
@@ -24,7 +25,7 @@ const ModelSelectorModern: React.FC<{ compact?: boolean }> = ({ compact = true }
 
   // Filtrage des modèles disponibles pour ne pas inclure ceux déjà sélectionnés
   const filteredAvailableModels = useMemo(() => {
-    return models.filter(model => !selectedModels.includes(model.id));
+    return models.filter((model) => !selectedModels.includes(model.id));
   }, [models, selectedModels]);
 
   // Modèles à afficher avec pagination
@@ -58,27 +59,28 @@ const ModelSelectorModern: React.FC<{ compact?: boolean }> = ({ compact = true }
       provider: 'all',
       searchTerm: '',
       contextLength: 'all',
-      priceRange: 'all'
+      priceRange: 'all',
     });
     setShowAllModels(false); // Réinitialiser l'affichage étendu lors du nettoyage des filtres
   };
 
-  const hasActiveFilters = filters.provider !== 'all' || filters.searchTerm || 
-                          filters.contextLength !== 'all' || filters.priceRange !== 'all';
+  const hasActiveFilters =
+    filters.provider !== 'all' ||
+    filters.searchTerm ||
+    filters.contextLength !== 'all' ||
+    filters.priceRange !== 'all';
 
   return (
     <div className={`model-selector-modern ${compact ? 'compact' : ''}`}>
       {/* Header avec statistiques */}
-    <div className="model-selector-modern-header">
+      <div className="model-selector-modern-header">
         <div className="model-selector-modern-title">
           <Cpu size={18} />
-      {!compact && <span>Modèles IA Actifs</span>}
-      {compact && <span>Modèles</span>}
-          <div className="model-selector-modern-badge">
-            {selectedModels.length}/3
-          </div>
+          {!compact && <span>Modèles IA Actifs</span>}
+          {compact && <span>Modèles</span>}
+          <div className="model-selector-modern-badge">{selectedModels.length}/3</div>
         </div>
-        
+
         <div className="model-selector-modern-controls">
           {/* Bouton de rafraîchissement des modèles */}
           <button
@@ -90,7 +92,7 @@ const ModelSelectorModern: React.FC<{ compact?: boolean }> = ({ compact = true }
           >
             <RotateCcw size={14} className={loading ? 'spinning' : ''} />
           </button>
-          
+
           {canAddMore && filteredAvailableModels.length > 0 && (
             <button
               onClick={() => setShowFilters(!showFilters)}
@@ -102,7 +104,7 @@ const ModelSelectorModern: React.FC<{ compact?: boolean }> = ({ compact = true }
               {hasActiveFilters && <div className="filter-indicator" />}
             </button>
           )}
-          
+
           {canAddMore && filteredAvailableModels.length > 0 && (
             <button
               onClick={() => setIsExpanded(!isExpanded)}
@@ -130,7 +132,7 @@ const ModelSelectorModern: React.FC<{ compact?: boolean }> = ({ compact = true }
                 className="model-filter-input"
               />
             </div>
-            
+
             <select
               value={filters.provider}
               onChange={(e) => handleFilterChange('provider', e.target.value)}
@@ -138,13 +140,13 @@ const ModelSelectorModern: React.FC<{ compact?: boolean }> = ({ compact = true }
               title="Filtrer par fournisseur"
             >
               <option value="all">Tous les fournisseurs</option>
-              {availableProviders.map(provider => (
+              {availableProviders.map((provider) => (
                 <option key={provider} value={provider}>
                   {provider}
                 </option>
               ))}
             </select>
-            
+
             <select
               value={filters.contextLength}
               onChange={(e) => handleFilterChange('contextLength', e.target.value)}
@@ -156,7 +158,7 @@ const ModelSelectorModern: React.FC<{ compact?: boolean }> = ({ compact = true }
               <option value="medium">Moyen (8K-32K)</option>
               <option value="long">Long (&gt;32K)</option>
             </select>
-            
+
             <select
               value={filters.priceRange}
               onChange={(e) => handleFilterChange('priceRange', e.target.value)}
@@ -169,7 +171,7 @@ const ModelSelectorModern: React.FC<{ compact?: boolean }> = ({ compact = true }
               <option value="moderate">Modéré (≤$20/1M)</option>
               <option value="premium">Premium (+$20/1M)</option>
             </select>
-            
+
             {hasActiveFilters && (
               <button
                 onClick={clearFilters}
@@ -180,9 +182,10 @@ const ModelSelectorModern: React.FC<{ compact?: boolean }> = ({ compact = true }
               </button>
             )}
           </div>
-          
+
           <div className="model-filters-stats">
-            {filteredAvailableModels.length} modèle{filteredAvailableModels.length > 1 ? 's' : ''} trouvé{filteredAvailableModels.length > 1 ? 's' : ''}
+            {filteredAvailableModels.length} modèle{filteredAvailableModels.length > 1 ? 's' : ''}{' '}
+            trouvé{filteredAvailableModels.length > 1 ? 's' : ''}
           </div>
         </div>
       )}
@@ -196,9 +199,7 @@ const ModelSelectorModern: React.FC<{ compact?: boolean }> = ({ compact = true }
                 <Zap size={16} />
               </div>
               <div className="model-card-modern-details">
-                <div className="model-card-modern-name">
-                  {getModelDisplayName(session.modelId)}
-                </div>
+                <div className="model-card-modern-name">{getModelDisplayName(session.modelId)}</div>
                 {!compact && (
                   <div className="model-card-modern-provider">
                     {getModelProvider(session.modelId)}
@@ -206,10 +207,12 @@ const ModelSelectorModern: React.FC<{ compact?: boolean }> = ({ compact = true }
                 )}
               </div>
             </div>
-            
+
             {!compact && (
               <div className="model-card-modern-status">
-                <div className={`model-card-modern-indicator ${session.isLoading ? 'loading' : 'ready'}`} />
+                <div
+                  className={`model-card-modern-indicator ${session.isLoading ? 'loading' : 'ready'}`}
+                />
                 <span className="model-card-modern-status-text">
                   {session.isLoading ? 'Actif' : 'Prêt'}
                 </span>
@@ -238,7 +241,7 @@ const ModelSelectorModern: React.FC<{ compact?: boolean }> = ({ compact = true }
               {filteredAvailableModels.length} disponibles
             </span>
           </div>
-          
+
           <div className="model-selector-modern-grid">
             {modelsToDisplay.map((model) => (
               <button
@@ -250,17 +253,13 @@ const ModelSelectorModern: React.FC<{ compact?: boolean }> = ({ compact = true }
                   <Cpu size={14} />
                 </div>
                 <div className="model-option-modern-details">
-                  <div className="model-option-modern-name">
-                    {getModelDisplayName(model.id)}
-                  </div>
+                  <div className="model-option-modern-name">{getModelDisplayName(model.id)}</div>
                   {!compact && (
                     <>
                       <div className="model-option-modern-provider">
                         {getModelProvider(model.id)}
                       </div>
-                      <div className="model-option-modern-price">
-                        {getModelPricing(model)}
-                      </div>
+                      <div className="model-option-modern-price">{getModelPricing(model)}</div>
                     </>
                   )}
                 </div>
@@ -296,7 +295,7 @@ const ModelSelectorModern: React.FC<{ compact?: boolean }> = ({ compact = true }
       )}
 
       {/* État vide */}
-  {selectedModels.length === 0 && (
+      {selectedModels.length === 0 && (
         <div className="model-selector-modern-empty">
           <Cpu size={24} />
           <span>Aucun modèle sélectionné</span>

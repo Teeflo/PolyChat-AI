@@ -61,7 +61,7 @@ export class ModelChangeManager {
   ): boolean {
     // Logique de décision pour demander confirmation
   }
-  
+
   static getSuggestedModel(
     taskType: string,
     preferences: ModelPreferences,
@@ -69,7 +69,7 @@ export class ModelChangeManager {
   ): string | null {
     // Suggestion intelligente de modèle
   }
-  
+
   static recordModelPreference(
     taskType: string,
     modelId: string,
@@ -83,6 +83,7 @@ export class ModelChangeManager {
 ### Composants d'Interface
 
 #### ModelChangeConfirmationModal
+
 ```typescript
 interface ModelChangeConfirmationModalProps {
   isOpen: boolean;
@@ -95,6 +96,7 @@ interface ModelChangeConfirmationModalProps {
 ```
 
 #### ModelCompatibilityWarning
+
 ```typescript
 interface ModelCompatibilityWarningProps {
   currentModel: OpenRouterModel;
@@ -106,6 +108,7 @@ interface ModelCompatibilityWarningProps {
 ```
 
 #### SmartModelSuggestion
+
 ```typescript
 interface SmartModelSuggestionProps {
   userInput: string;
@@ -188,16 +191,19 @@ interface ModelPreferencesStorage {
 ## Implementation Phases
 
 ### Phase 1 : Détection et Confirmation
+
 - Implémentation de la détection des types de tâches
 - Création de la modal de confirmation
 - Intégration dans le flux de chat existant
 
 ### Phase 2 : Préférences et Suggestions
+
 - Système de préférences utilisateur
 - Suggestions intelligentes de modèles
 - Interface de configuration dans les paramètres
 
 ### Phase 3 : Optimisations Avancées
+
 - Apprentissage des préférences utilisateur
 - Suggestions contextuelles améliorées
 - Analytics sur l'utilisation des modèles

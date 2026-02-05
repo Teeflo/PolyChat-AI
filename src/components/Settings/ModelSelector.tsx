@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useSettings } from '../../hooks/useSettings';
 import { Brain, Loader2, RefreshCw } from 'lucide-react';
-import { 
-  fetchAvailableModels, 
-  formatModelName, 
-  getModelPricing, 
-  type OpenRouterModel 
+import {
+  fetchAvailableModels,
+  formatModelName,
+  getModelPricing,
+  type OpenRouterModel,
 } from '../../services/modelsApi';
 import './ModelSelector.css';
 
@@ -24,12 +24,11 @@ const ModelSelector: React.FC = () => {
       setModels(fetchedModels);
 
       // Si le modèle actuel n'est pas dans la liste, sélectionner le premier
-      if (fetchedModels.length > 0 && !fetchedModels.find(m => m.id === selectedModel)) {
+      if (fetchedModels.length > 0 && !fetchedModels.find((m) => m.id === selectedModel)) {
         setSelectedModel(fetchedModels[0].id);
       }
-    } catch (err) {
+    } catch {
       setError('Erreur lors du chargement des modèles');
-      console.error('Erreur chargement modèles:', err);
     } finally {
       setLoading(false);
     }
@@ -40,7 +39,7 @@ const ModelSelector: React.FC = () => {
     loadModels();
   }, [loadModels]);
 
-  const selectedModelData = models.find(m => m.id === selectedModel);
+  const selectedModelData = models.find((m) => m.id === selectedModel);
 
   return (
     <div className={`model-selector ${isDark ? 'dark' : 'light'}`}>
@@ -58,14 +57,10 @@ const ModelSelector: React.FC = () => {
           title="Actualiser la liste des modèles"
           aria-label="Actualiser la liste des modèles"
         >
-          {loading ? (
-            <Loader2 size={14} className="spin" />
-          ) : (
-            <RefreshCw size={14} />
-          )}
+          {loading ? <Loader2 size={14} className="spin" /> : <RefreshCw size={14} />}
         </button>
       </div>
-      
+
       {error && (
         <div className="ms-error">
           <p id="model-select-error">{error}</p>
@@ -78,8 +73,8 @@ const ModelSelector: React.FC = () => {
         disabled={loading || models.length === 0}
         id="model-select"
         name="model-select"
-  className={`ms-select ${isDark ? 'dark' : 'light'}`}
-  aria-describedby={error ? 'model-select-error' : undefined}
+        className={`ms-select ${isDark ? 'dark' : 'light'}`}
+        aria-describedby={error ? 'model-select-error' : undefined}
       >
         {loading ? (
           <option>Chargement des modèles...</option>
@@ -93,7 +88,7 @@ const ModelSelector: React.FC = () => {
           ))
         )}
       </select>
-      
+
       {/* Description du modèle sélectionné */}
       {selectedModelData && (
         <div className={`ms-card ${isDark ? 'dark' : 'light'}`}>
@@ -101,15 +96,17 @@ const ModelSelector: React.FC = () => {
             <h4 className={`ms-card-title ${isDark ? 'dark' : 'light'}`}>
               {formatModelName(selectedModelData.id)}
             </h4>
-            <span className={`ms-badge ${selectedModelData.pricing.prompt === '0' ? 'free' : 'paid'}`}>
+            <span
+              className={`ms-badge ${selectedModelData.pricing.prompt === '0' ? 'free' : 'paid'}`}
+            >
               {getModelPricing(selectedModelData)}
             </span>
           </div>
-          
+
           <p className={`ms-card-desc ${isDark ? 'dark' : 'light'}`}>
             {selectedModelData.description || 'Aucune description disponible'}
           </p>
-          
+
           <div className={`ms-card-meta ${isDark ? 'dark' : 'light'}`}>
             <span>Contexte: {selectedModelData.context_length.toLocaleString()} tokens</span>
             <span>•</span>
@@ -117,7 +114,7 @@ const ModelSelector: React.FC = () => {
           </div>
         </div>
       )}
-      
+
       <p className={`ms-note ${isDark ? 'dark' : 'light'}`}>
         ✨ Liste automatiquement mise à jour depuis OpenRouter ({models.length} modèles disponibles)
       </p>
