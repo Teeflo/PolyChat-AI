@@ -9,13 +9,20 @@ interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
 }
 
 const Input = forwardRef<HTMLInputElement, InputProps>(
-  ({ label, error, hint, icon, iconPosition = 'left', className = '', ...props }, ref) => {
+  ({ label, error, hint, icon, iconPosition = 'left', className = '', id, ...props }, ref) => {
+    // Generate a unique ID if one isn't provided but a label exists
+    const inputId = id || (label ? `input-${Math.random().toString(36).substr(2, 9)}` : undefined);
+
     return (
       <div className="flex flex-col gap-1.5">
         {label && (
-          <label className="text-sm font-medium text-neutral-200">
+          <label htmlFor={inputId} className="text-sm font-medium text-neutral-200">
             {label}
-            {props.required && <span className="text-red-400 ml-1">*</span>}
+            {props.required && (
+              <span className="text-red-400 ml-1" aria-hidden="true">
+                *
+              </span>
+            )}
           </label>
         )}
         <div className="relative">
@@ -26,6 +33,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
           )}
           <input
             ref={ref}
+            id={inputId}
             className={`
               w-full px-4 py-2.5 
               bg-neutral-900/50 backdrop-blur-sm

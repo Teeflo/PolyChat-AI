@@ -20,25 +20,25 @@ export function OnboardingModalFresh({ isOpen, onClose }: OnboardingModalProps) 
       title: 'Bienvenue sur PolyChat AI',
       content: (
         <div className="popup-welcome-center">
-          <div className="popup-welcome-avatar blue">
+          <div className="popup-welcome-avatar blue" aria-hidden="true">
             <Zap className="w-8 h-8 text-white" />
           </div>
           <h4>Chat IA moderne avec plusieurs modèles</h4>
           <div className="popup-features">
             <div className="popup-feature">
-              <div className="popup-feature-icon yellow">
+              <div className="popup-feature-icon yellow" aria-hidden="true">
                 <Sparkles className="w-4 h-4 text-white" />
               </div>
               <span className="popup-feature-text">Interface intuitive</span>
             </div>
             <div className="popup-feature">
-              <div className="popup-feature-icon blue">
+              <div className="popup-feature-icon blue" aria-hidden="true">
                 <Bot className="w-4 h-4 text-white" />
               </div>
               <span className="popup-feature-text">GPT, Claude, Gemini</span>
             </div>
             <div className="popup-feature">
-              <div className="popup-feature-icon green">
+              <div className="popup-feature-icon green" aria-hidden="true">
                 <Sparkles className="w-4 h-4 text-white" />
               </div>
               <span className="popup-feature-text">Templates intelligents</span>
@@ -52,15 +52,18 @@ export function OnboardingModalFresh({ isOpen, onClose }: OnboardingModalProps) 
       title: 'Clé API OpenRouter',
       content: (
         <div className="popup-welcome-center">
-          <div className="popup-welcome-avatar amber">
+          <div className="popup-welcome-avatar amber" aria-hidden="true">
             <Sparkles className="w-8 h-8 text-white" />
           </div>
           <h4>Configuration de votre clé API</h4>
           <p>Ajoutez votre clé API pour utiliser PolyChat.</p>
 
           <div className="popup-form-group">
-            <label className="popup-label">Clé API OpenRouter</label>
+            <label htmlFor="onboarding-api-key" className="popup-label">
+              Clé API OpenRouter
+            </label>
             <input
+              id="onboarding-api-key"
               type="password"
               placeholder="Votre clé API OpenRouter"
               value={tempApiKey}
@@ -71,7 +74,7 @@ export function OnboardingModalFresh({ isOpen, onClose }: OnboardingModalProps) 
 
           <div className="popup-card">
             <p className="popup-tip">
-              <Sparkles className="w-4 h-4 text-blue-400" />
+              <Sparkles className="w-4 h-4 text-blue-400" aria-hidden="true" />
               <span>
                 <strong>Gratuit :</strong> Créez un compte sur{' '}
                 <a
@@ -94,7 +97,7 @@ export function OnboardingModalFresh({ isOpen, onClose }: OnboardingModalProps) 
       title: 'Modèle préféré',
       content: (
         <div className="popup-welcome-center">
-          <div className="popup-welcome-avatar green">
+          <div className="popup-welcome-avatar green" aria-hidden="true">
             <Bot className="w-8 h-8 text-white" />
           </div>
           <h4>Choisissez votre modèle d'IA par défaut</h4>
@@ -138,7 +141,12 @@ export function OnboardingModalFresh({ isOpen, onClose }: OnboardingModalProps) 
   }
 
   return (
-    <div className="onboarding-fresh-container">
+    <div
+      className="onboarding-fresh-container"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="onboarding-title"
+    >
       <div className="onboarding-fresh-card">
         <div className="onboarding-sidebar">
           <div
@@ -153,10 +161,11 @@ export function OnboardingModalFresh({ isOpen, onClose }: OnboardingModalProps) 
               justifyContent: 'center',
               marginBottom: 'var(--space-6)',
             }}
+            aria-hidden="true"
           >
             <Icon size={24} color="white" />
           </div>
-          <h2 className="onboarding-step-title" style={{ color: 'white' }}>
+          <h2 id="onboarding-title" className="onboarding-step-title" style={{ color: 'white' }}>
             PolyChat AI
           </h2>
           <p style={{ opacity: 0.8, fontSize: 'var(--text-sm)' }}>
@@ -164,12 +173,15 @@ export function OnboardingModalFresh({ isOpen, onClose }: OnboardingModalProps) 
           </p>
 
           <div style={{ marginTop: 'auto' }}>
-            <div className="step-indicator">
+            <div className="step-indicator" role="tablist" aria-label="Étapes de la configuration">
               {steps.map((_, i) => (
                 <div
                   key={i}
                   className={`step-dot ${i === currentStep ? 'active' : ''}`}
                   style={{ background: i === currentStep ? 'white' : 'rgba(255,255,255,0.3)' }}
+                  role="tab"
+                  aria-selected={i === currentStep}
+                  aria-label={`Étape ${i + 1}`}
                 />
               ))}
             </div>
@@ -201,6 +213,7 @@ export function OnboardingModalFresh({ isOpen, onClose }: OnboardingModalProps) 
             <button
               onClick={onClose}
               style={{ color: 'var(--text-tertiary)', padding: 'var(--space-2)' }}
+              aria-label="Fermer l'assistant de configuration"
             >
               <X size={20} />
             </button>

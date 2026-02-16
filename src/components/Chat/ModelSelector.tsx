@@ -46,15 +46,25 @@ const ModelSelector: React.FC = () => {
 
   return (
     <div className="polychat-model-selector">
-      <div className="polychat-model-selector-header" onClick={() => setIsOpen(!isOpen)}>
+      <button
+        className="polychat-model-selector-header w-full text-left"
+        onClick={() => setIsOpen(!isOpen)}
+        aria-expanded={isOpen}
+        aria-haspopup="true"
+        aria-label={isOpen ? 'Fermer le sélecteur de modèle' : 'Ouvrir le sélecteur de modèle'}
+      >
         <span className="polychat-model-selector-title">
           MODÈLES SÉLECTIONNÉS ({selectedModels.length})
         </span>
-        {isOpen ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
-      </div>
+        {isOpen ? (
+          <ChevronUp size={16} aria-hidden="true" />
+        ) : (
+          <ChevronDown size={16} aria-hidden="true" />
+        )}
+      </button>
 
       {isOpen && (
-        <div className="polychat-model-dropdown">
+        <div className="polychat-model-dropdown" role="menu">
           {selectedModels.length > 0 && (
             <div className="polychat-model-actions">
               <button className="polychat-clear-button" onClick={handleClearSelection}>
@@ -65,19 +75,21 @@ const ModelSelector: React.FC = () => {
 
           <div className="polychat-model-list">
             {models.map((model) => (
-              <div
+              <button
                 key={model.id}
-                className={`polychat-model-item ${selectedModels.includes(model.id) ? 'selected' : ''}`}
+                className={`polychat-model-item w-full text-left ${selectedModels.includes(model.id) ? 'selected' : ''}`}
                 onClick={() => handleModelToggle(model.id)}
+                role="menuitemcheckbox"
+                aria-checked={selectedModels.includes(model.id)}
               >
-                <div className="polychat-model-checkbox">
+                <div className="polychat-model-checkbox" aria-hidden="true">
                   {selectedModels.includes(model.id) ? '✓' : ''}
                 </div>
                 <div className="polychat-model-info">
                   <div className="polychat-model-name">{model.name}</div>
                   <div className="polychat-model-description">{model.description}</div>
                 </div>
-              </div>
+              </button>
             ))}
           </div>
         </div>

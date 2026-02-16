@@ -17,6 +17,7 @@ const ApiKeyInput: React.FC = () => {
   return (
     <div>
       <label
+        htmlFor="api-key-input"
         style={{
           display: 'block',
           fontSize: '14px',
@@ -26,7 +27,7 @@ const ApiKeyInput: React.FC = () => {
         }}
       >
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <Key size={16} />
+          <Key size={16} aria-hidden="true" />
           Clé API OpenRouter
         </div>
       </label>
@@ -37,6 +38,7 @@ const ApiKeyInput: React.FC = () => {
       >
         <div style={{ position: 'relative' }}>
           <input
+            id="api-key-input"
             type={showApiKey ? 'text' : 'password'}
             value={tempApiKey}
             onChange={(e) => setTempApiKey(e.target.value)}
@@ -62,6 +64,7 @@ const ApiKeyInput: React.FC = () => {
           <button
             type="button"
             onClick={() => setShowApiKey(!showApiKey)}
+            aria-label={showApiKey ? 'Masquer la clé API' : 'Afficher la clé API'}
             style={{
               position: 'absolute',
               right: '8px',

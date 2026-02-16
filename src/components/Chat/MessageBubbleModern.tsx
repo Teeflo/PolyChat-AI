@@ -192,7 +192,11 @@ const MessageBubbleModern: React.FC<MessageBubbleModernProps> = ({
                       }
                       return null;
                     })}
-                    {message.streaming && <span className="streaming-cursor">▌</span>}
+                    {message.streaming && (
+                      <span className="streaming-cursor" aria-hidden="true">
+                        ▌
+                      </span>
+                    )}
                   </>
                 );
               } else {
@@ -202,7 +206,11 @@ const MessageBubbleModern: React.FC<MessageBubbleModernProps> = ({
                     <ReactMarkdown remarkPlugins={[remarkGfm]} components={markdownComponents}>
                       {textContent}
                     </ReactMarkdown>
-                    {message.streaming && <span className="streaming-cursor">▌</span>}
+                    {message.streaming && (
+                      <span className="streaming-cursor" aria-hidden="true">
+                        ▌
+                      </span>
+                    )}
                   </>
                 );
               }

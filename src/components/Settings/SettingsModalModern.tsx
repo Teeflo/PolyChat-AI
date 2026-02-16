@@ -96,11 +96,17 @@ const SettingsModalModern: React.FC<SettingsModalModernProps> = ({ isOpen, onClo
   };
 
   return (
-    <div className="settings-modal-modern-overlay" onClick={onClose}>
+    <div
+      className="settings-modal-modern-overlay"
+      onClick={onClose}
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="settings-title"
+    >
       <div className="settings-modal-modern" onClick={(e) => e.stopPropagation()}>
         {/* Header */}
         <div className="settings-modal-modern-header">
-          <div className="settings-modal-modern-title">
+          <div className="settings-modal-modern-title" id="settings-title">
             <svg
               width="24"
               height="24"
@@ -126,7 +132,7 @@ const SettingsModalModern: React.FC<SettingsModalModernProps> = ({ isOpen, onClo
           {/* Section API Key */}
           <div className="settings-section-modern">
             <div className="settings-section-modern-header">
-              <Key size={18} />
+              <Key size={18} aria-hidden="true" />
               <h3>Clé API OpenRouter</h3>
               <div className="settings-section-modern-badge required">Requis</div>
             </div>
@@ -143,7 +149,7 @@ const SettingsModalModern: React.FC<SettingsModalModernProps> = ({ isOpen, onClo
                 className="settings-input-modern"
               />
               <div className="settings-help-modern">
-                <Info size={12} />
+                <Info size={12} aria-hidden="true" />
                 <span>
                   Obtenez votre clé API sur{' '}
                   <a
@@ -162,13 +168,13 @@ const SettingsModalModern: React.FC<SettingsModalModernProps> = ({ isOpen, onClo
           {/* Section Modèle par défaut améliorée */}
           <div className="settings-section-modern model-enhanced" id="default-model-section">
             <div className="settings-section-modern-header">
-              <Zap size={18} />
+              <Zap size={18} aria-hidden="true" />
               <h3>Modèle par défaut</h3>
               <div className="settings-section-modern-badge optional">Optionnel</div>
             </div>
             <div className="settings-model-enhanced-container">
               <div className="model-enhanced-search">
-                <Search size={14} />
+                <Search size={14} aria-hidden="true" />
                 <input
                   id="defaultModel"
                   placeholder="Rechercher (nom / provider)..."
@@ -304,7 +310,7 @@ const SettingsModalModern: React.FC<SettingsModalModernProps> = ({ isOpen, onClo
                 })}
               </div>
               <div className="settings-help-modern">
-                <Info size={12} />
+                <Info size={12} aria-hidden="true" />
                 <span>
                   Sélectionnera ce modèle automatiquement pour les nouvelles conversations.
                 </span>
@@ -315,7 +321,7 @@ const SettingsModalModern: React.FC<SettingsModalModernProps> = ({ isOpen, onClo
           {/* Section Instruction Système */}
           <div className="settings-section-modern">
             <div className="settings-section-modern-header">
-              <MessageSquare size={18} />
+              <MessageSquare size={18} aria-hidden="true" />
               <h3>Instruction Système</h3>
               <div className="settings-section-modern-badge optional">Optionnel</div>
             </div>
@@ -332,7 +338,7 @@ const SettingsModalModern: React.FC<SettingsModalModernProps> = ({ isOpen, onClo
                 rows={4}
               />
               <div className="settings-help-modern">
-                <Info size={12} />
+                <Info size={12} aria-hidden="true" />
                 <span>Instruction envoyée au début de chaque nouvelle conversation.</span>
               </div>
             </div>
@@ -341,13 +347,19 @@ const SettingsModalModern: React.FC<SettingsModalModernProps> = ({ isOpen, onClo
           {/* Section Ton de l'IA */}
           <div className="settings-section-modern">
             <div className="settings-section-modern-header">
-              <MessageSquare size={18} />
+              <MessageSquare size={18} aria-hidden="true" />
               <h3>Ton de l'IA</h3>
               <div className="settings-section-modern-badge optional">Optionnel</div>
             </div>
             <div className="settings-field-modern">
-              <label className="settings-label-modern">Style de réponse</label>
-              <div className="settings-radio-group-modern">
+              <div id="ai-tone-label" className="settings-label-modern">
+                Style de réponse
+              </div>
+              <div
+                className="settings-radio-group-modern"
+                role="radiogroup"
+                aria-labelledby="ai-tone-label"
+              >
                 {(['neutre', 'formel', 'amical', 'professionnel', 'enthousiaste'] as const).map(
                   (t) => (
                     <label
@@ -367,7 +379,7 @@ const SettingsModalModern: React.FC<SettingsModalModernProps> = ({ isOpen, onClo
                 )}
               </div>
               <div className="settings-help-modern">
-                <Info size={12} />
+                <Info size={12} aria-hidden="true" />
                 <span>Ajouté à l'instruction système.</span>
               </div>
             </div>
@@ -376,7 +388,7 @@ const SettingsModalModern: React.FC<SettingsModalModernProps> = ({ isOpen, onClo
           {/* Section Notifications */}
           <div className="settings-section-modern">
             <div className="settings-section-modern-header">
-              <MessageSquare size={18} />
+              <MessageSquare size={18} aria-hidden="true" />
               <h3>Notifications</h3>
               <div className="settings-section-modern-badge optional">Optionnel</div>
             </div>
@@ -391,6 +403,7 @@ const SettingsModalModern: React.FC<SettingsModalModernProps> = ({ isOpen, onClo
                   title="Activer les notifications"
                   type="checkbox"
                   checked={!!notificationsEnabled}
+                  aria-describedby="notif-status"
                   onChange={async (e) => {
                     const enabled = e.target.checked;
                     if (enabled && 'Notification' in window) {
@@ -401,10 +414,10 @@ const SettingsModalModern: React.FC<SettingsModalModernProps> = ({ isOpen, onClo
                     }
                   }}
                 />
-                <span>{notificationsEnabled ? 'Activées' : 'Désactivées'}</span>
+                <span id="notif-status">{notificationsEnabled ? 'Activées' : 'Désactivées'}</span>
               </div>
               <div className="settings-help-modern">
-                <Info size={12} />
+                <Info size={12} aria-hidden="true" />
                 <span>Alerte quand une réponse est prête.</span>
               </div>
             </div>
@@ -413,7 +426,7 @@ const SettingsModalModern: React.FC<SettingsModalModernProps> = ({ isOpen, onClo
           {/* Section Fonctionnalités IA */}
           <div className="settings-section-modern">
             <div className="settings-section-modern-header">
-              <Zap size={18} />
+              <Zap size={18} aria-hidden="true" />
               <h3>Fonctionnalités IA</h3>
               <div className="settings-section-modern-badge experimental">Expérimental</div>
             </div>
@@ -428,12 +441,13 @@ const SettingsModalModern: React.FC<SettingsModalModernProps> = ({ isOpen, onClo
                   title="Activer le RAG"
                   type="checkbox"
                   checked={!!ragEnabled}
+                  aria-describedby="rag-status"
                   onChange={(e) => setRagEnabled(e.target.checked)}
                 />
-                <span>{ragEnabled ? 'Activé' : 'Désactivé'}</span>
+                <span id="rag-status">{ragEnabled ? 'Activé' : 'Désactivé'}</span>
               </div>
               <div className="settings-help-modern">
-                <Info size={12} />
+                <Info size={12} aria-hidden="true" />
                 <span>
                   Enrichit le contexte avec les messages les plus pertinents de l'historique.
                 </span>
@@ -444,7 +458,7 @@ const SettingsModalModern: React.FC<SettingsModalModernProps> = ({ isOpen, onClo
           {/* Section Thème */}
           <div className="settings-section-modern">
             <div className="settings-section-modern-header">
-              <Palette size={18} />
+              <Palette size={18} aria-hidden="true" />
               <h3>Apparence</h3>
               <div className="settings-section-modern-badge experimental">Bêta</div>
             </div>
@@ -475,7 +489,7 @@ const SettingsModalModern: React.FC<SettingsModalModernProps> = ({ isOpen, onClo
                 </button>
               </div>
               <div className="settings-help-modern">
-                <Info size={12} />
+                <Info size={12} aria-hidden="true" />
                 <span>
                   Thème actuel: <strong>{theme === 'dark' ? 'Sombre (Cyber)' : 'Clair'}</strong>
                 </span>
@@ -498,7 +512,7 @@ const SettingsModalModern: React.FC<SettingsModalModernProps> = ({ isOpen, onClo
                 ))}
               </div>
               <div className="settings-help-modern">
-                <Info size={12} />
+                <Info size={12} aria-hidden="true" />
                 <span>
                   Accent actuel: <strong>{accent}</strong>
                 </span>
@@ -509,7 +523,7 @@ const SettingsModalModern: React.FC<SettingsModalModernProps> = ({ isOpen, onClo
           {/* Informations système */}
           <div className="settings-section-modern">
             <div className="settings-section-modern-header">
-              <Info size={18} />
+              <Info size={18} aria-hidden="true" />
               <h3>Informations</h3>
             </div>
             <div className="settings-info-grid-modern">
@@ -535,11 +549,19 @@ const SettingsModalModern: React.FC<SettingsModalModernProps> = ({ isOpen, onClo
 
         {/* Footer */}
         <div className="settings-modal-modern-footer">
-          <button onClick={onClose} className="settings-btn-modern secondary">
+          <button
+            onClick={onClose}
+            className="settings-btn-modern secondary"
+            aria-label="Annuler les modifications"
+          >
             Annuler
           </button>
-          <button onClick={handleSave} className="settings-btn-modern primary">
-            <Save size={16} />
+          <button
+            onClick={handleSave}
+            className="settings-btn-modern primary"
+            aria-label="Sauvegarder les paramètres"
+          >
+            <Save size={16} aria-hidden="true" />
             Sauvegarder
           </button>
         </div>

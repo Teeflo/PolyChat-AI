@@ -348,6 +348,7 @@ const ChatInputModern: React.FC = () => {
             onBlur={handleInputBlur}
             onKeyDown={handleKeyDown}
             placeholder="Posez votre question à l'IA..."
+            aria-label="Zone de saisie du message"
             className="chat-input-modern-textarea"
             disabled={isAnyLoading}
             rows={1}

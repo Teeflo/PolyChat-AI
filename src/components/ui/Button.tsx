@@ -74,7 +74,11 @@ const Button: React.FC<ButtonProps> = ({
       {...props}
     >
       {loading ? (
-        <span className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin" />
+        <span
+          className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin"
+          role="status"
+          aria-label="Chargement"
+        />
       ) : icon && iconPosition === 'left' ? (
         icon
       ) : null}

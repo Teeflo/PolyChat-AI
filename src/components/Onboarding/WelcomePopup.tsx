@@ -13,18 +13,29 @@ export function WelcomePopup({ isOpen, onClose, modelName = 'IA' }: WelcomePopup
   }
 
   return (
-    <div className="welcome-popup-container">
+    <div
+      className="welcome-popup-container"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="welcome-title"
+    >
       <div className="welcome-popup-header">
-        <div className="welcome-popup-avatar">
+        <div className="welcome-popup-avatar" aria-hidden="true">
           <Bot size={24} />
         </div>
         <div>
-          <h3 className="welcome-popup-title">Bienvenue sur PolyChat AI</h3>
+          <h3 id="welcome-title" className="welcome-popup-title">
+            Bienvenue sur PolyChat AI
+          </h3>
           <p style={{ color: 'var(--text-tertiary)', fontSize: 'var(--text-xs)' }}>
             Votre assistant {modelName} est prêt
           </p>
         </div>
-        <button onClick={onClose} style={{ marginLeft: 'auto', color: 'var(--text-tertiary)' }}>
+        <button
+          onClick={onClose}
+          style={{ marginLeft: 'auto', color: 'var(--text-tertiary)' }}
+          aria-label="Fermer la fenêtre de bienvenue"
+        >
           <X size={18} />
         </button>
       </div>

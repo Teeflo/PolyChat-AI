@@ -205,6 +205,15 @@ export const ChatHistorySidebar: React.FC<ChatHistorySidebarProps> = ({ isOpen, 
                           session.id === currentSessionId ? 'active' : ''
                         }`}
                         onClick={() => handleSessionClick(session.id)}
+                        role="button"
+                        tabIndex={0}
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter' || e.key === ' ') {
+                            e.preventDefault();
+                            handleSessionClick(session.id);
+                          }
+                        }}
+                        aria-label={`Ouvrir la conversation ${getSessionTitle(session)}`}
                       >
                         <div className="polychat-history-item-content">
                           <div

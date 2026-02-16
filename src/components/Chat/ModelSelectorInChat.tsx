@@ -41,8 +41,9 @@ const ModelSelectorInChat: React.FC = () => {
                   onClick={() => handleRemoveModel(session.modelId)}
                   className="polychat-model-remove"
                   title="Remove model"
+                  aria-label={`Supprimer le modèle ${session.modelName}`}
                 >
-                  <X size={12} />
+                  <X size={12} aria-hidden="true" />
                 </button>
               )}
             </div>
@@ -55,15 +56,22 @@ const ModelSelectorInChat: React.FC = () => {
                 onClick={() => setIsExpanded(!isExpanded)}
                 className="polychat-add-model-btn"
                 title="Add model"
+                aria-haspopup="true"
+                aria-expanded={isExpanded}
+                aria-label="Ajouter un modèle"
               >
-                <Plus size={14} />
+                <Plus size={14} aria-hidden="true" />
                 <span>ADD MODEL</span>
-                {isExpanded ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
+                {isExpanded ? (
+                  <ChevronUp size={14} aria-hidden="true" />
+                ) : (
+                  <ChevronDown size={14} aria-hidden="true" />
+                )}
               </button>
 
               {/* Dropdown des modèles disponibles */}
               {isExpanded && (
-                <div className="polychat-models-dropdown">
+                <div className="polychat-models-dropdown" role="menu">
                   <div className="polychat-dropdown-header">
                     <span>SELECT MODEL TO ADD</span>
                   </div>
@@ -73,7 +81,8 @@ const ModelSelectorInChat: React.FC = () => {
                         <button
                           key={model.id}
                           onClick={() => handleAddModel(model.id)}
-                          className="polychat-dropdown-item"
+                          className="polychat-dropdown-item w-full text-left"
+                          role="menuitem"
                         >
                           <span className="polychat-model-id">{model.id}</span>
                           <span className="polychat-model-full-name">{model.name}</span>
