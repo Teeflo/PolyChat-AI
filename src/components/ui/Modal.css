@@ -47,15 +47,28 @@
 }
 
 .modal-close-btn {
-  color: var(--text-tertiary);
-  padding: var(--space-1);
-  border-radius: var(--radius-md);
-  transition: var(--transition-colors);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-lg);
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: var(--transition-all);
 }
 
 .modal-close-btn:hover {
-  color: var(--text-primary);
-  background: var(--hover-overlay);
+  background: rgb(239 68 68 / 0.15);
+  border-color: rgb(239 68 68 / 0.4);
+  color: var(--color-error-500);
+  transform: scale(1.05);
+}
+
+.modal-close-btn:active {
+  transform: scale(0.95);
 }
 
 .modal-body {

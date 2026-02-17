@@ -212,10 +212,10 @@ export function OnboardingModalFresh({ isOpen, onClose }: OnboardingModalProps) 
             </div>
             <button
               onClick={onClose}
-              style={{ color: 'var(--text-tertiary)', padding: 'var(--space-2)' }}
+              className="modal-close-btn"
               aria-label="Fermer l'assistant de configuration"
             >
-              <X size={20} />
+              <X size={18} />
             </button>
           </div>
 
