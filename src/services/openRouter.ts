@@ -332,35 +332,49 @@ export const getTopWeeklyModels = async (): Promise<
     const data = await response.json();
     const models: OpenRouterModel[] = data.data || [];
 
-    // Patterns pour les modèles populaires généraux
+    // Patterns pour les modèles populaires généraux - Mis à jour Février 2026
     const modelPatterns = [
       {
-        regex: /Gemini\s+2\.5\s+Pro/i,
-        id: 'google/gemini-2.5-pro',
-        name: 'Gemini 2.5 Pro',
-        desc: 'Modèle trending #1',
+        regex: /Minimax\s+M2\.5/i,
+        id: 'minimax/minimax-m2.5-20260211',
+        name: 'Minimax M2.5',
+        desc: 'Top trending #1 - Nouveau',
+        emoji: '🚀',
+      },
+      {
+        regex: /Kimi\s+K2\.5/i,
+        id: 'moonshotai/kimi-k2.5-0127',
+        name: 'Kimi K2.5',
+        desc: 'IA chinoise performante',
+        emoji: '🌙',
+      },
+      {
+        regex: /Gemini\s+3\s+Flash/i,
+        id: 'google/gemini-3-flash-preview-20251217',
+        name: 'Gemini 3 Flash',
+        desc: '1M tokens - Google',
+        emoji: '💎',
+      },
+      {
+        regex: /DeepSeek\s+V3\.2/i,
+        id: 'deepseek/deepseek-v3.2-20251201',
+        desc: 'Excellent rapport qualité/prix',
+        name: 'DeepSeek V3.2',
         emoji: '🔥',
       },
       {
-        regex: /GPT-4o/i,
-        id: 'openai/gpt-4o',
-        name: 'GPT-4o',
-        desc: 'Le plus polyvalent',
+        regex: /Claude\s+4\.5\s+Sonnet/i,
+        id: 'anthropic/claude-4.5-sonnet-20250929',
+        name: 'Claude 4.5 Sonnet',
+        desc: 'Dernier modèle Anthropic',
+        emoji: '✨',
+      },
+      {
+        regex: /GPT-5\.2/i,
+        id: 'openai/gpt-5.2',
+        name: 'GPT-5.2',
+        desc: '400K contexte - OpenAI',
         emoji: '🎯',
-      },
-      {
-        regex: /Claude\s+3\.5/i,
-        id: 'anthropic/claude-3.5-sonnet',
-        name: 'Claude 3.5 Sonnet',
-        desc: "Excellent pour l'écriture",
-        emoji: '✍️',
-      },
-      {
-        regex: /GPT-4o\s+mini/i,
-        id: 'openai/gpt-4o-mini',
-        name: 'GPT-4o Mini',
-        desc: 'Rapide et économique',
-        emoji: '⚡',
       },
     ];
 
@@ -422,14 +436,31 @@ export const getTopWeeklyModels = async (): Promise<
         emoji: '🎁',
         isFree: true,
       },
-      { id: 'openai/gpt-4o', name: 'GPT-4o', desc: 'Le plus polyvalent', emoji: '🎯' },
       {
-        id: 'anthropic/claude-3.5-sonnet',
-        name: 'Claude 3.5 Sonnet',
-        desc: "Excellent pour l'écriture",
-        emoji: '✍️',
+        id: 'minimax/minimax-m2.5-20260211',
+        name: 'Minimax M2.5',
+        desc: 'Top trending #1 - Nouveau',
+        emoji: '🚀',
       },
-      { id: 'openai/gpt-4o-mini', name: 'GPT-4o Mini', desc: 'Rapide et économique', emoji: '⚡' },
+      {
+        id: 'google/gemini-3-flash-preview-20251217',
+        name: 'Gemini 3 Flash',
+        desc: '1M tokens - Google',
+        emoji: '💎',
+      },
+      {
+        id: 'deepseek/deepseek-v3.2-20251201',
+        name: 'DeepSeek V3.2',
+        desc: 'Excellent rapport qualité/prix',
+        emoji: '🔥',
+      },
+      {
+        id: 'anthropic/claude-4.5-sonnet-20250929',
+        name: 'Claude 4.5 Sonnet',
+        desc: 'Dernier modèle Anthropic',
+        emoji: '✨',
+      },
+      { id: 'openai/gpt-5.2', name: 'GPT-5.2', desc: '400K contexte - OpenAI', emoji: '🎯' },
     ];
   }
 };
