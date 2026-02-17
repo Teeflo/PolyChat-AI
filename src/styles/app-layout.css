@@ -7,10 +7,19 @@
    1. APP CONTAINER
    ========================================================================== */
 
+html,
+body {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+}
+
 .polychat-app {
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
+  height: 100%;
   background: var(--bg-primary);
   position: relative;
   overflow: hidden;
@@ -477,12 +486,14 @@
 }
 
 /* Messages container */
-.polychat-messages {
+.polychat-messages,
+.polychat-messages-container {
   flex: 1;
   overflow-y: auto;
   padding: var(--space-4);
   display: flex;
   flex-direction: column;
+  min-height: 0;
 }
 
 @media (min-width: 768px) {

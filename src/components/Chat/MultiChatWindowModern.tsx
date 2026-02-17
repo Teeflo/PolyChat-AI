@@ -3,6 +3,7 @@ import MessageBubbleModern from './MessageBubbleModern';
 import { Terminal, Zap, Bot } from 'lucide-react';
 import { useChat } from '../../hooks/useChat';
 import InlineModelPicker from './InlineModelPicker';
+import ErrorBoundary from '../ui/ErrorBoundary';
 import type { ChatSession } from '../../types/index';
 import './MultiChatWindowModern.css';
 
@@ -13,13 +14,26 @@ interface MultiChatWindowModernProps {
 const MultiChatWindowModern: React.FC<MultiChatWindowModernProps> = ({ sessions }) => {
   const { regenerateMessage, deleteMessage, streamingProgress, setSessionModel } = useChat();
   const scrollTails = React.useRef<Record<string, HTMLDivElement | null>>({});
+  const scrollContainers = React.useRef<Record<string, HTMLDivElement | null>>({});
 
-  // Auto-scroll to bottom when messages change
+  // Auto-scroll logic with stick-to-bottom behavior
   React.useEffect(() => {
     sessions.forEach((session) => {
+      const container = scrollContainers.current[session.id];
       const tail = scrollTails.current[session.id];
-      if (tail) {
-        tail.scrollIntoView({ behavior: 'smooth' });
+
+      if (container && tail) {
+        const { scrollHeight, scrollTop, clientHeight } = container;
+        const scrollBottom = scrollHeight - scrollTop - clientHeight;
+        const isNearBottom = scrollBottom < 100; // Threshold for "stickiness"
+
+        // Only auto-scroll if we are already near the bottom
+        if (isNearBottom) {
+          // Use 'auto' (instant) behavior during streaming to prevent jitter
+          // Use 'smooth' for other updates (like initial load or new message start)
+          const behavior = session.isLoading ? 'auto' : 'smooth';
+          tail.scrollIntoView({ behavior, block: 'end' });
+        }
       }
     });
   }, [sessions, streamingProgress]);
@@ -72,61 +86,68 @@ const MultiChatWindowModern: React.FC<MultiChatWindowModernProps> = ({ sessions 
             </div>
           )}
           {/* Messages du chat - TOUT dans la zone scrollable */}
-          <div className="chat-messages-modern">
-            {/* Message d'accueil stylisé */}
-            {session.messages.length === 1 && session.messages[0].role === 'assistant' && (
-              <div className="chat-welcome-modern">
-                <div className="chat-welcome-modern-icon">
-                  <Zap size={32} />
-                </div>
-                <div className="chat-welcome-modern-content">
-                  <h3 className="chat-welcome-modern-title">Assistant IA Prêt</h3>
-                  <p className="chat-welcome-modern-subtitle">
-                    {session.modelName.split('/').pop()} • Modèle optimisé
-                  </p>
-                  <div className="chat-welcome-modern-features">
-                    <span className="chat-welcome-modern-feature">🎯 Réponses précises</span>
-                    <span className="chat-welcome-modern-feature">⚡ Ultra rapide</span>
-                    <span className="chat-welcome-modern-feature">🧠 Intelligent</span>
+          <div
+            className="chat-messages-modern"
+            ref={(el) => {
+              scrollContainers.current[session.id] = el;
+            }}
+          >
+            <ErrorBoundary>
+              {/* Message d'accueil stylisé */}
+              {session.messages.length === 1 && session.messages[0].role === 'assistant' && (
+                <div className="chat-welcome-modern">
+                  <div className="chat-welcome-modern-icon">
+                    <Zap size={32} />
+                  </div>
+                  <div className="chat-welcome-modern-content">
+                    <h3 className="chat-welcome-modern-title">Assistant IA Prêt</h3>
+                    <p className="chat-welcome-modern-subtitle">
+                      {session.modelName.split('/').pop()} • Modèle optimisé
+                    </p>
+                    <div className="chat-welcome-modern-features">
+                      <span className="chat-welcome-modern-feature">🎯 Réponses précises</span>
+                      <span className="chat-welcome-modern-feature">⚡ Ultra rapide</span>
+                      <span className="chat-welcome-modern-feature">🧠 Intelligent</span>
+                    </div>
                   </div>
                 </div>
-              </div>
-            )}
+              )}
 
-            {session.messages.map((message) => (
-              <MessageBubbleModern
-                key={message.id}
-                message={message}
-                error={session.error}
-                onRegenerate={
-                  message.role === 'assistant'
-                    ? () => regenerateMessage(session.id, message.id)
-                    : undefined
-                }
-                onDelete={() => deleteMessage(session.id, message.id)}
-              />
-            ))}
+              {session.messages.map((message) => (
+                <MessageBubbleModern
+                  key={message.id}
+                  message={message}
+                  error={session.error}
+                  onRegenerate={
+                    message.role === 'assistant'
+                      ? () => regenerateMessage(session.id, message.id)
+                      : undefined
+                  }
+                  onDelete={() => deleteMessage(session.id, message.id)}
+                />
+              ))}
 
-            {/* Message de chargement */}
-            {session.isLoading && (
-              <MessageBubbleModern
-                message={{
-                  id: 'loading',
-                  role: 'assistant',
-                  content: '',
-                  timestamp: new Date(),
-                  modelId: session.modelId,
+              {/* Message de chargement */}
+              {session.isLoading && (
+                <MessageBubbleModern
+                  message={{
+                    id: 'loading',
+                    role: 'assistant',
+                    content: '',
+                    timestamp: new Date(),
+                    modelId: session.modelId,
+                  }}
+                  isLoading={true}
+                />
+              )}
+
+              {/* Element pour le scroll automatique */}
+              <div
+                ref={(el) => {
+                  scrollTails.current[session.id] = el;
                 }}
-                isLoading={true}
               />
-            )}
-
-            {/* Element pour le scroll automatique */}
-            <div
-              ref={(el) => {
-                scrollTails.current[session.id] = el;
-              }}
-            />
+            </ErrorBoundary>
           </div>
         </div>
 

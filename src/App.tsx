@@ -47,6 +47,9 @@ const AppContent: React.FC = () => {
   // Appliquer le thème et l'accent à la racine
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme);
+    document.documentElement.classList.remove('theme-light', 'theme-dark');
+    document.documentElement.classList.add(`theme-${theme}`);
+
     if (accent) {
       document.documentElement.setAttribute('data-accent', accent);
     }

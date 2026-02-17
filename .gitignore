@@ -139,3 +139,5 @@ ai-instructions/
 prompts/
 CLAUDE.md
 CLAUDE*.md
+
+.vercel

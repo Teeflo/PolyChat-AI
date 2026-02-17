@@ -8,19 +8,9 @@ const ThemeToggle: React.FC = () => {
 
   const isDark = theme === 'dark';
 
-  const toggle = () => {
-    toggleTheme();
-    // Appliquer le thème au document
-    if (theme === 'light') {
-      document.documentElement.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-    }
-  };
-
   return (
     <button
-      onClick={toggle}
+      onClick={toggleTheme}
       className={`polychat-btn-modern theme-toggle-btn ${isDark ? 'dark-theme' : 'light-theme'}`}
       title={isDark ? 'LIGHT MODE' : 'DARK MODE'}
       aria-label={isDark ? 'Passer en mode clair' : 'Passer en mode sombre'}

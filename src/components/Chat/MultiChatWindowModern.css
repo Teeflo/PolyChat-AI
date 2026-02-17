@@ -10,7 +10,7 @@
 .multi-chat-container-modern {
   height: 100%;
   overflow: hidden;
-  background: var(--bg-primary);
+  background: transparent;
   display: flex;
   flex-direction: column;
 }

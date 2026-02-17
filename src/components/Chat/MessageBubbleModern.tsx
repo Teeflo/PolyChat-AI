@@ -272,4 +272,17 @@ const MessageBubbleModern: React.FC<MessageBubbleModernProps> = ({
   );
 };
 
-export default MessageBubbleModern;
+const arePropsEqual = (
+  prevProps: MessageBubbleModernProps,
+  nextProps: MessageBubbleModernProps
+) => {
+  return (
+    prevProps.message.id === nextProps.message.id &&
+    prevProps.message.content === nextProps.message.content &&
+    prevProps.message.streaming === nextProps.message.streaming &&
+    prevProps.isLoading === nextProps.isLoading &&
+    prevProps.error === nextProps.error
+  );
+};
+
+export default React.memo(MessageBubbleModern, arePropsEqual);
