@@ -132,9 +132,7 @@ export const ChatHistorySidebar: React.FC<ChatHistorySidebarProps> = ({ isOpen, 
 
   const handleDeleteSession = (e: React.MouseEvent, sessionId: string) => {
     e.stopPropagation();
-    if (confirm('Êtes-vous sûr de vouloir supprimer cette conversation ?')) {
-      deleteSession(sessionId);
-    }
+    deleteSession(sessionId);
   };
 
   return (
