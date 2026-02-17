@@ -33,7 +33,8 @@ export function WelcomePopup({ isOpen, onClose, modelName = 'IA' }: WelcomePopup
         </div>
         <button
           onClick={onClose}
-          style={{ marginLeft: 'auto', color: 'var(--text-tertiary)' }}
+          className="modal-close-btn"
+          style={{ marginLeft: 'auto' }}
           aria-label="Fermer la fenêtre de bienvenue"
         >
           <X size={18} />

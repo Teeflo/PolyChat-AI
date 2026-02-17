@@ -75,13 +75,13 @@ export function ConfigurationPopup({ isOpen, onClose, type }: ConfigurationPopup
           ),
           actions: (
             <div className="popup-actions">
-              <button onClick={onClose} className="popup-secondary-btn">
+              <button onClick={onClose} className="polychat-btn-modern polychat-btn-secondary">
                 Plus tard
               </button>
               <button
                 onClick={handleSaveApiKey}
                 disabled={!tempApiKey.trim()}
-                className="popup-main-btn"
+                className="polychat-btn-modern"
               >
                 Sauvegarder
               </button>
@@ -116,19 +116,15 @@ export function ConfigurationPopup({ isOpen, onClose, type }: ConfigurationPopup
             </div>
           ),
           actions: (
-            <div className="flex gap-2">
-              <button
-                onClick={onClose}
-                className="flex-1 px-4 py-2 text-sm text-gray-600 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
-              >
+            <div className="popup-actions">
+              <button onClick={onClose} className="polychat-btn-modern polychat-btn-secondary">
                 Fermer
               </button>
               <button
                 onClick={() => {
-                  // Ouvrir les paramètres
                   onClose();
                 }}
-                className="flex-1 px-4 py-2 text-sm bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
+                className="polychat-btn-modern"
               >
                 Paramètres
               </button>

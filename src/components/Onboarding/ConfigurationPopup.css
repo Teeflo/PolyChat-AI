@@ -55,8 +55,12 @@
 
 .config-popup-actions {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   gap: var(--space-3);
+}
+
+.config-popup-actions .polychat-btn-modern {
+  flex: 1;
 }
 
 @keyframes slideInUp {
