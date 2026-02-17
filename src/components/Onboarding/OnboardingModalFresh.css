@@ -476,10 +476,37 @@
 }
 
 .model-name {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
   font-size: var(--text-base);
   font-weight: var(--font-semibold);
   color: var(--text-primary);
   margin-bottom: 2px;
+}
+
+.model-free-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  font-size: 10px;
+  font-weight: var(--font-bold);
+  color: white;
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  border-radius: var(--radius-sm);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  animation: badgePulse 2s ease-in-out infinite;
+}
+
+@keyframes badgePulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgb(16 185 129 / 0.4);
+  }
+  50% {
+    box-shadow: 0 0 8px 2px rgb(16 185 129 / 0.6);
+  }
 }
 
 .model-desc {

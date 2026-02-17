@@ -11,7 +11,7 @@ const ModelSelectionStep: React.FC<ModelSelectionStepProps> = ({ onNext }) => {
   const { setSelectedModel } = useSettings();
   const [selectedModelId, setSelectedModelId] = useState('');
   const [models, setModels] = useState<
-    Array<{ id: string; name: string; desc: string; emoji: string }>
+    Array<{ id: string; name: string; desc: string; emoji: string; isFree?: boolean }>
   >([]);
   const [loading, setLoading] = useState(true);
 
@@ -25,6 +25,13 @@ const ModelSelectionStep: React.FC<ModelSelectionStepProps> = ({ onNext }) => {
       } catch {
         // Fallback vers des modèles par défaut
         setModels([
+          {
+            id: 'openrouter/free',
+            name: 'Free Models',
+            desc: 'Accès gratuit aux modèles IA',
+            emoji: '🎁',
+            isFree: true,
+          },
           { id: 'openai/gpt-4o', name: 'GPT-4o', desc: 'Le plus polyvalent', emoji: '🎯' },
           {
             id: 'anthropic/claude-3.5-sonnet',
@@ -73,7 +80,10 @@ const ModelSelectionStep: React.FC<ModelSelectionStepProps> = ({ onNext }) => {
             <div className="model-card-content">
               <div className="model-emoji">{model.emoji}</div>
               <div className="model-info">
-                <div className="model-name">{model.name}</div>
+                <div className="model-name">
+                  {model.name}
+                  {model.isFree && <span className="model-free-badge">GRATUIT</span>}
+                </div>
                 <div className="model-desc">{model.desc}</div>
               </div>
               {selectedModelId === model.id && (

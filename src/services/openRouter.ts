@@ -315,7 +315,7 @@ export const getImageModels = async (): Promise<
 
 // Récupérer les modèles trending de la page d'accueil OpenRouter (modèles généraux)
 export const getTopWeeklyModels = async (): Promise<
-  Array<{ id: string; name: string; desc: string; emoji: string }>
+  Array<{ id: string; name: string; desc: string; emoji: string; isFree?: boolean }>
 > => {
   try {
     // Récupérer depuis l'API models directement
@@ -364,7 +364,22 @@ export const getTopWeeklyModels = async (): Promise<
       },
     ];
 
-    const result: Array<{ id: string; name: string; desc: string; emoji: string }> = [];
+    const result: Array<{
+      id: string;
+      name: string;
+      desc: string;
+      emoji: string;
+      isFree?: boolean;
+    }> = [];
+
+    // Ajouter le modèle gratuit en premier
+    result.push({
+      id: 'openrouter/free',
+      name: 'Free Models',
+      desc: 'Accès gratuit aux modèles IA',
+      emoji: '🎁',
+      isFree: true,
+    });
 
     // Chercher les modèles populaires
     for (const pattern of modelPatterns) {
@@ -400,6 +415,13 @@ export const getTopWeeklyModels = async (): Promise<
   } catch {
     // Fallback vers des modèles populaires connus
     return [
+      {
+        id: 'openrouter/free',
+        name: 'Free Models',
+        desc: 'Accès gratuit aux modèles IA',
+        emoji: '🎁',
+        isFree: true,
+      },
       { id: 'openai/gpt-4o', name: 'GPT-4o', desc: 'Le plus polyvalent', emoji: '🎯' },
       {
         id: 'anthropic/claude-3.5-sonnet',
