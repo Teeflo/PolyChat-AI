@@ -13,9 +13,12 @@ A modern, intuitive interface for interacting with the best language models via 
 ![Vite](https://img.shields.io/badge/Vite-7.0.4-purple?logo=vite)
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4.1.11-blue?logo=tailwind-css)
 ![Zustand](https://img.shields.io/badge/Zustand-5.0.7-orange)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/Teeflo/PolyChat-AI)
+[![Live Demo](https://img.shields.io/badge/Live_Demo-Visit-blue)](https://polychat-ai-xi.vercel.app)
 
 <!-- Quick Links -->
 
+[Live Demo](https://polychat-ai-xi.vercel.app) |
 [Features](#features) |
 [Installation](#installation) |
 [Configuration](#configuration) |
@@ -40,14 +43,14 @@ A modern, intuitive interface for interacting with the best language models via 
 
 ### Technical Architecture
 
-| Layer | Technology |
-|-------|------------|
-| Frontend | React 19 + TypeScript + Vite |
-| Styling | Tailwind CSS 4 with custom themes |
-| State Management | Zustand for performant state handling |
-| API | OpenRouter for language model access |
-| Embeddings | @xenova/transformers for local RAG |
-| Build Tool | Vite for ultra-fast development and builds |
+| Layer            | Technology                                 |
+| ---------------- | ------------------------------------------ |
+| Frontend         | React 19 + TypeScript + Vite               |
+| Styling          | Tailwind CSS 4 with custom themes          |
+| State Management | Zustand for performant state handling      |
+| API              | OpenRouter for language model access       |
+| Embeddings       | @xenova/transformers for local RAG         |
+| Build Tool       | Vite for ultra-fast development and builds |
 
 ---
 
@@ -65,14 +68,14 @@ A modern, intuitive interface for interacting with the best language models via 
 
 Generate images directly within your conversations using multimodal AI models.
 
-| Feature | Description |
-|---------|-------------|
-| **Supported Models** | Gemini 2.5 Flash, GPT-4o, Claude 3.5 Sonnet |
-| **Size Options** | 256x256, 512x512, 1024x1024 |
-| **Style Presets** | Natural, Vivid, Digital Art, Photorealistic, Anime, Oil Painting, Watercolor |
-| **Mood Settings** | Bright, Dark, Serene, Dramatic, Playful, Mysterious |
-| **Lighting Options** | Natural, Studio, Dramatic, Soft, Neon, Golden Hour |
-| **Smart Features** | Automatic prompt optimization, retry with fallback models on failure |
+| Feature              | Description                                                                  |
+| -------------------- | ---------------------------------------------------------------------------- |
+| **Supported Models** | Gemini 2.5 Flash, GPT-4o, Claude 3.5 Sonnet                                  |
+| **Size Options**     | 256x256, 512x512, 1024x1024                                                  |
+| **Style Presets**    | Natural, Vivid, Digital Art, Photorealistic, Anime, Oil Painting, Watercolor |
+| **Mood Settings**    | Bright, Dark, Serene, Dramatic, Playful, Mysterious                          |
+| **Lighting Options** | Natural, Studio, Dramatic, Soft, Neon, Golden Hour                           |
+| **Smart Features**   | Automatic prompt optimization, retry with fallback models on failure         |
 
 ### RAG (Context Enhancement)
 
@@ -94,17 +97,18 @@ Intelligent conversation context using local embeddings for enhanced AI response
 
 Jump-start conversations with professionally crafted templates across 7 categories:
 
-| Category | Templates | Examples |
-|----------|-----------|----------|
-| **Programming** | 4 | Advanced Code Review, Debugging, Optimization, Documentation |
-| **Writing** | 3 | Professional Content Creation, Grammar & Style Review, Email Writing |
-| **Analysis** | 2 | Comprehensive Data Analysis, Market Research & Competitive Analysis |
-| **Creative** | 2 | Structured Brainstorming, Professional Story Writing |
-| **Learning** | 2 | Clear Concept Explanation, Personalized Study Plan |
-| **Business** | 2 | Comprehensive Business Strategy, Presentation Preparation |
-| **Personal** | 2 | SMART Goal Setting, Structured Decision Making |
+| Category        | Templates | Examples                                                             |
+| --------------- | --------- | -------------------------------------------------------------------- |
+| **Programming** | 4         | Advanced Code Review, Debugging, Optimization, Documentation         |
+| **Writing**     | 3         | Professional Content Creation, Grammar & Style Review, Email Writing |
+| **Analysis**    | 2         | Comprehensive Data Analysis, Market Research & Competitive Analysis  |
+| **Creative**    | 2         | Structured Brainstorming, Professional Story Writing                 |
+| **Learning**    | 2         | Clear Concept Explanation, Personalized Study Plan                   |
+| **Business**    | 2         | Comprehensive Business Strategy, Presentation Preparation            |
+| **Personal**    | 2         | SMART Goal Setting, Structured Decision Making                       |
 
 Each template includes:
+
 - Detailed system prompts optimized for the task
 - User message templates with placeholders
 - Suggested models for best results
@@ -114,29 +118,29 @@ Each template includes:
 
 Apply instant transformations to selected text or code:
 
-| Action | Icon | Description |
-|--------|------|-------------|
-| Explain Code | 💡 | Get detailed explanations with examples |
-| Optimize | ⚡ | Performance and efficiency improvements |
-| Debug | 🐛 | Systematic bug analysis and solutions |
-| Add Comments | 📝 | Generate comprehensive documentation |
-| Translate | 🌐 | Multi-language translation |
-| Summarize | 📋 | Create concise summaries |
-| Review | ✅ | Code and text review with suggestions |
-| Improve | 🔧 | General quality improvements |
-| Simplify | 🎯 | Reduce complexity while maintaining meaning |
-| Expand | 📖 | Elaborate and add detail to content |
+| Action       | Icon | Description                                 |
+| ------------ | ---- | ------------------------------------------- |
+| Explain Code | 💡   | Get detailed explanations with examples     |
+| Optimize     | ⚡   | Performance and efficiency improvements     |
+| Debug        | 🐛   | Systematic bug analysis and solutions       |
+| Add Comments | 📝   | Generate comprehensive documentation        |
+| Translate    | 🌐   | Multi-language translation                  |
+| Summarize    | 📋   | Create concise summaries                    |
+| Review       | ✅   | Code and text review with suggestions       |
+| Improve      | 🔧   | General quality improvements                |
+| Simplify     | 🎯   | Reduce complexity while maintaining meaning |
+| Expand       | 📖   | Elaborate and add detail to content         |
 
 ### Customization
 
 #### Themes
 
-| Theme | Description |
-|-------|-------------|
-| Dark Mode | Elegant interface with dark background |
-| Light Mode | Clean, modern light interface |
-| Pixel Art | Retro style with animations |
-| Hacker | Terminal-style with custom cursor |
+| Theme      | Description                            |
+| ---------- | -------------------------------------- |
+| Dark Mode  | Elegant interface with dark background |
+| Light Mode | Clean, modern light interface          |
+| Pixel Art  | Retro style with animations            |
+| Hacker     | Terminal-style with custom cursor      |
 
 #### Accent Colors (8 Options)
 
@@ -161,6 +165,18 @@ Access detailed usage statistics with `Ctrl + U`:
 ---
 
 ## Installation
+
+### Try Online (Recommended)
+
+Experience PolyChat-AI instantly without installing anything:
+
+**Live Demo**: https://polychat-ai-xi.vercel.app
+
+Or deploy your own instance:
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/Teeflo/PolyChat-AI)
+
+### Local Development
 
 ### Prerequisites
 
@@ -273,13 +289,13 @@ Enable or disable RAG (Retrieval Augmented Generation) in settings. When enabled
 
 ### Keyboard Shortcuts
 
-| Shortcut | Action |
-|----------|--------|
+| Shortcut       | Action               |
+| -------------- | -------------------- |
 | `Ctrl/Cmd + U` | Open usage dashboard |
-| `Ctrl/Cmd + K` | Open settings |
-| `Ctrl/Cmd + N` | New conversation |
-| `Ctrl/Cmd + S` | Save conversation |
-| `Ctrl/Cmd + /` | Show help |
+| `Ctrl/Cmd + K` | Open settings        |
+| `Ctrl/Cmd + N` | New conversation     |
+| `Ctrl/Cmd + S` | Save conversation    |
+| `Ctrl/Cmd + /` | Show help            |
 
 ---
 
@@ -322,13 +338,13 @@ PolyChat-AI/
 
 ## Available Scripts
 
-| Command | Description |
-|---------|-------------|
-| `npm run dev` | Start development server |
-| `npm run build` | TypeScript check + production build |
-| `npm run preview` | Preview production build locally |
-| `npm run lint` | Check code quality with ESLint |
-| `npm run format` | Format code with Prettier |
+| Command           | Description                         |
+| ----------------- | ----------------------------------- |
+| `npm run dev`     | Start development server            |
+| `npm run build`   | TypeScript check + production build |
+| `npm run preview` | Preview production build locally    |
+| `npm run lint`    | Check code quality with ESLint      |
+| `npm run format`  | Format code with Prettier           |
 
 ### Development Workflow
 
