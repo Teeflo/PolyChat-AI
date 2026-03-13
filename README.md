@@ -1,3 +1,13 @@
+<p align="center">
+  <h1 align="center">PolyChat AI</h1>
+</p>
+
+<p align="center">
+  <strong>L'interface de chat IA ultime. Une application web moderne (React 19 + Vite) utilisant OpenRouter pour accéder aux meilleurs LLM du marché. Design polychrome, gestion d'état avec Zustand et expérience utilisateur fluide.</strong>
+</p>
+
+---
+
 # PolyChat-AI
 
 **Your customizable, stylish AI chat companion.**
